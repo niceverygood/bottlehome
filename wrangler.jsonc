@@ -1,0 +1,9 @@
+{
+  // Cloudflare Workers config — static-assets-only deploy (no server-side Worker code).
+  // Deploy command in Cloudflare Builds: `npx wrangler deploy`
+  "name": "bottlehome",
+  "compatibility_date": "2024-11-06",
+  "assets": {
+    "directory": "./public"
+  }
+}
