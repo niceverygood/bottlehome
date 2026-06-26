@@ -16,6 +16,7 @@
   --footer:      #14152B;  /* footer */
   --gray:        #5A5B6E;  /* body text on light */
   --muted:       #8A8CA6;  /* footer muted */
+  --pink:        #E85A9B;  /* BloomAI / clinic care */
 }
 
 * { box-sizing: border-box; }
@@ -195,6 +196,63 @@ html.js [data-reveal].revealed   { animation: revealUp .7s cubic-bezier(.2,.7,.2
   font: 800 clamp(30px,4.6vw,56px)/1.15 'Pretendard', sans-serif;
   letter-spacing: -.02em; color: var(--ink); margin: 18px 0 0;
 }
+
+/* ============================================================
+   PRODUCT LINEUP (overview rows)
+   ============================================================ */
+.lineup { background: var(--cream); padding: clamp(8px,2vw,20px) clamp(20px,5vw,64px) clamp(60px,8vw,100px); }
+.lineup-list { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.lineup-row {
+  background: #fff; border: 1px solid rgba(17,18,40,.08); border-radius: 24px;
+  padding: clamp(28px,3.4vw,44px);
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(20px,4vw,52px);
+  align-items: center; transition: transform .25s, box-shadow .25s;
+}
+.lineup-row:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(17,18,40,.1); }
+.lineup-chip {
+  display: inline-block; font: 600 13px/1 'Pretendard', sans-serif; color: #fff;
+  padding: 8px 14px; border-radius: 999px; letter-spacing: .02em;
+}
+.lineup-chip--ink   { background: var(--orange); }
+.lineup-chip--bobi  { background: var(--blue-bobi); }
+.lineup-chip--bloom { background: var(--pink); }
+.lineup-row h3 {
+  font: 800 clamp(23px,2.9vw,33px)/1.28 'Pretendard', sans-serif;
+  letter-spacing: -.02em; color: var(--ink); margin: 18px 0 0; text-wrap: balance;
+}
+.lineup-row h3 a { color: inherit; text-decoration: none; transition: color .2s; }
+.lineup-row h3 a:hover { color: var(--orange); }
+.lineup-desc {
+  font: 500 clamp(15px,1.6vw,17px)/1.7 'Pretendard', sans-serif;
+  color: var(--gray); margin: 0; text-wrap: pretty;
+}
+@media (max-width: 760px) {
+  .lineup-row { grid-template-columns: 1fr; gap: 14px; }
+}
+
+/* ============================================================
+   METHOD
+   ============================================================ */
+.method { background: var(--cream); padding: clamp(70px,10vw,130px) clamp(20px,5vw,64px); }
+.method h2 {
+  font: 800 clamp(30px,4.6vw,56px)/1.15 'Pretendard', sans-serif;
+  letter-spacing: -.02em; color: var(--ink); margin: 18px 0 0;
+}
+.method-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(232px,1fr));
+  gap: 24px; margin-top: clamp(40px,5vw,60px);
+}
+.method-card {
+  background: #fff; border: 1px solid rgba(17,18,40,.08); border-radius: 24px;
+  padding: clamp(28px,2.6vw,34px); min-height: 230px;
+  display: flex; flex-direction: column;
+  transition: transform .25s, box-shadow .25s;
+}
+.method-card:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(17,18,40,.1); }
+.method-num { font: 700 16px/1 'Fredoka', sans-serif; color: var(--orange); }
+.method-body { margin-top: auto; }
+.method-card h3 { font: 700 20px/1.3 'Pretendard', sans-serif; color: var(--ink); margin: 0; }
+.method-card p { font: 500 15px/1.6 'Pretendard', sans-serif; color: var(--gray); margin: 10px 0 0; }
 
 /* ============================================================
    PRODUCT SECTIONS (shared)
