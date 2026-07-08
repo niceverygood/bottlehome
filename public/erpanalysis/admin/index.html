@@ -170,7 +170,7 @@ function answerText(k,v){
 async function openDetail(id){
   const d=await api("?id="+encodeURIComponent(id));
   $("dCompany").textContent=d.company||"-";
-  $("dMeta").textContent=fmtDate(d.created_at)+" · "+(d.contact||"-")+(d.person?" · "+d.person:"");
+  $("dMeta").textContent=fmtDate(d.created_at)+" · "+(d.contact||"-")+(d.email?" · "+d.email:"")+(d.person?" · "+d.person:"");
   /* AI */
   const ai=d.ai;
   if(ai){
