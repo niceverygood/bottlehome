@@ -154,12 +154,13 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
 .cta a{flex:1;background:#fff;color:var(--teal);text-decoration:none;text-align:center;border-radius:10px;padding:13px;font-size:14px;font-weight:800}
 .cta a.dark{background:var(--navy);color:#fff}
 .foot{font-size:10.5px;color:var(--gray);text-align:center;padding:14px 24px 6px;line-height:1.6}
-.printbtn{display:block;margin:10px auto 0;background:#fff;border:1.5px solid var(--line);color:var(--navy);font-weight:800;font-size:13px;border-radius:10px;padding:11px 22px}
+.printrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;padding:0 14px}
+.printbtn{background:#fff;border:1.5px solid var(--line);color:var(--navy);font-weight:800;font-size:13px;border-radius:10px;padding:11px 22px}
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:11px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:50;white-space:nowrap}
 .toast.on{opacity:1}
 @media print{
   body{background:#fff}
-  .wrap,#loading,.nav,.toast,.printbtn{display:none!important}
+  .wrap,#loading,.nav,.toast,.printrow{display:none!important}
   #report{display:block!important;background:#fff}
   .cta a{border:1px solid #ccc}
 }
@@ -377,6 +378,8 @@ const CONFIG = {
        postTimeoutMs:15000, pollIntervalMs:3000, pollTimeoutMs:90000 }
 };
 const PENDING_KEY="erp_pending_v1";
+let LEAD_ID=null; /* 제출·조회 중인 리드 id — ?lead= 공유 링크와 이메일 본문에 쓰인다 */
+const reportURL=()=>LEAD_ID?location.origin+location.pathname+"?lead="+LEAD_ID:null;
 
 /* ---------- 데이터 사전 ---------- */
 const TIERS=[
@@ -487,7 +490,13 @@ function buildModules(){
     });
   });
 }
-if(!resumePendingIfAny()){buildModules();show(0);}
+{
+  const leadParam=new URLSearchParams(location.search).get("lead");
+  if(!resumePendingIfAny()){
+    if(leadParam)viewLead(leadParam);
+    else{buildModules();show(0);}
+  }
+}
 
 /* =====================================================================
    규칙 엔진
@@ -638,12 +647,13 @@ function applyAIToRule(R,ai){
   return R;
 }
 function savePending(id,R){
+  LEAD_ID=id;
   try{localStorage.setItem(PENDING_KEY,JSON.stringify({id,R,S:JSON.parse(JSON.stringify(S)),ts:Date.now()}));}catch(e){}
   try{history.replaceState(null,"",location.pathname+"?lead="+id);}catch(e){}
 }
+/* localStorage만 정리 — URL의 ?lead= 는 남겨서 그대로 공유 가능한 리포트 링크가 된다 */
 function clearPending(){
   try{localStorage.removeItem(PENDING_KEY);}catch(e){}
-  try{history.replaceState(null,"",location.pathname);}catch(e){}
 }
 /* id로 서버 상태를 주기적으로 확인 — 앱 전환·화면 꺼짐으로 타이머가 잠시
    느려지거나 멈춰도, 다시 활성화되는 순간 다음 tick에서 이어서 확인한다. */
@@ -692,12 +702,35 @@ function resumePendingIfAny(){
   try{pending=JSON.parse(localStorage.getItem(PENDING_KEY)||"null");}catch(e){}
   if(!pending||!pending.id||!pending.R||!pending.S)return false;
   if(Date.now()-(pending.ts||0)>15*60*1000){clearPending();return false;}
+  LEAD_ID=pending.id;
   Object.assign(S,pending.S);
   const hideLoading=showLoading();
   pollForResult(pending.id).then(ai=>{
     hideLoading();
     renderReport(applyAIToRule(pending.R,ai),ai);
   });
+  return true;
+}
+/* 공유 링크(?lead=<id>)로 접속 — 서버에 저장된 응답으로 리포트를 그대로 재구성.
+   이메일 속 링크를 어느 기기에서 열어도 같은 리포트가 나오고, PDF 저장도 가능. */
+function viewLead(id){
+  LEAD_ID=id;
+  const hideLoading=showLoading();
+  const fail=()=>{hideLoading();LEAD_ID=null;
+    try{history.replaceState(null,"",location.pathname);}catch(e){}
+    document.getElementById("wiz").style.display="";buildModules();show(0);
+    toast("리포트를 찾을 수 없습니다");};
+  fetch(CONFIG.AI.endpoint+"?public_id="+encodeURIComponent(id)+"&full=1")
+    .then(res=>res.ok?res.json():null)
+    .then(async data=>{
+      if(!data||!data.answers){fail();return;}
+      Object.assign(S,data.answers);
+      const R=ruleEngine();
+      const ai=data.ready?(data.ai||null):await pollForResult(id);
+      hideLoading();
+      renderReport(applyAIToRule(R,ai),ai);
+    })
+    .catch(fail);
   return true;
 }
 const fmt=n=>n>=10000?(n/10000).toFixed(n%10000?1:0)+"억":n.toLocaleString()+"만";
@@ -770,10 +803,19 @@ function renderReport(R,ai){
     <b>이 설계도를 확정 견적으로 —<br>무료 진단 상담 30분</b>
     <p>진단 결과를 바탕으로 범위·일정·확정 금액을 정리해 드립니다.${S.gov==="관심 있음"?" 스마트공장 정부지원 매칭도 함께 안내드립니다.":""} 상담 순서대로 착수 슬롯이 배정됩니다.</p>
     <div class="row"><a href="tel:${CONFIG.TEL}">전화 상담</a><a class="dark" href="${CONFIG.KAKAO_URL}">카카오 상담</a></div>
-    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier)}">이메일로 리포트 받기</a></div>
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
   </div>
-  <button class="printbtn" onclick="window.print()">리포트 저장 · 인쇄 (PDF)</button>
+  <div class="printrow">
+    <button class="printbtn" onclick="window.print()">리포트 저장 · 인쇄 (PDF)</button>
+    ${reportURL()?'<button class="printbtn" id="btnCopyLink">리포트 링크 복사</button>':""}
+  </div>
   <div class="foot">본 결과는 응답 기반 자동 추정치이며, 최종 범위와 금액은 30분 상담에서 확정됩니다.<br>모든 금액 VAT 별도 · ${CONFIG.BRAND} · 응답 정보는 상담 목적 외 사용하지 않습니다.</div>`;
+  const cp=document.getElementById("btnCopyLink");
+  if(cp)cp.addEventListener("click",async()=>{
+    const u=reportURL();
+    try{await navigator.clipboard.writeText(u);toast("리포트 링크가 복사되었습니다");}
+    catch(e){prompt("아래 링크를 복사해 주세요",u);}
+  });
   document.getElementById("report").style.display="block";window.scrollTo({top:0});
 }
 function autoFirst(){
