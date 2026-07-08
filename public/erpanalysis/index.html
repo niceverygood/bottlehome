@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우리 회사 ERP 무료 진단 — 3분</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  /* ▼ 디자인 시스템: 이 변수만 바꾸면 전체 색이 교체됩니다 (예: 코랄 #F54B1E) */
+  --navy:#141414; --navy2:#26262A; --teal:#F54B1E; --mint:#FF6A3D;
+  --ink:#26262A; --gray:#66666C; --light:#F4F1ED; --line:#E4E0DA; --bg:#EFECE7;
+  --red:#D64545; --gold:#B7791F; --goldbg:#FFF7E8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none}
+input,textarea{font-family:inherit}
+.wrap{max-width:640px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:#fff}
+/* ---------- header / progress ---------- */
+.top{background:var(--navy);color:#fff;padding:14px 20px 12px}
+.top .brand{font-size:12px;font-weight:700;color:var(--mint);letter-spacing:.06em}
+.top h1{font-size:17px;font-weight:800;margin-top:2px}
+.pbar{height:5px;background:var(--navy2)}
+.pbar i{display:block;height:100%;width:0%;background:var(--mint);transition:width .35s}
+.pstep{font-size:11.5px;color:var(--gray);padding:10px 20px 0;font-weight:600}
+/* ---------- steps ---------- */
+.step{display:none;padding:8px 20px 110px;animation:fade .25s}
+.step.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2.q{font-size:19px;font-weight:800;color:var(--navy);margin:18px 0 4px;line-height:1.35}
+p.sub{font-size:13px;color:var(--gray);margin-bottom:10px;line-height:1.55}
+.lbl{font-size:13.5px;font-weight:700;color:var(--navy);margin:20px 0 8px}
+.lbl small{font-weight:500;color:var(--gray)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:22px;padding:10px 15px;font-size:13.5px;font-weight:600;transition:.12s;min-height:42px}
+.chip.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip.sel.alt{background:var(--teal);border-color:var(--teal)}
+.hint{font-size:11.5px;color:var(--gray);margin-top:7px}
+/* module tri-state cards */
+.mod{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.mod.preset{background:var(--light)}
+.mod-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mod-h b{font-size:14.5px;color:var(--navy)}
+.mod-h span{font-size:11px;color:var(--gray)}
+.tri{display:flex;gap:6px;margin-top:9px}
+.tri button{flex:1;border:1.5px solid var(--line);border-radius:8px;padding:8px 2px;font-size:12px;font-weight:700;color:var(--gray);background:#fff}
+.tri button.sel[data-s="now"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.tri button.sel[data-s="later"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tri button.sel[data-s="no"]{background:#E4E0DA;border-color:#E4E0DA;color:var(--gray)}
+textarea.txt{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:14px;min-height:96px;resize:vertical;line-height:1.55}
+textarea.txt:focus,input.txt:focus{outline:none;border-color:var(--teal)}
+input.txt{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 12px;font-size:15px}
+.note{background:var(--light);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--gray);margin-top:10px;line-height:1.6}
+/* bottom nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.nav .in{max-width:640px;margin:0 auto;display:flex;gap:10px}
+.btn{flex:1;border-radius:12px;padding:15px;font-size:15px;font-weight:800}
+.btn.prev{background:var(--light);color:var(--gray);flex:.55}
+.btn.next{background:var(--navy);color:#fff}
+.btn.next:disabled{opacity:.35}
+.btn.go{background:var(--teal);color:#fff}
+/* intro */
+.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:34px 24px 30px}
+.hero .k{color:var(--mint);font-size:11.5px;font-weight:800;letter-spacing:.12em}
+.hero h1{font-size:25px;font-weight:800;line-height:1.35;margin:10px 0 8px}
+.hero h1 em{color:var(--mint);font-style:normal}
+.hero p{font-size:13.5px;color:#C4C4CA;line-height:1.65}
+.gets{padding:20px 24px 8px}
+.gets .g{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.gets .n{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+.gets b{font-size:14.5px;color:var(--navy)}
+.gets p{font-size:12.5px;color:var(--gray);margin-top:2px;line-height:1.5}
+.meta{display:flex;gap:8px;padding:6px 24px 18px}
+.meta span{background:var(--light);border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:var(--navy)}
+/* loading */
+#loading{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center}
+.spin{width:52px;height:52px;border-radius:50%;border:5px solid var(--light);border-top-color:var(--teal);animation:rot 1s linear infinite;margin-bottom:22px}
+@keyframes rot{to{transform:rotate(360deg)}}
+#loadmsg{font-size:15px;font-weight:700;color:var(--navy)}
+#loadsub{font-size:12.5px;color:var(--gray);margin-top:6px}
+/* ---------- report ---------- */
+#report{display:none;background:var(--bg);padding-bottom:40px}
+.rp{max-width:640px;margin:0 auto}
+.rhead{background:var(--navy);color:#fff;padding:22px 20px 20px}
+.rhead .k{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:.1em}
+.rhead h1{font-size:20px;font-weight:800;margin-top:4px}
+.rhead .d{font-size:11.5px;color:#A6A6AC;margin-top:4px}
+.aibadge{display:inline-block;margin-top:10px;font-size:11px;font-weight:800;padding:5px 10px;border-radius:12px;background:var(--navy2);color:var(--mint)}
+.card{background:#fff;border-radius:14px;margin:12px 14px;padding:16px 16px;box-shadow:0 1px 4px rgba(20,20,20,.06)}
+.card h3{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:10px}
+.first{font-size:14.5px;font-weight:700;color:var(--navy);line-height:1.6}
+.sumtx{font-size:13px;color:var(--ink);line-height:1.7;margin-top:8px}
+.tierrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tierbadge{background:var(--teal);color:#fff;font-weight:800;font-size:14px;border-radius:9px;padding:8px 13px}
+.pricebig{font-size:23px;font-weight:800;color:var(--navy)}
+.pricebig small{font-size:12px;font-weight:600;color:var(--gray)}
+.trow{display:flex;gap:8px;margin-top:12px}
+.tbox{flex:1;background:var(--light);border-radius:10px;padding:10px;text-align:center}
+.tbox b{display:block;font-size:14px;color:var(--navy)}
+.tbox span{font-size:11px;color:var(--gray)}
+.covwrap{display:flex;align-items:center;gap:16px}
+.donut{width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--teal) 0,var(--teal) calc(var(--p)*1%),#E8E4DE 0);display:flex;align-items:center;justify-content:center;flex:none}
+.donut i{width:66px;height:66px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:17px;color:var(--navy)}
+.covtx{font-size:12.5px;color:var(--ink);line-height:1.6}
+.covtx b{color:var(--navy)}
+ul.list{list-style:none}
+ul.list li{font-size:13px;padding:9px 0;border-bottom:1px solid var(--light);display:flex;gap:8px;line-height:1.5}
+ul.list li:last-child{border:0}
+ul.list li:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none;margin-top:7px}
+ul.list.warn li:before{background:var(--gold)}
+table.opt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.opt td{padding:8px 4px;border-bottom:1px solid var(--light)}
+table.opt td:last-child{text-align:right;font-weight:700;color:var(--navy);white-space:nowrap}
+table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight:800;color:var(--navy);font-size:13.5px}
+/* IA tree */
+.ph{display:inline-block;font-size:10px;font-weight:800;border-radius:9px;padding:3px 8px;margin-left:6px;vertical-align:1px}
+.ph.p1{background:#FBE3DA;color:#C2410C}.ph.p2{background:#EDE8E2;color:var(--gray)}
+.ia{margin-top:4px}
+.ia .m{margin-bottom:12px}
+.ia .m>b{font-size:13.5px;color:var(--navy);display:flex;align-items:center}
+.ia .m>b:before{content:"";width:8px;height:8px;border-radius:2px;background:var(--navy);margin-right:8px}
+.ia ul{list-style:none;margin:6px 0 0 3px;border-left:2px solid var(--line);padding-left:13px}
+.ia ul li{font-size:12.5px;color:var(--ink);padding:3.5px 0;position:relative}
+.ia ul li.ai{color:var(--teal);font-weight:700}
+/* dashboard mock */
+.dash{background:var(--navy);border-radius:14px;padding:14px;color:#fff}
+.dash .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.dash .dh b{font-size:13px}
+.dash .dh span{font-size:10px;color:#9A9AA0;background:var(--navy2);padding:4px 8px;border-radius:8px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.kpi{background:var(--navy2);border-radius:9px;padding:9px 8px}
+.kpi span{font-size:9.5px;color:#A6A6AC;display:block;line-height:1.3}
+.kpi b{font-size:14px;color:var(--mint);display:block;margin-top:3px}
+.dgrid{display:grid;grid-template-columns:1.35fr 1fr;gap:7px;margin-top:7px}
+.panel{background:var(--navy2);border-radius:9px;padding:10px}
+.panel h5{font-size:10px;color:#A6A6AC;font-weight:700;margin-bottom:8px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:64px}
+.bars i{flex:1;background:var(--teal);border-radius:3px 3px 0 0;opacity:.9}
+.bars i.hl{background:var(--mint)}
+.blabels{display:flex;gap:6px;margin-top:5px}
+.blabels span{flex:1;text-align:center;font-size:8.5px;color:#9A9AA0}
+.alertlist{list-style:none}
+.alertlist li{font-size:10.5px;color:#E4E4E7;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:6px;line-height:1.4}
+.alertlist li:last-child{border:0}
+.alertlist li:before{content:"●";color:var(--mint);font-size:7px;margin-top:3px}
+.dfoot{font-size:9.5px;color:#9A9AA0;margin-top:9px;text-align:center}
+/* CTA */
+.cta{background:var(--teal);border-radius:14px;margin:12px 14px;padding:18px 16px;color:#fff}
+.cta b{font-size:16px;display:block;line-height:1.45}
+.cta p{font-size:12px;margin-top:6px;opacity:.92;line-height:1.55}
+.cta .row{display:flex;gap:8px;margin-top:14px}
+.cta a{flex:1;background:#fff;color:var(--teal);text-decoration:none;text-align:center;border-radius:10px;padding:13px;font-size:14px;font-weight:800}
+.cta a.dark{background:var(--navy);color:#fff}
+.foot{font-size:10.5px;color:var(--gray);text-align:center;padding:14px 24px 6px;line-height:1.6}
+.printbtn{display:block;margin:10px auto 0;background:#fff;border:1.5px solid var(--line);color:var(--navy);font-weight:800;font-size:13px;border-radius:10px;padding:11px 22px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:11px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:50;white-space:nowrap}
+.toast.on{opacity:1}
+@media print{
+  body{background:#fff}
+  .wrap,#loading,.nav,.toast,.printbtn{display:none!important}
+  #report{display:block!important;background:#fff}
+  .cta a{border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== WIZARD ===================== -->
+<div class="wrap" id="wiz">
+  <div class="top">
+    <div class="brand">주식회사 바틀 · FIXED-PRICE CUSTOM ERP</div>
+    <h1>우리 회사 ERP 무료 진단</h1>
+  </div>
+  <div class="pbar"><i id="pfill"></i></div>
+  <div class="pstep" id="pstep"></div>
+
+  <!-- STEP 0 : intro -->
+  <section class="step on" data-step="0" style="padding:0 0 110px">
+    <div class="hero">
+      <div class="k">FREE AI DIAGNOSIS · 3 MIN</div>
+      <h1>버튼만 눌러도<br><em>우리 회사 ERP 설계도</em>가 나옵니다</h1>
+      <p>12개 문항, 약 3분. 완료 즉시 AI가 응답을 분석해 아래 4가지를 화면으로 보여드립니다.</p>
+    </div>
+    <div class="gets">
+      <div class="g"><div class="n">1</div><div><b>권장 구성 & 예상 견적 범위</b><p>회사 규모·요구 범위 기준, 정찰가 기준의 구축비 범위</p></div></div>
+      <div class="g"><div class="n">2</div><div><b>표준 커버율 분석</b><p>요구사항 중 몇 %가 검증된 표준 모듈로 해결되는지</p></div></div>
+      <div class="g"><div class="n">3</div><div><b>우리 회사 시스템 설계도(IA)</b><p>메뉴 구조를 1차 오픈 / 2차 확장으로 나눈 화면 지도</p></div></div>
+      <div class="g"><div class="n">4</div><div><b>경영 대시보드 미리보기</b><p>도입 후 대표님이 매일 아침 보게 될 화면 한 장</p></div></div>
+    </div>
+    <div class="meta"><span>⏱ 약 3분</span><span>✍ 주관식 1개</span><span>￦ 견적 범위 즉시</span></div>
+  </section>
+
+  <!-- STEP 1 : 회사 기본 -->
+  <section class="step" data-step="1">
+    <h2 class="q">회사에 대해 알려주세요</h2>
+    <p class="sub">규모에 맞는 구성과 가격 구간을 찾는 기준입니다.</p>
+    <div class="lbl">업종 <small>· 1개 선택</small></div>
+    <div class="chips" data-g="industry" data-type="single">
+      <button class="chip" data-v="mfg">제조</button><button class="chip" data-v="dist">도소매·유통</button>
+      <button class="chip" data-v="svc">서비스</button><button class="chip" data-v="trade">무역·물류</button>
+      <button class="chip" data-v="etc">기타</button>
+    </div>
+    <div class="lbl">직원 수</div>
+    <div class="chips" data-g="emp" data-type="single">
+      <button class="chip" data-v="0">~10인</button><button class="chip" data-v="1">10~30인</button>
+      <button class="chip" data-v="2">30~50인</button><button class="chip" data-v="3">50~100인</button>
+      <button class="chip" data-v="4">100~200인</button><button class="chip" data-v="5">200인 이상</button>
+    </div>
+    <div class="lbl">연매출 <small>· 대략이면 충분합니다</small></div>
+    <div class="chips" data-g="rev" data-type="single">
+      <button class="chip" data-v="0">~10억</button><button class="chip" data-v="1">10~50억</button>
+      <button class="chip" data-v="2">50~150억</button><button class="chip" data-v="3">150~400억</button>
+      <button class="chip" data-v="4">400억 이상</button><button class="chip" data-v="-1">비공개</button>
+    </div>
+    <div class="lbl">시스템을 실제로 쓸 인원</div>
+    <div class="chips" data-g="users" data-type="single">
+      <button class="chip" data-v="~10명">~10명</button><button class="chip" data-v="~30명">~30명</button>
+      <button class="chip" data-v="~50명">~50명</button><button class="chip" data-v="~100명">~100명</button>
+      <button class="chip" data-v="100명+">100명 이상</button>
+    </div>
+    <div class="lbl">사업장·창고 수</div>
+    <div class="chips" data-g="sites" data-type="single">
+      <button class="chip" data-v="1곳">1곳</button><button class="chip" data-v="2~3곳">2~3곳</button><button class="chip" data-v="4곳+">4곳 이상</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 : 현재 방식 -->
+  <section class="step" data-step="2">
+    <h2 class="q">지금은 어떻게 관리하고 계세요?</h2>
+    <p class="sub">데이터 이관 난이도를 가늠하는 문항입니다.</p>
+    <div class="lbl">현재 사용 도구 <small>· 모두 선택</small></div>
+    <div class="chips" data-g="tools" data-type="multi">
+      <button class="chip" data-v="엑셀·수기">엑셀·수기</button><button class="chip" data-v="이카운트">이카운트</button>
+      <button class="chip" data-v="위하고·더존">위하고·더존</button><button class="chip" data-v="자체·외주 시스템">자체·외주 시스템</button>
+      <button class="chip" data-v="기타 SaaS">기타 SaaS</button>
+    </div>
+    <div class="lbl">거래처 수</div>
+    <div class="chips" data-g="partners" data-type="single">
+      <button class="chip" data-v="~100">~100곳</button><button class="chip" data-v="100~500">100~500곳</button>
+      <button class="chip" data-v="500~2,000">500~2,000곳</button><button class="chip" data-v="2,000+">2,000곳 이상</button>
+    </div>
+    <div class="lbl">품목(SKU) 수</div>
+    <div class="chips" data-g="items" data-type="single">
+      <button class="chip" data-v="~100">~100개</button><button class="chip" data-v="100~1,000">100~1,000개</button>
+      <button class="chip" data-v="1,000~5,000">1,000~5,000개</button><button class="chip" data-v="5,000+">5,000개 이상</button>
+    </div>
+    <div class="lbl">월 거래(주문·전표) 건수</div>
+    <div class="chips" data-g="orders" data-type="single">
+      <button class="chip" data-v="~500">~500건</button><button class="chip" data-v="500~3,000">500~3,000건</button>
+      <button class="chip" data-v="3,000~10,000">3,000~10,000건</button><button class="chip" data-v="10,000+">1만 건 이상</button>
+    </div>
+    <div class="lbl">기존 데이터 이관</div>
+    <div class="chips" data-g="migrate" data-type="single">
+      <button class="chip" data-v="전체 이관">전체 이관</button><button class="chip" data-v="핵심만 이관">핵심만</button>
+      <button class="chip" data-v="새로 시작">새로 시작</button><button class="chip" data-v="모르겠음">모르겠음</button>
+    </div>
+    <div class="lbl">데이터 정리 상태</div>
+    <div class="chips" data-g="dataState" data-type="single">
+      <button class="chip" data-v="정리돼 있음">정리돼 있음</button><button class="chip" data-v="흩어져 있음">흩어져 있음</button><button class="chip" data-v="잘 모름">잘 모름</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 : 표준 모듈 -->
+  <section class="step" data-step="3">
+    <h2 class="q">필요한 기능을 골라주세요</h2>
+    <p class="sub">저희 표준 ERP의 기본 골자입니다. <b>지금 필수 / 2차 오픈 때 / 불필요</b>만 눌러주세요 — 추천값을 미리 채워뒀습니다.</p>
+    <div id="modlist"></div>
+    <div class="note">모듈 구성은 최종 견적의 핵심 변수입니다. 확신이 없으면 추천값 그대로 두셔도 좋습니다 — 상담에서 함께 조정합니다.</div>
+  </section>
+
+  <!-- STEP 4 : 연동·커스텀 -->
+  <section class="step" data-step="4">
+    <h2 class="q">연동과 커스텀이 필요한 부분</h2>
+    <p class="sub">여기부터가 '우리 회사만의' 영역입니다. 견적과 설계도에 그대로 반영됩니다.</p>
+    <div class="lbl">외부 시스템 연동 <small>· 모두 선택</small></div>
+    <div class="chips" data-g="integrations" data-type="multi">
+      <button class="chip alt" data-v="tax">전자세금계산서</button><button class="chip alt" data-v="pg">PG 결제</button>
+      <button class="chip alt" data-v="mall">쇼핑몰·오픈마켓</button><button class="chip alt" data-v="post">택배사</button>
+      <button class="chip alt" data-v="bank">은행 입출금</button><button class="chip alt" data-v="gw">그룹웨어·전자결재</button>
+      <button class="chip alt" data-v="barcode">바코드·PDA</button><button class="chip alt" data-v="mes">MES·설비</button>
+      <button class="chip alt" data-v="none">없음·모름</button>
+    </div>
+    <div id="mallq" style="display:none">
+      <div class="lbl">판매 채널 수 <small>· 쇼핑몰·오픈마켓</small></div>
+      <div class="chips" data-g="mallCh" data-type="single">
+        <button class="chip" data-v="1~2개">1~2개</button><button class="chip" data-v="3~5개">3~5개</button><button class="chip" data-v="6개+">6개 이상</button>
+      </div>
+    </div>
+    <div class="lbl">사용 환경</div>
+    <div class="chips" data-g="mobile" data-type="single">
+      <button class="chip" data-v="사무실 PC 위주">사무실 PC 위주</button><button class="chip" data-v="모바일도 필요">모바일도 필요</button><button class="chip" data-v="현장·창고 필수">현장·창고에서 필수</button>
+    </div>
+    <div class="lbl">꼭 유지해야 하는 서식 <small>· 거래명세서·라벨 등</small></div>
+    <div class="chips" data-g="forms" data-type="single">
+      <button class="chip" data-v="있음">있음</button><button class="chip" data-v="없음">없음</button><button class="chip" data-v="모름">모름</button>
+    </div>
+    <div class="lbl">우리 회사만의 특수한 업무가 있다면 <small>· 선택 · AI 분석의 핵심 재료</small></div>
+    <textarea class="txt" id="customText" placeholder="예) 거래처마다 단가 정책이 다릅니다 / 반품·교환 정산 규칙이 복잡합니다 / 3단계 결재 후 출고가 가능합니다"></textarea>
+  </section>
+
+  <!-- STEP 5 : 상황 -->
+  <section class="step" data-step="5">
+    <h2 class="q">지금 상황을 알려주세요</h2>
+    <p class="sub">진단 리포트의 우선순위를 맞추는 데 씁니다.</p>
+    <div class="lbl">가장 큰 고민 <small>· 최대 2개</small></div>
+    <div class="chips" data-g="pains" data-type="multi" data-max="2">
+      <button class="chip" data-v="재고 불일치">재고 불일치</button><button class="chip" data-v="월말 결산 야근">월말 결산 야근</button>
+      <button class="chip" data-v="데이터 흩어짐">데이터 흩어짐</button><button class="chip" data-v="실시간 파악 불가">실시간 파악 불가</button>
+      <button class="chip" data-v="인수인계 리스크">인수인계 리스크</button><button class="chip" data-v="수작업 실수">수작업 실수</button>
+    </div>
+    <div class="lbl">도입을 알아보게 된 계기</div>
+    <div class="chips" data-g="trigger" data-type="single">
+      <button class="chip" data-v="거래처의 시스템 요구">거래처 요구</button><button class="chip" data-v="재고·정산 사고">사고 발생</button>
+      <button class="chip" data-v="담당자 퇴사·인수인계">담당자 퇴사</button><button class="chip" data-v="감사·인증 준비">감사·인증</button>
+      <button class="chip" data-v="판매 채널 확장">채널 확장</button><button class="chip" data-v="정부지원 활용">정부지원 활용</button>
+      <button class="chip" data-v="성장 대비">성장 대비</button>
+    </div>
+    <div class="lbl">희망 오픈 시기</div>
+    <div class="chips" data-g="timing" data-type="single">
+      <button class="chip" data-v="1개월 내">1개월 내</button><button class="chip" data-v="3개월 내">3개월 내</button>
+      <button class="chip" data-v="6개월 내">6개월 내</button><button class="chip" data-v="검토 단계">아직 검토 단계</button>
+    </div>
+    <div class="lbl">예산 감각 <small>· 미정이어도 괜찮습니다</small></div>
+    <div class="chips" data-g="budget" data-type="single">
+      <button class="chip" data-v="~1,000만">~1,000만</button><button class="chip" data-v="1,000~3,000만">1,000~3,000만</button>
+      <button class="chip" data-v="3,000~5,000만">3,000~5,000만</button><button class="chip" data-v="5,000만+">5,000만 이상</button>
+      <button class="chip" data-v="미정">아직 미정</button>
+    </div>
+    <div id="govq" style="display:none">
+      <div class="lbl">스마트공장 정부지원(최대 2억) 관심</div>
+      <div class="chips" data-g="gov" data-type="single">
+        <button class="chip" data-v="관심 있음">관심 있음</button><button class="chip" data-v="이미 진행·경험">이미 진행·경험</button><button class="chip" data-v="잘 모름">잘 모름</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6 : 연락처 -->
+  <section class="step" data-step="6">
+    <h2 class="q">리포트를 받아보실 정보</h2>
+    <p class="sub">아래 2개만 입력하면 끝입니다. 분석 결과는 이 화면에서 바로 보여드립니다.</p>
+    <div class="lbl">회사명</div>
+    <input class="txt" id="company" placeholder="예) 한빛정밀" maxlength="40">
+    <div class="lbl">연락처 <small>· 휴대폰 또는 이메일</small></div>
+    <input class="txt" id="contact" placeholder="010-0000-0000 / name@company.com" maxlength="60">
+    <div class="lbl">담당자명 <small>· 선택</small></div>
+    <input class="txt" id="person" placeholder="예) 김대표" maxlength="20">
+    <div class="note">입력하신 정보는 진단 리포트 안내와 상담 연락 외 다른 목적으로 사용하지 않습니다.</div>
+  </section>
+
+  <div class="nav"><div class="in">
+    <button class="btn prev" id="btnPrev" style="display:none">이전</button>
+    <button class="btn next" id="btnNext">진단 시작하기</button>
+  </div></div>
+</div>
+
+<!-- ===================== LOADING ===================== -->
+<div class="wrap" id="loading">
+  <div class="spin"></div>
+  <div id="loadmsg">응답을 분석하고 있습니다</div>
+  <div id="loadsub">잠시만요, 30초 이내에 완료됩니다</div>
+</div>
+
+<!-- ===================== REPORT ===================== -->
+<div id="report"><div class="rp" id="rpbody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   CONFIG — 여기만 수정하면 됩니다
+   · 색상: 최상단 :root CSS 변수
+   · AI: Supabase Edge Function 프록시를 경유해 Claude(Sonnet)로 분석합니다.
+     API 키는 서버(프록시)에만 있고, 제출·분석 결과는 DB에 저장되어
+     /erpanalysis/admin 에서 조회할 수 있습니다. 프록시 실패 시 자동으로
+     규칙 기반 분석으로 전환되므로 리포트는 항상 출력됩니다.
+===================================================================== */
+const CONFIG = {
+  BRAND:"주식회사 바틀", TEL:"010-8739-9771", MAIL:"hss@bottlecorp.kr", KAKAO_URL:"https://pf.kakao.com/_채널명",
+  AI:{ enabled:true, endpoint:"https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-analyze", timeoutMs:55000 }
+};
+
+/* ---------- 데이터 사전 ---------- */
+const TIERS=[
+ {seg:"S1",tier:"LITE",lo:590,hi:990,mlo:15,mhi:25,weeks:"6주"},
+ {seg:"S2",tier:"STANDARD",lo:990,hi:1900,mlo:25,mhi:45,weeks:"12주 (3개월)"},
+ {seg:"M1",tier:"BUSINESS",lo:1900,hi:2900,mlo:45,mhi:70,weeks:"16주 (4개월)"},
+ {seg:"M2",tier:"BUSINESS+",lo:2900,hi:4900,mlo:70,mhi:120,weeks:"16~20주"},
+ {seg:"L1",tier:"ENTERPRISE",lo:5000,hi:9000,mlo:120,mhi:200,weeks:"20~28주"},
+ {seg:"L2",tier:"ENTERPRISE+",lo:9000,hi:15000,mlo:200,mhi:300,weeks:"협의 (5~7개월)"}];
+const MODS=[
+ {id:"sales",name:"영업·매출",kw:"견적·수주·매출·거래처",menus:["견적 관리","수주 관리","매출 전표","미수금 현황"],def:"now"},
+ {id:"buy",name:"구매·매입",kw:"발주·입고·매입·지급",menus:["발주 관리","입고 관리","매입 전표","지급 관리"],def:"now"},
+ {id:"inv",name:"재고관리",kw:"실시간 재고·입출고",menus:["실시간 재고 현황","입출고 관리","재고 조정","안전재고 알림"],def:"now"},
+ {id:"acc",name:"회계 연동",kw:"전표·부가세 기초",menus:["매입·매출 전표","부가세 자료"],def:"now"},
+ {id:"dash",name:"대시보드·리포트",kw:"실시간 경영 지표",menus:["경영 현황판","기간별 통계","맞춤 리포트"],def:"now"},
+ {id:"auth",name:"권한·보안",kw:"역할별 접근·로그",menus:["역할별 권한","접근 기록"],def:"now"},
+ {id:"hr",name:"인사·근태",kw:"사원·근태·휴가",menus:["사원 관리","근태 기록","휴가 관리"],def:"later"},
+ {id:"auto",name:"알림·자동화",kw:"결재·알림·반복업무",menus:["결재·승인 알림","반복 업무 자동화"],def:"later"}];
+const PRESETS={
+ mfg:{name:"생산관리",kw:"제조 특화 · BOM·공정",menus:["BOM 관리","생산 지시","공정 현황","원자재 소요"]},
+ dist:{name:"판매채널 통합",kw:"유통 특화 · 다채널",menus:["채널 주문 통합","채널별 정산","송장·배송 처리"]},
+ svc:{name:"예약·회원",kw:"서비스 특화",menus:["예약 캘린더","회원·이용권 관리","이용 정산"]},
+ trade:{name:"수출입 관리",kw:"무역 특화",menus:["수출입 오더","환율·외화 관리","선적·통관"]}};
+const OPTS={tax:{n:"전자세금계산서 연동",lo:150,hi:150},pg:{n:"PG 결제 연동",lo:200,hi:200},
+ post:{n:"택배사 연동",lo:150,hi:150},bank:{n:"은행 입출금 연동",lo:250,hi:250},
+ gw:{n:"그룹웨어·전자결재",lo:400,hi:400},barcode:{n:"바코드·PDA 재고",lo:350,hi:350},
+ mes:{n:"MES·설비 연계",lo:700,hi:null}};
+const MALLP={"1~2개":[250,500],"3~5개":[750,1250],"6개+":[1500,null]};
+const INDNAME={mfg:"제조",dist:"도소매·유통",svc:"서비스",trade:"무역·물류",etc:""};
+
+/* ---------- 상태 ---------- */
+const S={industry:null,emp:null,rev:null,users:null,sites:null,tools:[],partners:null,items:null,orders:null,
+ migrate:null,dataState:null,modules:{},integrations:[],mallCh:null,mobile:null,forms:null,customText:"",
+ pains:[],trigger:null,timing:null,budget:null,gov:null,company:"",contact:"",person:""};
+MODS.forEach(m=>S.modules[m.id]=m.def);
+
+/* ---------- 위저드 ---------- */
+const steps=[...document.querySelectorAll(".step")];let cur=0;
+const TITLES=["","STEP 1 / 6 · 회사 기본","STEP 2 / 6 · 현재 관리 방식","STEP 3 / 6 · 표준 기능 선택","STEP 4 / 6 · 연동·커스텀","STEP 5 / 6 · 상황·조건","STEP 6 / 6 · 리포트 수신"];
+function show(n){
+  cur=n;steps.forEach(s=>s.classList.toggle("on",+s.dataset.step===n));
+  document.getElementById("pfill").style.width=(n/6*100)+"%";
+  document.getElementById("pstep").textContent=TITLES[n];
+  const prev=document.getElementById("btnPrev"),next=document.getElementById("btnNext");
+  prev.style.display=n===0?"none":"block";
+  next.textContent=n===0?"진단 시작하기":(n===6?"AI 분석 결과 보기":"다음");
+  next.className="btn "+(n===6?"go":"next");
+  window.scrollTo({top:0});
+}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800);}
+function validate(n){
+  if(n===1&&(!S.industry||S.emp===null)){toast("업종과 직원 수를 선택해 주세요");return false;}
+  if(n===6){
+    S.company=document.getElementById("company").value.trim();
+    S.contact=document.getElementById("contact").value.trim();
+    S.person=document.getElementById("person").value.trim();
+    if(!S.company||!S.contact){toast("회사명과 연락처를 입력해 주세요");return false;}
+  }
+  if(n===4)S.customText=document.getElementById("customText").value.trim();
+  return true;
+}
+document.getElementById("btnNext").addEventListener("click",()=>{
+  if(!validate(cur))return;
+  if(cur<6)show(cur+1);else startAnalysis();
+});
+document.getElementById("btnPrev").addEventListener("click",()=>show(cur-1));
+
+/* 칩 선택 */
+document.addEventListener("click",e=>{
+  const c=e.target.closest(".chip");if(!c)return;
+  const g=c.parentElement,key=g.dataset.g,type=g.dataset.type;
+  if(type==="single"){
+    [...g.children].forEach(x=>x.classList.remove("sel"));c.classList.add("sel");
+    S[key]=(key==="emp"||key==="rev")?+c.dataset.v:c.dataset.v;
+    if(key==="industry"){buildModules();document.getElementById("govq").style.display=(c.dataset.v==="mfg")?"block":"none";}
+  }else{
+    const v=c.dataset.v,max=+g.dataset.max||99;
+    if(key==="integrations"&&v==="none"){S.integrations=c.classList.contains("sel")?[]:["none"];
+      [...g.children].forEach(x=>x.classList.remove("sel"));if(S.integrations.includes("none"))c.classList.add("sel");
+      document.getElementById("mallq").style.display="none";return;}
+    if(key==="integrations"){const i=S.integrations.indexOf("none");if(i>-1){S.integrations.splice(i,1);[...g.children].forEach(x=>{if(x.dataset.v==="none")x.classList.remove("sel");});}}
+    const arr=S[key],idx=arr.indexOf(v);
+    if(idx>-1){arr.splice(idx,1);c.classList.remove("sel");}
+    else{if(arr.length>=max){toast("최대 "+max+"개까지 선택할 수 있어요");return;}arr.push(v);c.classList.add("sel");}
+    if(key==="integrations")document.getElementById("mallq").style.display=S.integrations.includes("mall")?"block":"none";
+  }
+});
+/* 모듈 카드 */
+function buildModules(){
+  const box=document.getElementById("modlist");let html="";
+  const render=(id,name,kw,preset)=>`
+   <div class="mod${preset?" preset":""}" data-id="${id}">
+     <div class="mod-h"><b>${name}${preset?' <span style="color:var(--teal);font-weight:800">★업종 추천</span>':""}</b><span>${kw}</span></div>
+     <div class="tri">
+       <button data-s="now">지금 필수</button><button data-s="later">2차 오픈에</button><button data-s="no">불필요</button>
+     </div></div>`;
+  if(S.industry&&PRESETS[S.industry]){const p=PRESETS[S.industry];
+    if(!(("preset") in S.modules))S.modules.preset="now";html+=render("preset",p.name,p.kw,true);}
+  else delete S.modules.preset;
+  MODS.forEach(m=>html+=render(m.id,m.name,m.kw,false));
+  box.innerHTML=html;
+  box.querySelectorAll(".mod").forEach(md=>{
+    const id=md.dataset.id;
+    md.querySelectorAll(".tri button").forEach(b=>{
+      if(b.dataset.s===S.modules[id])b.classList.add("sel");
+      b.addEventListener("click",()=>{md.querySelectorAll(".tri button").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.modules[id]=b.dataset.s;});
+    });
+  });
+}
+buildModules();show(0);
+
+/* =====================================================================
+   규칙 엔진
+===================================================================== */
+function ruleEngine(){
+  const ei=S.emp??0, ri=S.rev>=0?Math.min(S.rev,4):-1;
+  let ti=Math.max(ei, ri>=0?ri:0); ti=Math.min(ti,5);
+  const nowCnt=Object.values(S.modules).filter(v=>v==="now").length;
+  if(nowCnt>=7&&ti<2)ti=Math.min(ti+1,5); // 범위 과다 시 상향
+  const T=TIERS[ti];
+  /* 옵션 합산 */
+  const rows=[];let olo=0,ohi=0,open=false;
+  S.integrations.filter(v=>v!=="none").forEach(v=>{
+    if(v==="mall"){const c=MALLP[S.mallCh||"1~2개"];rows.push(["쇼핑몰·오픈마켓 연동 ("+(S.mallCh||"채널 수 미정")+")",c[0],c[1]]);olo+=c[0];if(c[1]==null)open=true;else ohi+=c[1];}
+    else{const o=OPTS[v];rows.push([o.n,o.lo,o.hi]);olo+=o.lo;if(o.hi==null)open=true;else ohi+=o.hi;}
+  });
+  if(S.mobile==="현장·창고 필수"&&!S.integrations.includes("barcode")){rows.push(["현장용 모바일·PDA 화면(권장)",350,350]);olo+=350;ohi+=350;}
+  /* 커버율 */
+  let covered=nowCnt+rows.length, custom=0;const customItems=[];
+  if(S.customText){custom+=1;customItems.push({title:"특수 업무 커스텀",desc:S.customText.slice(0,80)+(S.customText.length>80?"…":""),module:"상담 확정"});}
+  if(S.forms==="있음"){custom+=1;customItems.push({title:"기존 서식·출력물 유지",desc:"거래명세서·라벨 등 현행 양식 그대로 구현",module:"출력물"});}
+  let pct=covered+custom===0?95:Math.round(covered/(covered+custom)*100);
+  pct=Math.max(62,Math.min(pct,97));
+  /* 리스크 */
+  const risks=[];
+  if(S.dataState==="잘 모름"||S.dataState==="흩어져 있음")risks.push("데이터가 정리되지 않은 상태 — 이관 범위·정제 공수를 상담에서 먼저 확정해야 일정이 지켜집니다.");
+  if(S.migrate==="전체 이관"&&(S.items==="5,000+"||S.orders==="10,000+"))risks.push("대용량 전체 이관 — 기본 이관 범위를 초과할 수 있어 이관 옵션(100~500만) 검토가 필요합니다.");
+  if(S.timing==="1개월 내")risks.push("희망 일정 1개월 — 표준 구축 기간보다 짧습니다. 핵심 모듈 우선 오픈(단계 오픈) 방식을 권장합니다.");
+  if(nowCnt>=7&&ti<=1)risks.push("선택 범위가 규모 대비 넓습니다 — 1차/2차 오픈으로 나누면 비용·기간을 지키면서 전부 구현할 수 있습니다.");
+  if(S.trigger==="담당자 퇴사·인수인계")risks.push("담당자 공백 상황 — 구축 기간 중 주 1회 60분 미팅이 가능한 창구 1명 지정이 꼭 필요합니다.");
+  if(S.gov==="관심 있음")risks.push("스마트공장 정부지원(최대 2억) 매칭 가능성 — 공고 일정에 맞춘 준비를 상담에서 안내드립니다.");
+  if(!risks.length)risks.push("특별한 리스크 신호는 없습니다 — 표준 프로세스(12주, 4주차 범위 확정)로 진행 가능한 구성입니다.");
+  return {T,ti,rows,olo,ohi,open,pct,covered,custom,customItems,risks,nowCnt};
+}
+
+/* ---------- IA 트리 ---------- */
+function buildIA(R,ai){
+  const ia=[];const P=S.industry&&PRESETS[S.industry]?PRESETS[S.industry]:null;
+  ia.push({name:"기초정보",phase:1,menus:["거래처 관리","품목 관리","사원 계정","역할·권한"]});
+  const push=(m,phase)=>{const menus=[...m.menus];
+    if(m.id==="inv"&&S.sites&&S.sites!=="1곳")menus.push("창고·로케이션 관리");
+    if(m.id==="inv"&&S.integrations.includes("barcode"))menus.push("바코드·PDA 입출고 ▸연동");
+    if(m.id==="inv"&&S.integrations.includes("post"))menus.push("송장 출력·배송 추적 ▸연동");
+    if(m.id==="acc"&&S.integrations.includes("tax"))menus.push("전자세금계산서 발행 ▸연동");
+    if(m.id==="acc"&&S.integrations.includes("bank"))menus.push("입출금 자동 대사 ▸연동");
+    if(m.id==="sales"&&S.integrations.includes("pg"))menus.push("결제 내역 관리 ▸연동");
+    ia.push({name:m.name,phase,menus});};
+  MODS.forEach(m=>{const st=S.modules[m.id];if(st==="now")push(m,1);});
+  if(P&&S.modules.preset!=="no"){const menus=[...P.menus];
+    if(S.industry==="mfg"&&S.integrations.includes("mes"))menus.push("설비 데이터 연계 ▸연동");
+    if(S.industry==="dist"&&S.integrations.includes("mall"))menus.push("오픈마켓 주문 수집 ▸연동");
+    ia.push({name:P.name+" (업종 특화)",phase:S.modules.preset==="now"?1:2,menus});}
+  if(S.integrations.includes("mall")&&(!P||S.industry!=="dist"))ia.push({name:"판매채널 통합",phase:1,menus:["채널 주문 수집 ▸연동","채널별 정산"]});
+  if(S.integrations.includes("gw"))ia.push({name:"전자결재",phase:1,menus:["결재선 관리","문서 양식"]});
+  MODS.forEach(m=>{if(S.modules[m.id]==="later")push(m,2);});
+  /* AI 추가 메뉴 병합 */
+  if(ai&&Array.isArray(ai.extraMenus))ai.extraMenus.slice(0,6).forEach(x=>{
+    const node=ia.find(n=>n.name.startsWith(x.module));
+    if(node&&x.menu)node.menus.push(x.menu+" ✦AI");
+  });
+  if(R.customItems.length)ia.push({name:"맞춤 커스텀 (상담 확정)",phase:1,menus:R.customItems.map(c=>c.title+" ✦"),custom:true});
+  return ia;
+}
+
+/* ---------- 대시보드 위젯 ---------- */
+function buildDash(){
+  const kpiByInd={mfg:["오늘 생산 진행률","이번 달 매출","자재 부족 품목","불량·반품률"],
+    dist:["오늘 주문","채널 합산 매출","출고 대기","재고 회전일"],
+    svc:["오늘 예약","이번 달 매출","신규 회원","미정산 금액"],
+    trade:["진행 중 오더","이번 달 매출","선적 예정","외화 미수금"],
+    etc:["오늘 매출","이번 달 매출","미수금","재고 자산"]};
+  const vals={mfg:["87%","4.2억","3건","0.8%"],dist:["142건","1.9억","23건","18일"],svc:["36건","8,400만","57명","1,240만"],trade:["12건","6.7억","4건","$48K"],etc:["1,850만","3.1억","6,300만","9.4억"]};
+  const barByInd={mfg:"주간 생산량 추이",dist:"채널별 매출 비중",svc:"요일별 예약 현황",trade:"월별 수출 실적",etc:"월별 매출 추이"};
+  const ind=S.industry||"etc";
+  const alerts=[];
+  if(S.pains.includes("재고 불일치"))alerts.push("안전재고 미달 5개 품목 — 자동 발주 제안");
+  if(S.pains.includes("월말 결산 야근"))alerts.push("11월 결산 리포트 자동 생성 완료");
+  if(S.pains.includes("실시간 파악 불가"))alerts.push("실시간 현황 — 방금 전 데이터 기준");
+  if(S.pains.includes("수작업 실수"))alerts.push("중복 입력 2건 자동 감지·병합");
+  if(S.pains.includes("인수인계 리스크"))alerts.push("업무 처리 이력 — 담당자별 기록 조회");
+  if(S.integrations.includes("mall"))alerts.push("쇼핑몰 신규 주문 34건 자동 수집");
+  if(!alerts.length)alerts.push("오늘의 승인 대기 3건","안전재고 미달 알림 2건");
+  return {kpis:kpiByInd[ind],vals:vals[ind],bar:barByInd[ind],alerts:alerts.slice(0,4)};
+}
+
+/* =====================================================================
+   AI 분석 — 서버 프록시(Edge Function) 경유. 제출 저장 + Claude(Sonnet)
+   분석을 한 번에 처리하고 AI 결과(JSON)를 돌려받는다. 실패 시 규칙 기반 폴백.
+===================================================================== */
+async function aiAnalyze(R){
+  if(!CONFIG.AI.enabled)return null;
+  const modName=id=>id==="preset"?((PRESETS[S.industry]||{}).name||"업종 특화"):((MODS.find(m=>m.id===id)||{}).name||id);
+  const nowNames=Object.keys(S.modules).filter(k=>S.modules[k]==="now").map(modName);
+  const aiPayload={industry:INDNAME[S.industry]||"기타",emp:["~10인","10~30인","30~50인","50~100인","100~200인","200인+"][S.emp],
+    tools:S.tools,dataState:S.dataState,modulesNow:nowNames,
+    integrations:S.integrations,mobile:S.mobile,forms:S.forms,customText:S.customText,
+    pains:S.pains,trigger:S.trigger,timing:S.timing,tier:R.T.tier};
+  const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),CONFIG.AI.timeoutMs);
+  try{
+    const res=await fetch(CONFIG.AI.endpoint,{method:"POST",signal:ctl.signal,
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        answers:S,
+        rule:{tier:R.T.tier,lo:R.T.lo,hi:R.T.hi,pct:R.pct,olo:R.olo,ohi:R.ohi,nowCnt:R.nowCnt},
+        aiPayload
+      })});
+    clearTimeout(to);
+    if(!res.ok)return null;
+    const data=await res.json();
+    return data&&data.ai?data.ai:null;
+  }catch(e){clearTimeout(to);return null;}
+}
+
+/* =====================================================================
+   분석 실행 → 리포트
+===================================================================== */
+const LOADMSGS=["응답을 분석하고 있습니다","규모에 맞는 구성을 계산하는 중","시스템 설계도를 그리는 중","대시보드를 구성하는 중"];
+async function startAnalysis(){
+  S.customText=document.getElementById("customText").value.trim();
+  document.getElementById("wiz").style.display="none";
+  const L=document.getElementById("loading");L.style.display="flex";
+  let li=0;const lt=setInterval(()=>{li=(li+1)%LOADMSGS.length;document.getElementById("loadmsg").textContent=LOADMSGS[li];},2200);
+  const R=ruleEngine();
+  const ai=await aiAnalyze(R);
+  if(ai&&Array.isArray(ai.customItems)&&ai.customItems.length){
+    R.customItems=R.customItems.filter(c=>c.title!=="특수 업무 커스텀").concat(ai.customItems.slice(0,4));
+    R.custom=R.customItems.length;
+    R.pct=Math.max(62,Math.min(Math.round(R.covered/(R.covered+R.custom)*100),97));
+  }
+  if(ai&&Array.isArray(ai.risks))R.risks=R.risks.concat(ai.risks.slice(0,3));
+  clearInterval(lt);L.style.display="none";
+  renderReport(R,ai);
+}
+const fmt=n=>n>=10000?(n/10000).toFixed(n%10000?1:0)+"억":n.toLocaleString()+"만";
+const priceRange=(lo,hi)=>hi==null?fmt(lo)+" 원~":(lo===hi?fmt(lo)+" 원":fmt(lo)+"~"+fmt(hi)+" 원");
+function renderReport(R,ai){
+  const ia=buildIA(R,ai), D=buildDash();
+  const today=new Date();const ds=today.getFullYear()+"."+String(today.getMonth()+1).padStart(2,"0")+"."+String(today.getDate()).padStart(2,"0");
+  const first=(ai&&ai.firstLine)||autoFirst();
+  const summary=(ai&&ai.summary)||autoSummary(R);
+  const p2=ia.filter(n=>n.phase===2).length;
+  const el=document.getElementById("rpbody");
+  el.innerHTML=`
+  <div class="rhead">
+    <div class="k">ERP DIAGNOSIS REPORT · ${CONFIG.BRAND}</div>
+    <h1>${esc(S.company)} 님의 ERP 진단 리포트</h1>
+    <div class="d">${ds} · 응답 기반 자동 분석${S.person?" · "+esc(S.person)+" 님":""}</div>
+    <span class="aibadge">${ai?"✦ AI 정밀 분석 적용":"규칙 기반 분석 (상담 시 AI 정밀 분석 제공)"}</span>
+  </div>
+
+  <div class="card"><div class="first">${esc(first)}</div><div class="sumtx">${esc(summary)}</div></div>
+
+  <div class="card"><h3>RECOMMENDED PLAN · 권장 구성</h3>
+    <div class="tierrow"><span class="tierbadge">${R.T.tier}</span>
+      <span class="pricebig">${fmt(R.T.lo)}~${fmt(R.T.hi)} 원 <small>구축비 · VAT 별도</small></span></div>
+    <div class="trow">
+      <div class="tbox"><b>${R.T.weeks}</b><span>표준 구축 기간</span></div>
+      <div class="tbox"><b>${R.nowCnt}개 모듈</b><span>1차 오픈 범위</span></div>
+      <div class="tbox"><b>월 ${R.T.mlo}~${R.T.mhi}만</b><span>유지보수 권장</span></div>
+    </div>
+  </div>
+
+  <div class="card"><h3>STANDARD COVERAGE · 표준 커버율</h3>
+    <div class="covwrap">
+      <div class="donut" style="--p:${R.pct}"><i>${R.pct}%</i></div>
+      <div class="covtx">요구사항의 <b>약 ${R.pct}%가 검증된 표준 모듈·정찰 옵션</b>으로 해결됩니다.<br>
+      순수 커스텀 검토 항목은 <b>${R.custom}건</b> — 이것이 990만원대 고정가가 가능한 이유입니다.</div>
+    </div>
+    ${R.customItems.length?`<ul class="list" style="margin-top:8px">${R.customItems.map(c=>`<li><span><b>${esc(c.title)}</b> — ${esc(c.desc)} <span style="color:var(--gray)">(${esc(c.module)})</span></span></li>`).join("")}</ul>`:""}
+  </div>
+
+  ${R.rows.length?`<div class="card"><h3>OPTION ESTIMATE · 선택 연동 정찰가</h3>
+    <table class="opt">${R.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${priceRange(r[1],r[2])}</td></tr>`).join("")}
+    <tr class="sum"><td>옵션 합계 (구축비 별도 가산)</td><td>+ ${R.open?fmt(R.olo)+" 원~ (일부 협의)":priceRange(R.olo,Math.max(R.ohi,R.olo))}</td></tr></table>
+    <div class="hint" style="margin-top:8px">모든 옵션은 공개 정찰표 기준입니다 — 상담에서 흥정이 아니라 확인만 하시면 됩니다.</div></div>`:""}
+
+  <div class="card"><h3>SYSTEM BLUEPRINT · ${esc(S.company)} 전용 시스템 설계도 (IA)</h3>
+    <p class="hint" style="margin:0 0 10px">‘▸연동’은 선택하신 외부 연동, ‘✦’는 커스텀${ai?", ‘✦AI’는 AI 추천 메뉴":""}입니다. ${p2?`2차 확장 ${p2}개 모듈은 1차 오픈 후 단계 도입을 권장합니다.`:""}</p>
+    <div class="ia">${ia.map(n=>`<div class="m"><b>${esc(n.name)}<span class="ph ${n.phase===1?"p1":"p2"}">${n.phase===1?"1차 오픈":"2차 확장"}</span></b>
+      <ul>${n.menus.map(m=>`<li class="${m.includes("✦")?"ai":""}">${esc(m)}</li>`).join("")}</ul></div>`).join("")}</div>
+  </div>
+
+  <div class="card"><h3>DASHBOARD PREVIEW · 도입 후 매일 아침 보게 될 화면</h3>
+    <div class="dash">
+      <div class="dh"><b>${esc(S.company)} 경영 현황</b><span>LIVE · 방금 전 기준</span></div>
+      <div class="kpis">${D.kpis.map((k,i)=>`<div class="kpi"><span>${esc(k)}</span><b>${D.vals[i]}</b></div>`).join("")}</div>
+      <div class="dgrid">
+        <div class="panel"><h5>${esc(D.bar)}</h5>
+          <div class="bars"><i style="height:38%"></i><i style="height:55%"></i><i style="height:47%"></i><i style="height:70%"></i><i style="height:62%"></i><i class="hl" style="height:88%"></i></div>
+          <div class="blabels"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>오늘</span></div></div>
+        <div class="panel"><h5>주요 알림</h5><ul class="alertlist">${D.alerts.map(a=>`<li>${esc(a)}</li>`).join("")}</ul></div>
+      </div>
+      <div class="dfoot">※ 예시 화면 — 실제 지표·위젯은 ${esc(S.company)}의 업무에 맞춰 구성됩니다</div>
+    </div>
+  </div>
+
+  <div class="card"><h3>CHECKPOINTS · 리스크 & 체크포인트</h3>
+    <ul class="list warn">${R.risks.map(r=>`<li><span>${esc(r)}</span></li>`).join("")}</ul></div>
+
+  <div class="cta">
+    <b>이 설계도를 확정 견적으로 —<br>무료 진단 상담 30분</b>
+    <p>진단 결과를 바탕으로 범위·일정·확정 금액을 정리해 드립니다.${S.gov==="관심 있음"?" 스마트공장 정부지원 매칭도 함께 안내드립니다.":""} 상담 순서대로 착수 슬롯이 배정됩니다.</p>
+    <div class="row"><a href="tel:${CONFIG.TEL}">전화 상담</a><a class="dark" href="${CONFIG.KAKAO_URL}">카카오 상담</a></div>
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n연락처: "+S.contact+"\n권장 구성: "+R.T.tier)}">이메일로 리포트 받기</a></div>
+  </div>
+  <button class="printbtn" onclick="window.print()">리포트 저장 · 인쇄 (PDF)</button>
+  <div class="foot">본 결과는 응답 기반 자동 추정치이며, 최종 범위와 금액은 30분 상담에서 확정됩니다.<br>모든 금액 VAT 별도 · ${CONFIG.BRAND} · 응답 정보는 상담 목적 외 사용하지 않습니다.</div>`;
+  document.getElementById("report").style.display="block";window.scrollTo({top:0});
+}
+function autoFirst(){
+  const ind=INDNAME[S.industry]||"";const emp=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"][S.emp]||"";
+  const trg=S.trigger?`${S.trigger} 때문에 도입을 검토 중이신 `:"";
+  return `${trg}${emp} ${ind} 기업이시군요. ${S.pains[0]?`'${S.pains[0]}' 문제부터 시스템으로 끊어내는 설계를 권장드립니다.`:"규모에 맞는 최적 구성을 정리했습니다."}`;
+}
+function autoSummary(R){
+  return `선택하신 범위 기준으로 ${R.T.tier} 구성이 가장 적합합니다. 요구사항의 약 ${R.pct}%는 검증된 표준 모듈로 즉시 해결되고, 커스텀 검토는 ${R.custom}건에 그칩니다. 아래 설계도(IA)와 대시보드는 이번 응답만으로 구성한 초안이며, 30분 상담에서 확정 견적으로 다듬어 드립니다.`;
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+</script>
+</body>
+</html>

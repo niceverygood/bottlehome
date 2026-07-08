@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ERP 진단 어드민 — 주식회사 바틀</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#141414;--navy2:#26262A;--accent:#F54B1E;--mint:#FF6A3D;--gray:#66666C;--light:#F4F1ED;--line:#E4E0DA;--bg:#EFECE7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:#26262A;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+.top{background:var(--navy);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top b{font-size:16px}.top .k{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:.08em;display:block}
+.top .actions{display:flex;gap:8px}
+.top button{background:var(--navy2);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
+/* login */
+#login{max-width:420px;margin:80px auto;background:#fff;border-radius:14px;padding:28px 26px;box-shadow:0 2px 10px rgba(20,20,20,.07)}
+#login h1{font-size:18px;color:var(--navy);margin-bottom:6px}
+#login p{font-size:12.5px;color:var(--gray);margin-bottom:16px;line-height:1.55}
+#login input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:13px 12px;font-size:14px}
+#login input:focus{outline:none;border-color:var(--accent)}
+#login button{width:100%;margin-top:12px;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:14px;font-size:14px;font-weight:800;cursor:pointer}
+#loginerr{color:#D64545;font-size:12.5px;margin-top:10px;display:none}
+/* table */
+.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(20,20,20,.06);margin-bottom:14px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#fff;border-radius:12px;padding:12px 18px;box-shadow:0 1px 4px rgba(20,20,20,.06)}
+.stat b{font-size:20px;color:var(--navy);display:block}
+.stat span{font-size:11.5px;color:var(--gray)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11px;color:var(--gray);text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);letter-spacing:.04em;white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--light);vertical-align:middle}
+tr.row{cursor:pointer}tr.row:hover{background:#FBF9F6}
+.badge{display:inline-block;font-size:10.5px;font-weight:800;border-radius:9px;padding:3px 9px}
+.badge.tier{background:var(--navy);color:#fff}
+.badge.ai{background:#FBE3DA;color:#C2410C}
+.badge.rule{background:var(--light);color:var(--gray)}
+.empty{text-align:center;color:var(--gray);font-size:13px;padding:40px 0}
+/* detail */
+#detail{display:none}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+.dhead h2{font-size:18px;color:var(--navy)}
+.dhead .meta{font-size:12px;color:var(--gray)}
+.back{background:var(--light);border:0;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:700;color:var(--navy);cursor:pointer}
+h3.sec{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.06em;margin-bottom:10px}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.kv .it{background:var(--light);border-radius:9px;padding:9px 12px}
+.kv .it span{font-size:10.5px;color:var(--gray);display:block}
+.kv .it b{font-size:13.5px;color:var(--navy);word-break:break-all}
+.txtblock{background:var(--light);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+ul.list{list-style:none}
+ul.list li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--light);display:flex;gap:8px;line-height:1.5}
+ul.list li:last-child{border:0}
+ul.list li:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;margin-top:7px}
+.aibox{border:1.5px solid #FBE3DA;background:#FFF8F5;border-radius:12px;padding:14px}
+.aibox .fl{font-weight:800;color:var(--navy);font-size:14px;line-height:1.55}
+.aibox .sm{font-size:13px;line-height:1.65;margin-top:8px}
+@media(max-width:640px){th:nth-child(5),td:nth-child(5),th:nth-child(6),td:nth-child(6){display:none}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div><span class="k">BOTTLE · ADMIN</span><b>ERP 진단 신청 관리</b></div>
+  <div class="actions">
+    <button id="btnRefresh" style="display:none">새로고침</button>
+    <button id="btnLogout" style="display:none">로그아웃</button>
+  </div>
+</div>
+
+<!-- 로그인 -->
+<div id="login">
+  <h1>어드민 접속</h1>
+  <p>ERP 진단 제출 내역과 AI 분석 결과를 조회합니다.<br>어드민 토큰을 입력하세요.</p>
+  <input id="token" type="password" placeholder="어드민 토큰" autocomplete="current-password">
+  <div id="loginerr">토큰이 올바르지 않습니다.</div>
+  <button id="btnLogin">접속</button>
+</div>
+
+<div class="wrap" id="main" style="display:none">
+  <!-- 목록 -->
+  <div id="listview">
+    <div class="stats">
+      <div class="stat"><b id="stTotal">-</b><span>총 신청</span></div>
+      <div class="stat"><b id="stAI">-</b><span>AI 분석 완료</span></div>
+      <div class="stat"><b id="stToday">-</b><span>오늘 신청</span></div>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>신청일시</th><th>회사명</th><th>연락처</th><th>담당자</th><th>권장 구성</th><th>견적 범위</th><th>분석</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">아직 신청 내역이 없습니다.</div>
+    </div>
+  </div>
+
+  <!-- 상세 -->
+  <div id="detail">
+    <div class="dhead">
+      <div><h2 id="dCompany"></h2><div class="meta" id="dMeta"></div></div>
+      <button class="back" id="btnBack">← 목록으로</button>
+    </div>
+    <div class="card"><h3 class="sec">AI 분석 결과 (Claude Sonnet)</h3><div id="dAI"></div></div>
+    <div class="card"><h3 class="sec">권장 구성 (규칙 엔진)</h3><div class="kv" id="dRule"></div></div>
+    <div class="card"><h3 class="sec">진단 응답</h3><div class="kv" id="dAnswers"></div>
+      <div id="dCustomWrap" style="margin-top:12px;display:none"><h3 class="sec">특수 업무 (주관식)</h3><div class="txtblock" id="dCustom"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API="https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-analyze";
+const LS="erp_admin_token";
+let leads=[];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtWon=n=>n==null?"-":(n>=10000?(n/10000).toFixed(n%10000?1:0)+"억":n.toLocaleString()+"만");
+const fmtDate=s=>{const d=new Date(s);return d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");};
+
+async function api(params){
+  const token=localStorage.getItem(LS)||"";
+  const res=await fetch(API+(params||""),{headers:{"x-admin-token":token}});
+  if(res.status===401)throw new Error("unauthorized");
+  if(!res.ok)throw new Error("http "+res.status);
+  return res.json();
+}
+
+async function loadList(){
+  leads=await api();
+  const tb=$("rows");tb.innerHTML="";
+  $("empty").style.display=leads.length?"none":"block";
+  const today=new Date().toDateString();
+  $("stTotal").textContent=leads.length;
+  $("stAI").textContent=leads.filter(l=>l.ai_used).length;
+  $("stToday").textContent=leads.filter(l=>new Date(l.created_at).toDateString()===today).length;
+  leads.forEach(l=>{
+    const tr=document.createElement("tr");tr.className="row";
+    tr.innerHTML=`<td style="white-space:nowrap">${fmtDate(l.created_at)}</td>
+      <td><b>${esc(l.company)}</b></td><td>${esc(l.contact)}</td><td>${esc(l.person||"-")}</td>
+      <td>${l.tier?`<span class="badge tier">${esc(l.tier)}</span>`:"-"}</td>
+      <td style="white-space:nowrap">${l.price_lo!=null?fmtWon(l.price_lo)+"~"+fmtWon(l.price_hi)+" 원":"-"}</td>
+      <td>${l.ai_used?'<span class="badge ai">✦ AI</span>':'<span class="badge rule">규칙</span>'}</td>`;
+    tr.addEventListener("click",()=>openDetail(l.id));
+    tb.appendChild(tr);
+  });
+}
+
+const ANSWER_LABELS={industry:"업종",emp:"직원 수",rev:"연매출",users:"사용 인원",sites:"사업장 수",tools:"현재 도구",
+ partners:"거래처 수",items:"SKU 수",orders:"월 거래 건수",migrate:"데이터 이관",dataState:"데이터 상태",
+ integrations:"외부 연동",mallCh:"판매 채널 수",mobile:"사용 환경",forms:"기존 서식",pains:"주요 고민",
+ trigger:"도입 계기",timing:"희망 시기",budget:"예산 감각",gov:"정부지원 관심",modules:"모듈 선택"};
+const EMP=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"];
+const REV=["~10억","10~50억","50~150억","150~400억","400억 이상"];
+const IND={mfg:"제조",dist:"도소매·유통",svc:"서비스",trade:"무역·물류",etc:"기타"};
+
+function answerText(k,v){
+  if(v==null||v===""||(Array.isArray(v)&&!v.length))return null;
+  if(k==="industry")return IND[v]||v;
+  if(k==="emp")return EMP[v]||String(v);
+  if(k==="rev")return v===-1?"비공개":(REV[v]||String(v));
+  if(k==="modules")return Object.entries(v).map(([m,s])=>m+":"+s).join(", ");
+  if(Array.isArray(v))return v.join(", ");
+  return String(v);
+}
+
+async function openDetail(id){
+  const d=await api("?id="+encodeURIComponent(id));
+  $("dCompany").textContent=d.company||"-";
+  $("dMeta").textContent=fmtDate(d.created_at)+" · "+(d.contact||"-")+(d.person?" · "+d.person:"");
+  /* AI */
+  const ai=d.ai;
+  if(ai){
+    let html=`<div class="aibox"><div class="fl">${esc(ai.firstLine||"")}</div><div class="sm">${esc(ai.summary||"")}</div></div>`;
+    if(Array.isArray(ai.customItems)&&ai.customItems.length)
+      html+=`<h3 class="sec" style="margin-top:14px">커스텀 항목</h3><ul class="list">${ai.customItems.map(c=>`<li><span><b>${esc(c.title)}</b> — ${esc(c.desc)} <span style="color:var(--gray)">(${esc(c.module)})</span></span></li>`).join("")}</ul>`;
+    if(Array.isArray(ai.extraMenus)&&ai.extraMenus.length)
+      html+=`<h3 class="sec" style="margin-top:14px">AI 추천 메뉴</h3><ul class="list">${ai.extraMenus.map(m=>`<li><span>${esc(m.module)} → <b>${esc(m.menu)}</b></span></li>`).join("")}</ul>`;
+    if(Array.isArray(ai.risks)&&ai.risks.length)
+      html+=`<h3 class="sec" style="margin-top:14px">AI 리스크</h3><ul class="list">${ai.risks.map(r=>`<li><span>${esc(r)}</span></li>`).join("")}</ul>`;
+    $("dAI").innerHTML=html;
+  }else{
+    $("dAI").innerHTML='<div class="txtblock">AI 분석 결과 없음 (규칙 기반 리포트만 제공됨)</div>';
+  }
+  /* rule */
+  const r=d.rule||{};
+  $("dRule").innerHTML=[["권장 구성",r.tier],["구축비 범위",r.lo!=null?fmtWon(r.lo)+"~"+fmtWon(r.hi)+" 원":null],
+    ["표준 커버율",r.pct!=null?r.pct+"%":null],["옵션 합계",r.olo!=null?"+ "+fmtWon(r.olo)+(r.ohi?"~"+fmtWon(r.ohi):"")+" 원":null],
+    ["1차 오픈 모듈",r.nowCnt!=null?r.nowCnt+"개":null]]
+    .filter(x=>x[1]!=null).map(x=>`<div class="it"><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join("");
+  /* answers */
+  const a=d.answers||{};
+  $("dAnswers").innerHTML=Object.keys(ANSWER_LABELS).map(k=>{
+    const t=answerText(k,a[k]);
+    return t?`<div class="it"><span>${ANSWER_LABELS[k]}</span><b>${esc(t)}</b></div>`:"";
+  }).join("");
+  if(a.customText){$("dCustomWrap").style.display="block";$("dCustom").textContent=a.customText;}
+  else $("dCustomWrap").style.display="none";
+  $("listview").style.display="none";$("detail").style.display="block";window.scrollTo({top:0});
+}
+
+function showMain(){
+  $("login").style.display="none";$("main").style.display="block";
+  $("btnRefresh").style.display="inline-block";$("btnLogout").style.display="inline-block";
+}
+async function tryLogin(token){
+  localStorage.setItem(LS,token);
+  try{await loadList();showMain();return true;}
+  catch(e){localStorage.removeItem(LS);return false;}
+}
+$("btnLogin").addEventListener("click",async()=>{
+  const ok=await tryLogin($("token").value.trim());
+  $("loginerr").style.display=ok?"none":"block";
+});
+$("token").addEventListener("keydown",e=>{if(e.key==="Enter")$("btnLogin").click();});
+$("btnLogout").addEventListener("click",()=>{localStorage.removeItem(LS);location.reload();});
+$("btnRefresh").addEventListener("click",()=>{$("detail").style.display="none";$("listview").style.display="block";loadList();});
+$("btnBack").addEventListener("click",()=>{$("detail").style.display="none";$("listview").style.display="block";});
+
+(async()=>{if(localStorage.getItem(LS)){if(await tryLogin(localStorage.getItem(LS)))return;}$("login").style.display="block";})();
+</script>
+</body>
+</html>
