@@ -777,6 +777,97 @@ html.js [data-reveal].revealed {
 }
 
 /* ============================================================
+   ERP SERVICE
+   ============================================================ */
+.erp-service {
+  position: relative;
+  overflow: hidden;
+  padding: 104px 0;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(160deg, #141414 0%, #1f1f23 55%, #141414 100%);
+}
+
+.erp-wrap { max-width: 860px; }
+
+.erp-service h2 {
+  max-width: 720px;
+  margin: 18px auto 0;
+  color: #fff;
+  font-size: clamp(1.9rem, 3.2vw, 2.55rem);
+  line-height: 1.32;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.erp-lead {
+  max-width: 620px;
+  margin: 20px auto 0;
+  color: rgba(255, 255, 255, .78);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+.erp-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  max-width: 620px;
+  margin: 48px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, .18);
+}
+
+.erp-stats .stat-num .unit {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .68);
+}
+
+.erp-features {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 920px;
+  margin: 40px auto 0;
+}
+
+.erp-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .05);
+  color: rgba(255, 255, 255, .9);
+  font-size: .86rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.erp-feature-num {
+  color: var(--accent);
+  font-weight: 850;
+  font-size: .82rem;
+}
+
+.erp-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.erp-cta { background: var(--accent); color: #fff; }
+.erp-cta:hover { background: #d94716; }
+
+/* ============================================================
    METHOD
    ============================================================ */
 .method {
@@ -984,6 +1075,10 @@ html.js [data-reveal].revealed {
   .bobi-copy {
     order: initial;
   }
+
+  .erp-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -1050,9 +1145,22 @@ html.js [data-reveal].revealed {
 
   .vision,
   .method,
-  .product {
+  .product,
+  .erp-service {
     padding: 72px 0;
   }
+
+  .erp-stats {
+    max-width: 420px;
+    margin-top: 36px;
+  }
+
+  .erp-features {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .erp-actions { margin-top: 32px; }
 
   .vision h2,
   .products-intro h2,
