@@ -373,7 +373,7 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
      규칙 기반 분석으로 전환되므로 리포트는 항상 출력됩니다.
 ===================================================================== */
 const CONFIG = {
-  BRAND:"주식회사 바틀", TEL:"010-8739-9771", MAIL:"hss@bottlecorp.kr", KAKAO_URL:"https://pf.kakao.com/_nrxjwX",
+  BRAND:"주식회사 바틀", MAIL:"hss@bottlecorp.kr",
   AI:{ enabled:true, endpoint:"https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-analyze",
        postTimeoutMs:15000, pollIntervalMs:3000, pollTimeoutMs:90000 }
 };
@@ -383,12 +383,12 @@ const reportURL=()=>LEAD_ID?location.origin+location.pathname+"?lead="+LEAD_ID:n
 
 /* ---------- 데이터 사전 ---------- */
 const TIERS=[
- {seg:"S1",tier:"LITE",lo:590,hi:990,mlo:15,mhi:25,weeks:"6주"},
- {seg:"S2",tier:"STANDARD",lo:990,hi:1900,mlo:25,mhi:45,weeks:"12주 (3개월)"},
- {seg:"M1",tier:"BUSINESS",lo:1900,hi:2900,mlo:45,mhi:70,weeks:"16주 (4개월)"},
- {seg:"M2",tier:"BUSINESS+",lo:2900,hi:4900,mlo:70,mhi:120,weeks:"16~20주"},
- {seg:"L1",tier:"ENTERPRISE",lo:5000,hi:9000,mlo:120,mhi:200,weeks:"20~28주"},
- {seg:"L2",tier:"ENTERPRISE+",lo:9000,hi:15000,mlo:200,mhi:300,weeks:"협의 (5~7개월)"}];
+ {seg:"S1",tier:"LITE",lo:790,hi:990,mlo:15,mhi:25,weeks:"6주"},
+ {seg:"S2",tier:"STANDARD",lo:1300,hi:1700,mlo:25,mhi:45,weeks:"12주 (3개월)"},
+ {seg:"M1",tier:"BUSINESS",lo:2150,hi:2650,mlo:45,mhi:70,weeks:"16주 (4개월)"},
+ {seg:"M2",tier:"BUSINESS+",lo:3400,hi:4400,mlo:70,mhi:120,weeks:"16~20주"},
+ {seg:"L1",tier:"ENTERPRISE",lo:6200,hi:7800,mlo:120,mhi:200,weeks:"20~28주"},
+ {seg:"L2",tier:"ENTERPRISE+",lo:10500,hi:13500,mlo:200,mhi:300,weeks:"협의 (5~7개월)"}];
 const MODS=[
  {id:"sales",name:"영업·매출",kw:"견적·수주·매출·거래처",menus:["견적 관리","수주 관리","매출 전표","미수금 현황"],def:"now"},
  {id:"buy",name:"구매·매입",kw:"발주·입고·매입·지급",menus:["발주 관리","입고 관리","매입 전표","지급 관리"],def:"now"},
@@ -794,6 +794,9 @@ function renderReport(R,ai){
       </div>
       <div class="dfoot">${D.aiGenerated?"※ AI가 응답 내용을 바탕으로 구성한 예시 화면":"※ 예시 화면"} — 실제 지표·위젯은 ${esc(S.company)}의 업무에 맞춰 구성됩니다</div>
     </div>
+    ${reportURL()?`<div style="margin-top:12px;text-align:center">
+      <a href="/erpanalysis/dashboard/?lead=${encodeURIComponent(LEAD_ID)}" target="_blank" rel="noopener" class="printbtn" style="display:inline-block;text-decoration:none">실제 대시보드 화면으로 보기 ↗</a>
+    </div>`:""}
   </div>
 
   <div class="card"><h3>CHECKPOINTS · 리스크 & 체크포인트</h3>
@@ -802,8 +805,8 @@ function renderReport(R,ai){
   <div class="cta">
     <b>이 설계도를 확정 견적으로 —<br>무료 진단 상담 30분</b>
     <p>진단 결과를 바탕으로 범위·일정·확정 금액을 정리해 드립니다.${S.gov==="관심 있음"?" 스마트공장 정부지원 매칭도 함께 안내드립니다.":""} 상담 순서대로 착수 슬롯이 배정됩니다.</p>
-    <div class="row"><a href="tel:${CONFIG.TEL}">전화 상담</a><a class="dark" href="${CONFIG.KAKAO_URL}">카카오 상담</a></div>
-    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
+    <div class="row"><a class="dark" href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n30분 무료 진단 상담을 요청드립니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일 상담</a></div>
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 리포트 받기")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n진단 리포트를 이메일로 받아보고 싶습니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
   </div>
   <div class="printrow">
     <button class="printbtn" onclick="window.print()">리포트 저장 · 인쇄 (PDF)</button>
