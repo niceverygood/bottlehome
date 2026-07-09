@@ -160,10 +160,30 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
 .toast.on{opacity:1}
 @media print{
   body{background:#fff}
-  .wrap,#loading,.nav,.toast,.printrow{display:none!important}
+  .wrap,#loading,.nav,.toast,.printrow,#chatPanel,#chatFab{display:none!important}
   #report{display:block!important;background:#fff}
   .cta a{border:1px solid #ccc}
 }
+/* ---------- chat ---------- */
+#chatFab{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;background:var(--navy);color:#fff;border-radius:26px;padding:13px 22px;font-size:14px;font-weight:800;box-shadow:0 4px 16px rgba(20,20,20,.25);display:none;align-items:center;gap:7px}
+#chatFab.on{display:flex}
+#chatFab .dot{width:7px;height:7px;border-radius:50%;background:var(--mint)}
+#chatPanel{position:fixed;inset:0;background:#fff;z-index:70;display:none;flex-direction:column}
+#chatPanel.on{display:flex}
+.chead{background:var(--navy);color:#fff;padding:16px 18px 14px;display:flex;justify-content:space-between;align-items:center;flex:none}
+.chead b{font-size:15px}
+.chead span{font-size:11px;color:#A6A6AC;display:block;margin-top:2px}
+.chead button{color:#fff;font-size:22px;line-height:1;opacity:.8}
+.cbody{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:9px;background:var(--light)}
+.cempty{margin:auto;text-align:center;font-size:12.5px;color:var(--gray);line-height:1.7;max-width:260px}
+.cmsg{max-width:78%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.cmsg.out{align-self:flex-end;background:var(--teal);color:#fff;border-bottom-right-radius:4px}
+.cmsg.in{align-self:flex-start;background:#fff;color:var(--ink);border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(20,20,20,.08)}
+.cfoot{flex:none;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+.cfoot textarea{flex:1;border:1.5px solid var(--line);border-radius:20px;padding:11px 16px;font-size:14px;resize:none;max-height:90px;line-height:1.4}
+.cfoot textarea:focus{outline:none;border-color:var(--teal)}
+.cfoot button{background:var(--teal);color:#fff;border-radius:50%;width:44px;height:44px;flex:none;font-size:17px;font-weight:800}
+.cfoot button:disabled{opacity:.4}
 </style>
 </head>
 <body>
@@ -363,6 +383,20 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
 <div id="report"><div class="rp" id="rpbody"></div></div>
 <div class="toast" id="toast"></div>
 
+<!-- ===================== CHAT ===================== -->
+<button id="chatFab" onclick="openChat()"><span class="dot"></span>채팅 상담</button>
+<div id="chatPanel">
+  <div class="chead">
+    <div><b>채팅 상담</b><span>주식회사 바틀 · 보통 빠르게 답변드립니다</span></div>
+    <button id="chatClose" onclick="closeChat()" aria-label="닫기">×</button>
+  </div>
+  <div class="cbody" id="chatMsgs"><div class="cempty">궁금하신 점을 편하게 남겨주세요.<br>진단 내용을 바탕으로 담당자가 직접 답변드립니다.</div></div>
+  <div class="cfoot">
+    <textarea id="chatInput" rows="1" placeholder="메시지를 입력하세요" maxlength="2000"></textarea>
+    <button id="chatSend" onclick="sendChat()">↑</button>
+  </div>
+</div>
+
 <script>
 /* =====================================================================
    CONFIG — 여기만 수정하면 됩니다
@@ -375,7 +409,8 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
 const CONFIG = {
   BRAND:"주식회사 바틀", MAIL:"hss@bottlecorp.kr",
   AI:{ enabled:true, endpoint:"https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-analyze",
-       postTimeoutMs:15000, pollIntervalMs:3000, pollTimeoutMs:90000 }
+       postTimeoutMs:15000, pollIntervalMs:3000, pollTimeoutMs:90000 },
+  CHAT_ENDPOINT:"https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-chat"
 };
 const PENDING_KEY="erp_pending_v1";
 let LEAD_ID=null; /* 제출·조회 중인 리드 id — ?lead= 공유 링크와 이메일 본문에 쓰인다 */
@@ -805,7 +840,8 @@ function renderReport(R,ai){
   <div class="cta">
     <b>이 설계도를 확정 견적으로 —<br>무료 진단 상담 30분</b>
     <p>진단 결과를 바탕으로 범위·일정·확정 금액을 정리해 드립니다.${S.gov==="관심 있음"?" 스마트공장 정부지원 매칭도 함께 안내드립니다.":""} 상담 순서대로 착수 슬롯이 배정됩니다.</p>
-    <div class="row"><a class="dark" href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n30분 무료 진단 상담을 요청드립니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일 상담</a></div>
+    ${LEAD_ID?`<div class="row"><a class="dark" href="javascript:void(0)" onclick="openChat()">채팅 상담 받기</a></div>`:""}
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n30분 무료 진단 상담을 요청드립니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일 상담</a></div>
     <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 리포트 받기")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n진단 리포트를 이메일로 받아보고 싶습니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
   </div>
   <div class="printrow">
@@ -820,6 +856,7 @@ function renderReport(R,ai){
     catch(e){prompt("아래 링크를 복사해 주세요",u);}
   });
   document.getElementById("report").style.display="block";window.scrollTo({top:0});
+  document.getElementById("chatFab").classList.toggle("on",!!LEAD_ID);
 }
 function autoFirst(){
   const ind=INDNAME[S.industry]||"";const emp=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"][S.emp]||"";
@@ -830,6 +867,56 @@ function autoSummary(R){
   return `선택하신 범위 기준으로 ${R.T.tier} 구성이 가장 적합합니다. 요구사항의 약 ${R.pct}%는 검증된 표준 모듈로 즉시 해결되고, 커스텀 검토는 ${R.custom}건에 그칩니다. 아래 설계도(IA)와 대시보드는 이번 응답만으로 구성한 초안이며, 30분 상담에서 확정 견적으로 다듬어 드립니다.`;
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+/* =====================================================================
+   채팅 상담 — CONFIG.CHAT_ENDPOINT(erp-chat 함수)를 3.5초 간격으로 폴링한다.
+   고객 쪽에는 관리자 인증이 없다 — LEAD_ID(리포트 링크와 동일한 값)가
+   곧 이 스레드에 대한 접근 키다.
+===================================================================== */
+let chatAfter=0, chatTimer=null;
+function openChat(){
+  if(!LEAD_ID){toast("리포트 제출 후 이용 가능합니다");return;}
+  document.getElementById("chatPanel").classList.add("on");
+  if(!chatTimer){pollChat();chatTimer=setInterval(pollChat,3500);}
+  setTimeout(()=>document.getElementById("chatInput").focus(),300);
+}
+function closeChat(){
+  document.getElementById("chatPanel").classList.remove("on");
+  if(chatTimer){clearInterval(chatTimer);chatTimer=null;}
+}
+function appendChatMsg(m){
+  const box=document.getElementById("chatMsgs");
+  const empty=box.querySelector(".cempty");if(empty)empty.remove();
+  const div=document.createElement("div");
+  div.className="cmsg "+(m.sender==="admin"?"in":"out");
+  div.textContent=m.body;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+}
+async function pollChat(){
+  if(!LEAD_ID)return;
+  try{
+    const res=await fetch(CONFIG.CHAT_ENDPOINT+"?leadId="+encodeURIComponent(LEAD_ID)+"&after="+chatAfter);
+    if(!res.ok)return;
+    const data=await res.json();
+    (data.messages||[]).forEach(m=>{appendChatMsg(m);chatAfter=Math.max(chatAfter,m.id);});
+  }catch(e){/* 다음 폴링에 재시도 */}
+}
+async function sendChat(){
+  const inp=document.getElementById("chatInput");
+  const body=inp.value.trim();
+  if(!body||!LEAD_ID)return;
+  inp.value="";inp.style.height="";
+  const btn=document.getElementById("chatSend");btn.disabled=true;
+  try{
+    await fetch(CONFIG.CHAT_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({leadId:LEAD_ID,sender:"customer",body})});
+  }catch(e){toast("전송에 실패했습니다 — 다시 시도해 주세요");}
+  btn.disabled=false;
+  pollChat();
+}
+document.getElementById("chatInput").addEventListener("input",function(){this.style.height="";this.style.height=Math.min(this.scrollHeight,90)+"px";});
+document.getElementById("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat();}});
 </script>
 </body>
 </html>

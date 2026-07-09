@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>채팅 상담 관리자 — 주식회사 바틀</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#141414;--navy2:#26262A;--accent:#F54B1E;--mint:#FF6A3D;--gray:#66666C;--light:#F4F1ED;--line:#E4E0DA;--bg:#EFECE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:#26262A;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+/* login */
+#login{max-width:380px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:24px}
+#login .box{background:#fff;border-radius:14px;padding:28px 26px;box-shadow:0 2px 10px rgba(20,20,20,.07)}
+#login .k{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.08em}
+#login h1{font-size:18px;color:var(--navy);margin:6px 0 18px}
+#login label{font-size:12px;font-weight:700;color:var(--gray);display:block;margin:14px 0 6px}
+#login input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:13px 12px;font-size:14px}
+#login input:focus{outline:none;border-color:var(--accent)}
+#login button{width:100%;margin-top:20px;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:14px;font-size:14px;font-weight:800;cursor:pointer}
+#login button:disabled{opacity:.5}
+#loginerr{color:#D64545;font-size:12.5px;margin-top:10px;display:none}
+/* shell */
+#app{display:none;height:100dvh;flex-direction:column}
+#app.on{display:flex}
+.top{background:var(--navy);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex:none}
+.top b{font-size:15px}.top .k{color:var(--mint);font-size:10.5px;font-weight:800;letter-spacing:.06em;display:block}
+.top button{background:var(--navy2);color:#fff;border:0;border-radius:8px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer}
+.main{flex:1;display:flex;min-height:0}
+/* thread list */
+.threads{width:100%;max-width:340px;flex:none;background:#fff;border-right:1px solid var(--line);overflow-y:auto}
+.thread{padding:13px 16px;border-bottom:1px solid var(--light);cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.thread:hover,.thread.active{background:var(--light)}
+.thread .co{font-size:13.5px;font-weight:800;color:var(--navy)}
+.thread .last{font-size:12px;color:var(--gray);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px}
+.thread .time{font-size:10.5px;color:var(--gray);flex:none}
+.badge{background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:9px;padding:2px 7px;flex:none}
+.tempty{text-align:center;color:var(--gray);font-size:13px;padding:40px 20px;line-height:1.6}
+/* conversation */
+.conv{flex:1;display:flex;flex-direction:column;min-width:0}
+.cvempty{margin:auto;text-align:center;color:var(--gray);font-size:13px}
+.cvhead{padding:14px 18px;border-bottom:1px solid var(--line);background:#fff;flex:none;display:flex;align-items:center;gap:10px}
+.cvhead button{display:none;background:var(--light);border:0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer}
+.cvhead b{font-size:14.5px;color:var(--navy);display:block}
+.cvhead span{font-size:11.5px;color:var(--gray)}
+.cvbody{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
+.cmsg{max-width:70%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.cmsg.out{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.cmsg.in{align-self:flex-start;background:#fff;color:#26262A;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(20,20,20,.08)}
+.cvfoot{flex:none;display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line);background:#fff}
+.cvfoot textarea{flex:1;border:1.5px solid var(--line);border-radius:20px;padding:11px 16px;font-size:14px;resize:none;max-height:100px;line-height:1.4}
+.cvfoot textarea:focus{outline:none;border-color:var(--accent)}
+.cvfoot button{background:var(--accent);color:#fff;border-radius:50%;width:44px;height:44px;flex:none;font-size:17px;font-weight:800;cursor:pointer}
+.cvfoot button:disabled{opacity:.4}
+@media(max-width:760px){
+  .threads{max-width:none;display:flex;flex-direction:column}
+  .threads.hide{display:none}
+  .conv{display:none}
+  .conv.show{display:flex}
+  .cvhead button{display:inline-block}
+}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <span class="k">BOTTLE · 총괄관리자</span>
+    <h1>채팅 상담 관리자 로그인</h1>
+    <label>아이디</label>
+    <input id="loginId" autocomplete="username" placeholder="아이디">
+    <label>비밀번호</label>
+    <input id="loginPw" type="password" autocomplete="current-password" placeholder="비밀번호">
+    <div id="loginerr">아이디 또는 비밀번호가 올바르지 않습니다.</div>
+    <button id="btnLogin">로그인</button>
+  </div>
+</div>
+
+<div id="app">
+  <div class="top">
+    <div><span class="k">BOTTLE · 총괄관리자</span><b>채팅 상담</b></div>
+    <button id="btnLogout">로그아웃</button>
+  </div>
+  <div class="main">
+    <div class="threads" id="threads"><div class="tempty">불러오는 중…</div></div>
+    <div class="conv" id="conv">
+      <div class="cvempty">왼쪽에서 대화를 선택하세요</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API="https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-chat";
+const LS_TOKEN="erp_chat_admin_token";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtTime=s=>{const d=new Date(s);const now=new Date();const sameDay=d.toDateString()===now.toDateString();
+  return sameDay?String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")
+    :(d.getMonth()+1)+"."+d.getDate();};
+
+let TOKEN=null, activeLead=null, threadsTimer=null, convTimer=null, convAfter=0, threadsCache=[];
+
+async function api(qs,opts){
+  const res=await fetch(API+(qs||""),Object.assign({headers:{"x-admin-token":TOKEN,"Content-Type":"application/json"}},opts||{}));
+  if(res.status===401)throw new Error("unauthorized");
+  if(!res.ok)throw new Error("http "+res.status);
+  return res.json();
+}
+
+async function tryLogin(id,pw){
+  TOKEN=pw;
+  try{await api("?threads=1");localStorage.setItem(LS_TOKEN,pw);return true;}
+  catch(e){TOKEN=null;return false;}
+}
+
+async function loadThreads(){
+  let data;
+  try{data=await api("?threads=1");}catch(e){return;}
+  threadsCache=data.threads||[];
+  const box=$("threads");
+  if(!threadsCache.length){box.innerHTML='<div class="tempty">아직 채팅 문의가 없습니다.<br>고객이 리포트에서 채팅을 시작하면 여기에 표시됩니다.</div>';return;}
+  box.innerHTML=threadsCache.map(t=>`
+    <div class="thread${t.leadId===activeLead?" active":""}" data-lead="${esc(t.leadId)}">
+      <div style="min-width:0"><div class="co">${esc(t.company||"이름 미상")}${t.contact?` <span style="color:var(--gray);font-weight:500">· ${esc(t.contact)}</span>`:""}</div>
+      <div class="last">${t.lastSender==="admin"?"나: ":""}${esc(t.lastMessage)}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <span class="time">${fmtTime(t.lastAt)}</span>
+        ${t.unread?`<span class="badge">${t.unread}</span>`:""}
+      </div>
+    </div>`).join("");
+  box.querySelectorAll(".thread").forEach(el=>el.addEventListener("click",()=>openThread(el.dataset.lead)));
+}
+
+async function openThread(leadId){
+  activeLead=leadId;convAfter=0;
+  $("threads").classList.add("hide");
+  const conv=$("conv");conv.classList.add("show");
+  const t=threadsCache.find(x=>x.leadId===leadId)||{};
+  conv.innerHTML=`
+    <div class="cvhead"><button id="btnBackList">← 목록</button>
+      <div><b>${esc(t.company||"이름 미상")}</b><span>${esc(t.contact||"")}${t.tier?" · "+esc(t.tier):""}</span></div>
+    </div>
+    <div class="cvbody" id="cvbody"></div>
+    <div class="cvfoot"><textarea id="cvInput" rows="1" placeholder="답변을 입력하세요"></textarea><button id="cvSend">↑</button></div>`;
+  $("btnBackList").addEventListener("click",()=>{$("threads").classList.remove("hide");conv.classList.remove("show");activeLead=null;if(convTimer){clearInterval(convTimer);convTimer=null;}});
+  $("cvSend").addEventListener("click",sendReply);
+  $("cvInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendReply();}});
+  if(convTimer)clearInterval(convTimer);
+  pollConv();convTimer=setInterval(pollConv,3500);
+  loadThreads();
+}
+
+function appendMsg(m){
+  const box=$("cvbody");if(!box)return;
+  const div=document.createElement("div");
+  div.className="cmsg "+(m.sender==="admin"?"out":"in");
+  div.textContent=m.body;
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+
+async function pollConv(){
+  if(!activeLead)return;
+  let data;
+  try{data=await api("?leadId="+encodeURIComponent(activeLead)+"&after="+convAfter);}catch(e){return;}
+  (data.messages||[]).forEach(m=>{appendMsg(m);convAfter=Math.max(convAfter,m.id);});
+}
+
+async function sendReply(){
+  const inp=$("cvInput");if(!inp)return;
+  const body=inp.value.trim();if(!body||!activeLead)return;
+  inp.value="";
+  const btn=$("cvSend");if(btn)btn.disabled=true;
+  try{await api("",{method:"POST",body:JSON.stringify({leadId:activeLead,sender:"admin",body})});}catch(e){alert("전송 실패 — 다시 시도해 주세요");}
+  if(btn)btn.disabled=false;
+  pollConv();
+}
+
+function showApp(){
+  $("login").style.display="none";$("app").classList.add("on");
+  loadThreads();
+  if(threadsTimer)clearInterval(threadsTimer);
+  threadsTimer=setInterval(loadThreads,5000);
+}
+$("btnLogin").addEventListener("click",async()=>{
+  const id=$("loginId").value.trim(),pw=$("loginPw").value;
+  $("btnLogin").disabled=true;
+  const ok=id.toLowerCase()==="bottle"&&await tryLogin(id,pw);
+  $("btnLogin").disabled=false;
+  $("loginerr").style.display=ok?"none":"block";
+  if(ok)showApp();
+});
+$("loginPw").addEventListener("keydown",e=>{if(e.key==="Enter")$("btnLogin").click();});
+$("btnLogout").addEventListener("click",()=>{localStorage.removeItem(LS_TOKEN);location.reload();});
+
+(async()=>{
+  const saved=localStorage.getItem(LS_TOKEN);
+  if(saved){TOKEN=saved;try{await api("?threads=1");showApp();return;}catch(e){localStorage.removeItem(LS_TOKEN);}}
+})();
+</script>
+</body>
+</html>
