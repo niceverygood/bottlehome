@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>채팅 상담 관리자 — 주식회사 바틀</title>
+<link rel="manifest" href="/erpanalysis/admin/manifest.webmanifest">
+<meta name="theme-color" content="#141414">
+<link rel="apple-touch-icon" href="/erpanalysis/admin/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="바틀 상담">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{--navy:#141414;--navy2:#26262A;--accent:#F54B1E;--mint:#FF6A3D;--gray:#66666C;--light:#F4F1ED;--line:#E4E0DA;--bg:#EFECE7}
@@ -62,9 +69,23 @@ button,input{font-family:inherit}
   .conv.show{display:flex}
   .cvhead button{display:inline-block}
 }
+/* PWA 설치 배너 — 폰 브라우저 상단에 '앱으로 설치' 안내 */
+#pwaBar{display:none;background:var(--navy);color:#fff;padding:10px 14px;gap:10px;align-items:center}
+#pwaBar.on{display:flex}
+#pwaBar .t{flex:1;font-size:12px;line-height:1.5}
+#pwaBar .t b{font-size:12.5px;color:var(--mint)}
+#pwaBar button{border:0;border-radius:8px;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer}
+#pwaBar .go{background:var(--accent);color:#fff}
+#pwaBar .x{background:var(--navy2);color:#fff}
 </style>
 </head>
 <body>
+
+<div id="pwaBar">
+  <div class="t" id="pwaTxt"></div>
+  <button class="go" id="pwaGo">설치</button>
+  <button class="x" id="pwaX">나중에</button>
+</div>
 
 <div id="login">
   <div class="box">
@@ -82,7 +103,10 @@ button,input{font-family:inherit}
 <div id="app">
   <div class="top">
     <div><span class="k">BOTTLE · 총괄관리자</span><b>채팅 상담</b></div>
-    <button id="btnLogout">로그아웃</button>
+    <div style="display:flex;gap:8px">
+      <button id="btnNoti" style="display:none;background:var(--accent)">🔔 알림 켜기</button>
+      <button id="btnLogout">로그아웃</button>
+    </div>
   </div>
   <div class="main">
     <div class="threads" id="threads"><div class="tempty">불러오는 중…</div></div>
@@ -120,6 +144,7 @@ async function loadThreads(){
   let data;
   try{data=await api("?threads=1");}catch(e){return;}
   threadsCache=data.threads||[];
+  notifyIfNew();
   const box=$("threads");
   if(!threadsCache.length){box.innerHTML='<div class="tempty">아직 채팅 문의가 없습니다.<br>고객이 리포트에서 채팅을 시작하면 여기에 표시됩니다.</div>';return;}
   box.innerHTML=threadsCache.map(t=>`
@@ -183,7 +208,57 @@ function showApp(){
   loadThreads();
   if(threadsTimer)clearInterval(threadsTimer);
   threadsTimer=setInterval(loadThreads,5000);
+  if("Notification" in window&&Notification.permission==="default")$("btnNoti").style.display="inline-block";
 }
+
+/* ---------- 새 메시지 알림 — 소리 + 타이틀 배지 + 브라우저 알림 ---------- */
+let lastUnreadTotal=0,firstThreadsLoad=true,audioCtx=null;
+function beep(){try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);
+  o.frequency.value=880;g.gain.setValueAtTime(.12,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.35);o.start();o.stop(audioCtx.currentTime+.36);}catch(e){}}
+function notifyIfNew(){
+  const unreadTotal=threadsCache.reduce((a,t)=>a+(t.unread||0),0);
+  document.title=(unreadTotal?"("+unreadTotal+") ":"")+"채팅 상담 관리자 — 주식회사 바틀";
+  if(navigator.setAppBadge){if(unreadTotal)navigator.setAppBadge(unreadTotal).catch(()=>{});else if(navigator.clearAppBadge)navigator.clearAppBadge().catch(()=>{});}
+  if(!firstThreadsLoad&&unreadTotal>lastUnreadTotal){
+    const newest=threadsCache.filter(t=>t.lastSender==="customer"&&t.unread)
+      .sort((a,b)=>new Date(b.lastAt)-new Date(a.lastAt))[0];
+    beep();
+    if(newest&&"Notification" in window&&Notification.permission==="granted"&&(document.hidden||newest.leadId!==activeLead)){
+      try{const n=new Notification((newest.company||"고객")+" 님의 새 메시지",
+        {body:newest.lastMessage||"",icon:"/erpanalysis/admin/icon-192.png",tag:"erpchat"});
+        n.onclick=()=>{window.focus();openThread(newest.leadId);n.close();};}catch(e){}
+    }
+  }
+  firstThreadsLoad=false;lastUnreadTotal=unreadTotal;
+}
+$("btnNoti").addEventListener("click",async()=>{
+  if(!("Notification" in window))return;
+  const p=await Notification.requestPermission();
+  $("btnNoti").style.display=p==="default"?"inline-block":"none";
+});
+
+/* ---------- PWA — 홈 화면 설치 (안드로이드: 설치 프롬프트 / 아이폰: 안내) ---------- */
+let deferredPrompt=null;
+const isStandalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+function showPwaBar(){
+  if(isStandalone()||localStorage.getItem("erp_pwa_dismiss"))return;
+  if(deferredPrompt){
+    $("pwaTxt").innerHTML="<b>📲 앱으로 설치</b> — 홈 화면에 추가하면 앱처럼 열고 새 상담 알림을 받을 수 있습니다";
+    $("pwaGo").style.display="";$("pwaBar").classList.add("on");
+  }else if(isIOS){
+    $("pwaTxt").innerHTML="<b>📲 아이폰에 설치</b> — Safari 하단 공유 버튼(□↑) → ‘홈 화면에 추가’를 누르면 앱처럼 설치됩니다";
+    $("pwaGo").style.display="none";$("pwaBar").classList.add("on");
+  }
+}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;showPwaBar();});
+window.addEventListener("appinstalled",()=>$("pwaBar").classList.remove("on"));
+$("pwaGo").addEventListener("click",async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("pwaBar").classList.remove("on");});
+$("pwaX").addEventListener("click",()=>{localStorage.setItem("erp_pwa_dismiss","1");$("pwaBar").classList.remove("on");});
+if(isIOS)setTimeout(showPwaBar,800);
+if("serviceWorker" in navigator)navigator.serviceWorker.register("/erpanalysis/admin/sw.js").catch(()=>{});
 $("btnLogin").addEventListener("click",async()=>{
   const id=$("loginId").value.trim(),pw=$("loginPw").value;
   $("btnLogin").disabled=true;

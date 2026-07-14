@@ -1,0 +1,18 @@
+{
+  "name": "바틀 상담 관리자",
+  "short_name": "바틀 상담",
+  "description": "ERP 진단 리드·채팅 상담 관리자 — 주식회사 바틀",
+  "id": "/erpanalysis/admin/",
+  "start_url": "/erpanalysis/admin/chat/",
+  "scope": "/erpanalysis/admin/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "lang": "ko",
+  "icons": [
+    { "src": "/erpanalysis/admin/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/erpanalysis/admin/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/erpanalysis/admin/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
