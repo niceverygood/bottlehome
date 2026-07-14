@@ -217,10 +217,16 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
   <section class="step" data-step="1">
     <h2 class="q">회사에 대해 알려주세요</h2>
     <p class="sub">규모에 맞는 구성과 가격 구간을 찾는 기준입니다.</p>
-    <div class="lbl">업종 <small>· 1개 선택</small></div>
+    <div class="lbl">업종 <small>· 가장 가까운 것 1개</small></div>
     <div class="chips" data-g="industry" data-type="single">
-      <button class="chip" data-v="mfg">제조</button><button class="chip" data-v="dist">도소매·유통</button>
-      <button class="chip" data-v="svc">서비스</button><button class="chip" data-v="trade">무역·물류</button>
+      <button class="chip" data-v="mfg">제조</button><button class="chip" data-v="food">식품·음료</button>
+      <button class="chip" data-v="cos">화장품·뷰티</button><button class="chip" data-v="fashion">패션·잡화</button>
+      <button class="chip" data-v="dist">도소매·유통</button><button class="chip" data-v="ecom">이커머스·온라인몰</button>
+      <button class="chip" data-v="trade">무역·수출입</button><button class="chip" data-v="logi">물류·운송</button>
+      <button class="chip" data-v="cons">건설·인테리어</button><button class="chip" data-v="svc">전문 서비스</button>
+      <button class="chip" data-v="med">의료·헬스케어</button><button class="chip" data-v="edu">교육·학원</button>
+      <button class="chip" data-v="fnb">외식·프랜차이즈</button><button class="chip" data-v="it">IT·소프트웨어</button>
+      <button class="chip" data-v="rent">렌탈·구독</button><button class="chip" data-v="agri">농축수산</button>
       <button class="chip" data-v="etc">기타</button>
     </div>
     <div class="lbl">직원 수</div>
@@ -401,7 +407,8 @@ table.opt tr.sum td{border-top:2px solid var(--navy);border-bottom:0;font-weight
 /* =====================================================================
    CONFIG — 여기만 수정하면 됩니다
    · 색상: 최상단 :root CSS 변수
-   · AI: Supabase Edge Function 프록시를 경유해 Claude(Sonnet)로 분석합니다.
+   · AI: Supabase Edge Function 프록시를 경유해 Claude Sonnet 5로 분석합니다
+     (비용·속도 최적화 — 함수 소스는 리포지토리 /supabase/functions/erp-analyze).
      API 키는 서버(프록시)에만 있고, 제출·분석 결과는 DB에 저장되어
      /erpanalysis/admin 에서 조회할 수 있습니다. 프록시 실패 시 자동으로
      규칙 기반 분석으로 전환되므로 리포트는 항상 출력됩니다.
@@ -435,15 +442,33 @@ const MODS=[
  {id:"auto",name:"알림·자동화",kw:"결재·알림·반복업무",menus:["결재·승인 알림","반복 업무 자동화"],def:"later"}];
 const PRESETS={
  mfg:{name:"생산관리",kw:"제조 특화 · BOM·공정",menus:["BOM 관리","생산 지시","공정 현황","원자재 소요"]},
+ food:{name:"생산·유통기한 관리",kw:"식품 특화 · LOT·유통기한",menus:["LOT·유통기한 관리","생산 지시·배합","원부자재 소요","품질·검사 기록"]},
+ cos:{name:"생산·품질 관리",kw:"뷰티 특화 · LOT·인증",menus:["LOT·사용기한 관리","처방(BOM)·생산 지시","품질·인증 문서","OEM 발주 관리"]},
+ fashion:{name:"스타일·시즌 관리",kw:"패션 특화 · 옵션 매트릭스",menus:["스타일·컬러·사이즈 관리","시즌·기획 관리","발주·생산 트래킹","매장·채널 배분"]},
  dist:{name:"판매채널 통합",kw:"유통 특화 · 다채널",menus:["채널 주문 통합","채널별 정산","송장·배송 처리"]},
+ ecom:{name:"온라인 판매 통합",kw:"이커머스 특화 · 오픈마켓",menus:["오픈마켓 주문 수집","클레임·반품 관리","채널별 정산·수수료","송장·출고 자동화"]},
+ trade:{name:"수출입 관리",kw:"무역 특화",menus:["수출입 오더","환율·외화 관리","선적·통관"]},
+ logi:{name:"운송·배차 관리",kw:"물류 특화",menus:["배차·기사 관리","운임 정산","화물 추적","거래처별 단가"]},
+ cons:{name:"현장·프로젝트 관리",kw:"건설 특화 · 현장 원가",menus:["현장별 원가 관리","기성·청구 관리","자재 투입 관리","외주·노무 관리"]},
  svc:{name:"예약·회원",kw:"서비스 특화",menus:["예약 캘린더","회원·이용권 관리","이용 정산"]},
- trade:{name:"수출입 관리",kw:"무역 특화",menus:["수출입 오더","환율·외화 관리","선적·통관"]}};
+ med:{name:"예약·고객 관리",kw:"헬스케어 특화",menus:["예약 캘린더","고객·상담 이력","패키지·이용권","미수·정산 관리"]},
+ edu:{name:"수강·학사 관리",kw:"교육 특화",menus:["수강권·수납 관리","출결 관리","강사·시간표","학부모 알림"]},
+ fnb:{name:"매장·가맹 관리",kw:"외식 특화 · 본사·가맹",menus:["매장별 매출 집계","본사·가맹 발주 정산","레시피·원가 관리","폐기·재고 실사"]},
+ it:{name:"프로젝트·계약 관리",kw:"IT 특화 · 손익",menus:["프로젝트 손익","계약·구독 청구","공수(리소스) 관리","마일스톤·정산"]},
+ rent:{name:"렌탈·구독 관리",kw:"렌탈 특화 · 회차 청구",menus:["렌탈 계약 관리","회차 청구·수납","자산·재고 추적","회수·AS 관리"]},
+ agri:{name:"산지·로트 관리",kw:"농축수산 특화",menus:["산지 입고·로트 관리","시세·단가 관리","선별·포장 재고","경매·위탁 정산"]}};
 const OPTS={tax:{n:"전자세금계산서 연동",lo:150,hi:150},pg:{n:"PG 결제 연동",lo:200,hi:200},
  post:{n:"택배사 연동",lo:150,hi:150},bank:{n:"은행 입출금 연동",lo:250,hi:250},
  gw:{n:"그룹웨어·전자결재",lo:400,hi:400},barcode:{n:"바코드·PDA 재고",lo:350,hi:350},
  mes:{n:"MES·설비 연계",lo:700,hi:null}};
 const MALLP={"1~2개":[250,500],"3~5개":[750,1250],"6개+":[1500,null]};
-const INDNAME={mfg:"제조",dist:"도소매·유통",svc:"서비스",trade:"무역·물류",etc:""};
+const INDNAME={mfg:"제조",food:"식품·음료",cos:"화장품·뷰티",fashion:"패션·잡화",dist:"도소매·유통",ecom:"이커머스·온라인몰",
+ trade:"무역·수출입",logi:"물류·운송",cons:"건설·인테리어",svc:"전문 서비스",med:"의료·헬스케어",edu:"교육·학원",
+ fnb:"외식·프랜차이즈",it:"IT·소프트웨어",rent:"렌탈·구독",agri:"농축수산",etc:"기타"};
+/* 업종 계열 — 폴백 대시보드·정부지원(스마트공장)·연동 힌트에 사용 */
+const FAM={mfg:"mfg",food:"mfg",cos:"mfg",fashion:"dist",dist:"dist",ecom:"dist",fnb:"dist",agri:"dist",
+ trade:"trade",logi:"trade",cons:"svc",svc:"svc",med:"svc",edu:"svc",it:"svc",rent:"svc",etc:"etc"};
+const INTNAME={tax:"전자세금계산서",pg:"PG 결제",mall:"쇼핑몰·오픈마켓",post:"택배사",bank:"은행 입출금",gw:"그룹웨어·전자결재",barcode:"바코드·PDA",mes:"MES·설비"};
 
 /* ---------- 상태 ---------- */
 const S={industry:null,emp:null,rev:null,users:null,sites:null,tools:[],partners:null,items:null,orders:null,
@@ -490,7 +515,7 @@ document.addEventListener("click",e=>{
   if(type==="single"){
     [...g.children].forEach(x=>x.classList.remove("sel"));c.classList.add("sel");
     S[key]=(key==="emp"||key==="rev")?+c.dataset.v:c.dataset.v;
-    if(key==="industry"){buildModules();document.getElementById("govq").style.display=(c.dataset.v==="mfg")?"block":"none";}
+    if(key==="industry"){buildModules();document.getElementById("govq").style.display=(FAM[c.dataset.v]==="mfg")?"block":"none";}
   }else{
     const v=c.dataset.v,max=+g.dataset.max||99;
     if(key==="integrations"&&v==="none"){S.integrations=c.classList.contains("sel")?[]:["none"];
@@ -534,37 +559,112 @@ function buildModules(){
 }
 
 /* =====================================================================
-   규칙 엔진
+   종합 견적 엔진
+   응답을 4개 영역 — A 회사 규모 · B 현재 관리상태 · C 기능 범위 ·
+   D 연동·커스텀 — 으로 점수화(각 0~5)해 티어와 구간 내 위치를 정한다.
+   제안가(opt)는 원가 하한(floor)과 지불가치 상한(ceil) 사이에서
+   '우리 매출 최대 × 고객 만족 최대'의 균형점(가치 55 : 원가 45)을 잡고,
+   만족 가드(하한 +30%·티어 상단 초과 금지)로 마감한다.
+   같은 응답 → 언제나 같은 금액(정찰제 신뢰의 핵심).
 ===================================================================== */
 function ruleEngine(){
-  const ei=S.emp??0, ri=S.rev>=0?Math.min(S.rev,4):-1;
-  let ti=Math.max(ei, ri>=0?ri:0); ti=Math.min(ti,5);
+  const pos=(v,arr)=>{const i=arr.indexOf(v);return i<0?0:i;};
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  /* ── A. 회사 규모 (0~5) — 지불 여력·동시 사용 부하 ── */
+  const ei=S.emp??0;
+  const ri=(S.rev!=null&&S.rev>=0)?Math.min(S.rev,4):null; /* 비공개면 null */
+  const ui=pos(S.users,["~10명","~30명","~50명","~100명","100명+"]);
+  const si=pos(S.sites,["1곳","2~3곳","4곳+"]);
+  const scale=ri==null
+    ? ei*.50 + ui*1.25*.35 + si*2.5*.15
+    : ei*.38 + ri*1.25*.30 + ui*1.25*.22 + si*2.5*.10;
+  /* ── B. 현재 관리상태 (0~5) — 데이터 볼륨·이관 난이도 ── */
+  const vol=(pos(S.partners,["~100","100~500","500~2,000","2,000+"])
+            +pos(S.items,["~100","100~1,000","1,000~5,000","5,000+"])
+            +pos(S.orders,["~500","500~3,000","3,000~10,000","10,000+"]))*5/9;
+  const migF={"전체 이관":1,"핵심만 이관":.55,"모르겠음":.55,"새로 시작":.15}[S.migrate]??.45;
+  const stF={"정리돼 있음":.45,"흩어져 있음":1,"잘 모름":.75}[S.dataState]??.65;
+  let toolF=0;
+  if(S.tools.includes("자체·외주 시스템"))toolF+=.5;
+  if(S.tools.includes("위하고·더존"))toolF+=.35;
+  if(S.tools.includes("이카운트"))toolF+=.25;
+  if(S.tools.includes("엑셀·수기"))toolF+=.3;
+  if(S.tools.includes("기타 SaaS"))toolF+=.2;
+  if(S.tools.length>1)toolF+=.15*(S.tools.length-1); /* 여러 곳에 흩어진 데이터 */
+  const dataScore=clamp(vol*.5 + migF*5*.3 + stF*5*.12 + Math.min(toolF,.9),0,5);
+  /* ── C. 기능 범위 (0~5) — 표준 6모듈은 기본가에 포함, 그 이상만 가산 ── */
   const nowCnt=Object.values(S.modules).filter(v=>v==="now").length;
-  if(nowCnt>=7&&ti<2)ti=Math.min(ti+1,5); // 범위 과다 시 상향
+  const laterCnt=Object.values(S.modules).filter(v=>v==="later").length;
+  const scopeScore=clamp((nowCnt-5)*.7 + laterCnt*.2,0,5);
+  /* ── D. 연동·커스텀 (0~5) ── */
+  const IW={mes:1.6,gw:1.2,barcode:1.1,bank:1,mall:1,pg:.8,post:.7,tax:.5};
+  let intLoad=0;
+  S.integrations.filter(v=>v!=="none").forEach(v=>intLoad+=IW[v]||.6);
+  if(S.integrations.includes("mall"))intLoad+={"1~2개":0,"3~5개":.5,"6개+":1}[S.mallCh]||0;
+  let cust=0;
+  if(S.mobile.includes("현장·창고 필수"))cust+=.7;else if(S.mobile.includes("모바일도 필요"))cust+=.3;
+  if(S.forms==="있음")cust+=.5;else if(S.forms==="모름")cust+=.2;
+  const ctLen=(S.customText||"").length;
+  cust+=ctLen>200?1.6:ctLen>80?1.2:ctLen>0?.8:0;
+  const customScore=clamp(intLoad*.55+cust,0,5);
+  /* ── 티어 — 규모 55% + 구축 난이도 45%의 연속 점수로 결정 ── */
+  const effort=scopeScore*.34 + dataScore*.28 + customScore*.22 + scale*.16;
+  const tScore=clamp(scale*.55 + effort*.45,0,5);
+  let ti=clamp(Math.round(tScore),ei>=4?ei-1:0,ei<=1?ei+2:5); /* 소기업 과대·대기업 과소 방지 */
   const T=TIERS[ti];
-  /* 옵션 합산 */
+  const base=Math.round((T.lo+(T.hi-T.lo)*clamp(tScore-ti+.5,0,1))/10)*10;
+  /* ── 연동·이관 정찰 옵션 합산 ── */
   const rows=[];let olo=0,ohi=0,open=false;
+  const addRow=(n,lo,hi)=>{rows.push([n,lo,hi]);olo+=lo;if(hi==null)open=true;else ohi+=hi;};
   S.integrations.filter(v=>v!=="none").forEach(v=>{
-    if(v==="mall"){const c=MALLP[S.mallCh||"1~2개"];rows.push(["쇼핑몰·오픈마켓 연동 ("+(S.mallCh||"채널 수 미정")+")",c[0],c[1]]);olo+=c[0];if(c[1]==null)open=true;else ohi+=c[1];}
-    else{const o=OPTS[v];rows.push([o.n,o.lo,o.hi]);olo+=o.lo;if(o.hi==null)open=true;else ohi+=o.hi;}
+    if(v==="mall"){const c=MALLP[S.mallCh||"1~2개"];addRow("쇼핑몰·오픈마켓 연동 ("+(S.mallCh||"채널 수 미정")+")",c[0],c[1]);}
+    else{const o=OPTS[v];addRow(o.n,o.lo,o.hi);}
   });
-  if(S.mobile.includes("현장·창고 필수")&&!S.integrations.includes("barcode")){rows.push(["현장용 모바일·PDA 화면(권장)",350,350]);olo+=350;ohi+=350;}
-  /* 커버율 */
+  if(S.mobile.includes("현장·창고 필수")&&!S.integrations.includes("barcode"))addRow("현장용 모바일·PDA 화면(권장)",350,350);
+  if(S.migrate==="전체 이관")addRow(vol>=3?"데이터 전체 이관·정제 (대용량)":"데이터 전체 이관·정제",vol>=3?250:150,vol>=3?500:300);
+  else if(S.migrate==="핵심만 이관")addRow("핵심 데이터 이관·정제",80,180);
+  /* ── 커버율 ── */
   let covered=nowCnt+rows.length, custom=0;const customItems=[];
   if(S.customText){custom+=1;customItems.push({title:"특수 업무 커스텀",desc:S.customText.slice(0,80)+(S.customText.length>80?"…":""),module:"상담 확정"});}
   if(S.forms==="있음"){custom+=1;customItems.push({title:"기존 서식·출력물 유지",desc:"거래명세서·라벨 등 현행 양식 그대로 구현",module:"출력물"});}
   let pct=covered+custom===0?95:Math.round(covered/(covered+custom)*100);
   pct=Math.max(62,Math.min(pct,97));
-  /* 리스크 */
+  /* ── 최적 제안가 — 원가 하한 ↔ 지불가치 상한 사이의 균형점 ── */
+  const floor=base+olo;                       /* 이 구성의 원가 기준선 */
+  const ceil=Math.max(floor,T.hi+ohi);        /* 고객이 수긍 가능한 가치 상단 */
+  let vf=1;                                    /* 상황 계수: 절박도·시기·여력 */
+  if(ri!=null)vf+=(ri-1.5)*.02;
+  vf+=Math.min(S.pains.length,2)*.015;
+  if(S.timing==="3개월 내")vf+=.04;else if(S.timing==="검토 단계")vf-=.05;
+  if(["거래처의 시스템 요구","재고·정산 사고","감사·인증 준비","담당자 퇴사·인수인계"].includes(S.trigger))vf+=.03;
+  if(S.gov==="관심 있음")vf+=.02;
+  vf=clamp(vf,.9,1.15);
+  let opt=(floor*.45+ceil*.55)*vf;
+  opt=clamp(opt,floor,Math.min(floor*1.3,T.hi+olo));
+  opt=Math.round(opt/10)*10;if(opt>0&&opt%100===0)opt-=10; /* 정찰 단수가 */
+  const optBase=opt-olo;                      /* 리포트 표기용 구축비(옵션 제외) */
+  /* ── 산정 근거 (리포트 투명성 = 만족도) ── */
+  const EMPL=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"];
+  const drivers=[
+   "회사 규모 — "+(EMPL[ei]||"미선택")+(S.users?" · 실사용 "+S.users:"")+(S.sites&&S.sites!=="1곳"?" · 사업장 "+S.sites:"")+" → "+T.tier+" 구간",
+   "기능 범위 — 1차 오픈 "+nowCnt+"개 모듈"+(laterCnt?" · 2차 "+laterCnt+"개(1차 구축비 미포함)":""),
+   "현재 관리상태 — "+(S.tools.length?S.tools.join("·"):"도구 미선택")+(S.migrate?" · "+S.migrate:"")+(S.dataState?" · "+S.dataState:""),
+   rows.length?"연동·이관 — 정찰 옵션 "+rows.length+"건 합산":"연동·이관 — 추가 옵션 없음",
+   (ctLen||S.forms==="있음")?"커스텀 신호 — 특수 업무·서식 반영, 세부 범위는 상담에서 확정":null
+  ].filter(Boolean);
+  /* ── 리스크 ── */
   const risks=[];
   if(S.dataState==="잘 모름"||S.dataState==="흩어져 있음")risks.push("데이터가 정리되지 않은 상태 — 이관 범위·정제 공수를 상담에서 먼저 확정해야 일정이 지켜집니다.");
-  if(S.migrate==="전체 이관"&&(S.items==="5,000+"||S.orders==="10,000+"))risks.push("대용량 전체 이관 — 기본 이관 범위를 초과할 수 있어 이관 옵션(100~500만) 검토가 필요합니다.");
-  if(S.timing==="1개월 내")risks.push("희망 일정 1개월 — 표준 구축 기간보다 짧습니다. 핵심 모듈 우선 오픈(단계 오픈) 방식을 권장합니다.");
+  if(S.migrate==="전체 이관"&&(S.items==="5,000+"||S.orders==="10,000+"))risks.push("대용량 전체 이관 — 이관 정찰 옵션의 상단 범위로 준비하시는 것이 안전합니다.");
+  if(S.timing==="3개월 내"&&ti>=3)risks.push("희망 일정 3개월 — 이 규모의 표준 기간보다 짧습니다. 핵심 모듈 우선 오픈(단계 오픈)을 권장합니다.");
   if(nowCnt>=7&&ti<=1)risks.push("선택 범위가 규모 대비 넓습니다 — 1차/2차 오픈으로 나누면 비용·기간을 지키면서 전부 구현할 수 있습니다.");
+  if(ri!=null&&ri<=0&&opt>=1500)risks.push("연매출 대비 초기 투자가 큰 편입니다 — 2차 오픈 항목을 늘려 초기 비용을 낮추는 조정을 상담에서 제안드립니다.");
   if(S.trigger==="담당자 퇴사·인수인계")risks.push("담당자 공백 상황 — 구축 기간 중 주 1회 60분 미팅이 가능한 창구 1명 지정이 꼭 필요합니다.");
   if(S.gov==="관심 있음")risks.push("스마트공장 정부지원(최대 2억) 매칭 가능성 — 공고 일정에 맞춘 준비를 상담에서 안내드립니다.");
   if(!risks.length)risks.push("특별한 리스크 신호는 없습니다 — 표준 프로세스(12주, 4주차 범위 확정)로 진행 가능한 구성입니다.");
-  return {T,ti,rows,olo,ohi,open,pct,covered,custom,customItems,risks,nowCnt};
+  return {T,ti,rows,olo,ohi,open,pct,covered,custom,customItems,risks,nowCnt,laterCnt,
+    base,opt,optBase,floor,ceil,drivers,
+    scores:{scale:+scale.toFixed(2),data:+dataScore.toFixed(2),scope:+scopeScore.toFixed(2),custom:+customScore.toFixed(2)}};
 }
 
 /* ---------- IA 트리 ---------- */
@@ -581,10 +681,10 @@ function buildIA(R,ai){
     ia.push({name:m.name,phase,menus});};
   MODS.forEach(m=>{const st=S.modules[m.id];if(st==="now")push(m,1);});
   if(P&&S.modules.preset!=="no"){const menus=[...P.menus];
-    if(S.industry==="mfg"&&S.integrations.includes("mes"))menus.push("설비 데이터 연계 ▸연동");
+    if(FAM[S.industry]==="mfg"&&S.integrations.includes("mes"))menus.push("설비 데이터 연계 ▸연동");
     if(S.industry==="dist"&&S.integrations.includes("mall"))menus.push("오픈마켓 주문 수집 ▸연동");
     ia.push({name:P.name+" (업종 특화)",phase:S.modules.preset==="now"?1:2,menus});}
-  if(S.integrations.includes("mall")&&(!P||S.industry!=="dist"))ia.push({name:"판매채널 통합",phase:1,menus:["채널 주문 수집 ▸연동","채널별 정산"]});
+  if(S.integrations.includes("mall")&&!["dist","ecom"].includes(S.industry))ia.push({name:"판매채널 통합",phase:1,menus:["채널 주문 수집 ▸연동","채널별 정산"]});
   if(S.integrations.includes("gw"))ia.push({name:"전자결재",phase:1,menus:["결재선 관리","문서 양식"]});
   MODS.forEach(m=>{if(S.modules[m.id]==="later")push(m,2);});
   /* AI 추가 메뉴 병합 */
@@ -620,7 +720,7 @@ function buildDash(ai){
     etc:["오늘 매출","이번 달 매출","미수금","재고 자산"]};
   const vals={mfg:["87%","4.2억","3건","0.8%"],dist:["142건","1.9억","23건","18일"],svc:["36건","8,400만","57명","1,240만"],trade:["12건","6.7억","4건","$48K"],etc:["1,850만","3.1억","6,300만","9.4억"]};
   const barByInd={mfg:"주간 생산량 추이",dist:"채널별 매출 비중",svc:"요일별 예약 현황",trade:"월별 수출 실적",etc:"월별 매출 추이"};
-  const ind=S.industry||"etc";
+  const ind=FAM[S.industry]||"etc"; /* 폴백 사전은 업종 계열 기준 */
   const alerts=[];
   if(S.pains.includes("재고 불일치"))alerts.push("안전재고 미달 5개 품목 — 자동 발주 제안");
   if(S.pains.includes("월말 결산 야근"))alerts.push("11월 결산 리포트 자동 생성 완료");
@@ -650,10 +750,19 @@ function buildDash(ai){
 function buildAIPayload(R){
   const modName=id=>id==="preset"?((PRESETS[S.industry]||{}).name||"업종 특화"):((MODS.find(m=>m.id===id)||{}).name||id);
   const nowNames=Object.keys(S.modules).filter(k=>S.modules[k]==="now").map(modName);
-  return {industry:INDNAME[S.industry]||"기타",emp:["~10인","10~30인","30~50인","50~100인","100~200인","200인+"][S.emp],
-    tools:S.tools,dataState:S.dataState,modulesNow:nowNames,
-    integrations:S.integrations,mobile:S.mobile,forms:S.forms,customText:S.customText,
-    pains:S.pains,trigger:S.trigger,timing:S.timing,tier:R.T.tier};
+  const laterNames=Object.keys(S.modules).filter(k=>S.modules[k]==="later").map(modName);
+  return {company:S.company,industry:INDNAME[S.industry]||"기타",
+    emp:["~10인","10~30인","30~50인","50~100인","100~200인","200인+"][S.emp],
+    rev:(S.rev!=null&&S.rev>=0)?["~10억","10~50억","50~150억","150~400억","400억 이상"][S.rev]:"비공개",
+    users:S.users,sites:S.sites,
+    tools:S.tools,partners:S.partners,items:S.items,orders:S.orders,
+    migrate:S.migrate,dataState:S.dataState,
+    modulesNow:nowNames,modulesLater:laterNames,
+    integrations:S.integrations.filter(v=>v!=="none").map(v=>INTNAME[v]||v),
+    mallCh:S.mallCh,mobile:S.mobile,forms:S.forms,customText:S.customText,
+    pains:S.pains,trigger:S.trigger,timing:S.timing,gov:S.gov,
+    pricing:{tier:R.T.tier,band:[R.T.lo,R.T.hi],base:R.optBase,options:R.rows,
+      optionTotal:[R.olo,R.ohi],opt:R.opt,weeks:R.T.weeks,monthly:[R.T.mlo,R.T.mhi]}};
 }
 async function submitLead(R){
   if(!CONFIG.AI.enabled)return null;
@@ -663,7 +772,7 @@ async function submitLead(R){
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
         answers:S,
-        rule:{tier:R.T.tier,lo:R.T.lo,hi:R.T.hi,pct:R.pct,olo:R.olo,ohi:R.ohi,nowCnt:R.nowCnt},
+        rule:{tier:R.T.tier,lo:R.T.lo,hi:R.T.hi,base:R.base,opt:R.opt,pct:R.pct,olo:R.olo,ohi:R.ohi,nowCnt:R.nowCnt,scores:R.scores},
         aiPayload:buildAIPayload(R)
       })});
     clearTimeout(to);
@@ -713,7 +822,7 @@ function pollForResult(id){
 /* =====================================================================
    분석 실행 → 리포트
 ===================================================================== */
-const LOADMSGS=["응답을 분석하고 있습니다","규모에 맞는 구성을 계산하는 중","시스템 설계도를 그리는 중","대시보드를 구성하는 중"];
+const LOADMSGS=["응답을 분석하고 있습니다","Claude Sonnet 5가 응답을 읽는 중","규모·관리상태·기능·연동을 종합해 견적을 산정하는 중","시스템 설계도를 그리는 중","대시보드를 구성하는 중"];
 function showLoading(){
   document.getElementById("wiz").style.display="none";
   document.getElementById("loading").style.display="flex";
@@ -776,25 +885,38 @@ function renderReport(R,ai){
   const first=(ai&&ai.firstLine)||autoFirst();
   const summary=(ai&&ai.summary)||autoSummary(R);
   const p2=ia.filter(n=>n.phase===2).length;
+  /* 구버전 localStorage에 저장된 R(제안가 없음)로 재개돼도 깨지지 않게 가드 */
+  const opt=R.opt??(R.T.lo+(R.olo||0));
+  const optBase=R.optBase??Math.max(R.T.lo,opt-(R.olo||0));
+  const optHi=(R.ohi>R.olo)?opt+R.ohi-R.olo:null;
+  const drivers=R.drivers||[];
   const el=document.getElementById("rpbody");
   el.innerHTML=`
   <div class="rhead">
     <div class="k">ERP DIAGNOSIS REPORT · ${CONFIG.BRAND}</div>
     <h1>${esc(S.company)} 님의 ERP 진단 리포트</h1>
     <div class="d">${ds} · 응답 기반 자동 분석${S.person?" · "+esc(S.person)+" 님":""}</div>
-    <span class="aibadge">${ai?"✦ AI 정밀 분석 적용":"규칙 기반 분석 (상담 시 AI 정밀 분석 제공)"}</span>
+    <span class="aibadge">${ai?"✦ Claude Sonnet 5 정밀 분석":"규칙 기반 분석 (상담 시 AI 정밀 분석 제공)"}</span>
   </div>
 
   <div class="card"><div class="first">${esc(first)}</div><div class="sumtx">${esc(summary)}</div></div>
 
-  <div class="card"><h3>RECOMMENDED PLAN · 권장 구성</h3>
+  <div class="card"><h3>OPTIMAL QUOTE · 최적 제안가</h3>
     <div class="tierrow"><span class="tierbadge">${R.T.tier}</span>
-      <span class="pricebig">${fmt(R.T.lo)}~${fmt(R.T.hi)} 원 <small>구축비 · VAT 별도</small></span></div>
+      <span class="pricebig">${fmt(opt)}${optHi?"~"+fmt(optHi):""} 원 <small>구축+연동·이관 · VAT 별도</small></span></div>
+    <table class="opt" style="margin-top:12px">
+      <tr><td>기본 구축 — 1차 ${R.nowCnt}개 모듈 (${R.T.tier} 정찰 구간 ${fmt(R.T.lo)}~${fmt(R.T.hi)})</td><td>${fmt(optBase)} 원</td></tr>
+      ${R.rows.length?`<tr><td>연동·이관 정찰 옵션 ${R.rows.length}건 — 상세 아래 표</td><td>+ ${R.open?fmt(R.olo)+" 원~":priceRange(R.olo,Math.max(R.ohi,R.olo))}</td></tr>`:""}
+      <tr class="sum"><td>최적 제안가${R.open?" · 협의 항목 별도":""}</td><td>${fmt(opt)}${optHi?"~"+fmt(optHi):""} 원</td></tr>
+    </table>
     <div class="trow">
       <div class="tbox"><b>${R.T.weeks}</b><span>표준 구축 기간</span></div>
       <div class="tbox"><b>${R.nowCnt}개 모듈</b><span>1차 오픈 범위</span></div>
       <div class="tbox"><b>월 ${R.T.mlo}~${R.T.mhi}만</b><span>유지보수 권장</span></div>
     </div>
+    ${drivers.length?`<div style="font-size:12px;font-weight:800;color:var(--navy);margin:14px 0 2px">가격 산정 근거 — 응답 4개 영역 종합</div>
+    <ul class="list">${drivers.map(d=>`<li><span>${esc(d)}</span></li>`).join("")}</ul>`:""}
+    <div class="hint" style="margin-top:8px">같은 응답이면 언제나 같은 금액이 나오는 정찰 기준 최적가입니다 — 상담에서는 깎는 대신 범위만 확정합니다.</div>
   </div>
 
   <div class="card"><h3>STANDARD COVERAGE · 표준 커버율</h3>
@@ -803,7 +925,8 @@ function renderReport(R,ai){
       <div class="covtx">요구사항의 <b>약 ${R.pct}%가 검증된 표준 모듈·정찰 옵션</b>으로 해결됩니다.<br>
       순수 커스텀 검토 항목은 <b>${R.custom}건</b> — 이것이 990만원대 고정가가 가능한 이유입니다.</div>
     </div>
-    ${R.customItems.length?`<ul class="list" style="margin-top:8px">${R.customItems.map(c=>`<li><span><b>${esc(c.title)}</b> — ${esc(c.desc)} <span style="color:var(--gray)">(${esc(c.module)})</span></span></li>`).join("")}</ul>`:""}
+    ${R.customItems.length?`<ul class="list" style="margin-top:8px">${R.customItems.map(c=>`<li><span><b>${esc(c.title)}</b> — ${esc(c.desc)} <span style="color:var(--gray)">(${esc(c.module)})</span></span></li>`).join("")}</ul>
+    <div class="hint" style="margin-top:6px">커스텀 항목은 상담에서 범위 확정 후 별도 정찰 견적(통상 건당 60~140만)으로 안내됩니다 — 위 제안가에는 포함되지 않습니다.</div>`:""}
   </div>
 
   ${R.rows.length?`<div class="card"><h3>OPTION ESTIMATE · 선택 연동 정찰가</h3>
@@ -841,8 +964,8 @@ function renderReport(R,ai){
     <b>이 설계도를 확정 견적으로 —<br>무료 진단 상담 30분</b>
     <p>진단 결과를 바탕으로 범위·일정·확정 금액을 정리해 드립니다.${S.gov==="관심 있음"?" 스마트공장 정부지원 매칭도 함께 안내드립니다.":""} 상담 순서대로 착수 슬롯이 배정됩니다.</p>
     ${LEAD_ID?`<div class="row"><a class="dark" href="javascript:void(0)" onclick="openChat()">채팅 상담 받기</a></div>`:""}
-    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n30분 무료 진단 상담을 요청드립니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일 상담</a></div>
-    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 리포트 받기")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+"\n\n진단 리포트를 이메일로 받아보고 싶습니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 상담 요청")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+" · 최적 제안가 "+fmt(opt)+" 원(VAT 별도)"+"\n\n30분 무료 진단 상담을 요청드립니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일 상담</a></div>
+    <div class="row"><a href="mailto:${CONFIG.MAIL}?subject=${encodeURIComponent("[ERP 진단] "+S.company+" 리포트 받기")}&body=${encodeURIComponent("회사명: "+S.company+"\n휴대폰: "+S.contact+(S.email?"\n이메일: "+S.email:"")+"\n권장 구성: "+R.T.tier+" · 최적 제안가 "+fmt(opt)+" 원(VAT 별도)"+"\n\n진단 리포트를 이메일로 받아보고 싶습니다."+(reportURL()?"\n\n진단 리포트 전체 보기·PDF 저장:\n"+reportURL():""))}">이메일로 리포트 받기</a></div>
   </div>
   <div class="printrow">
     <button class="printbtn" onclick="window.print()">리포트 저장 · 인쇄 (PDF)</button>
@@ -859,12 +982,12 @@ function renderReport(R,ai){
   document.getElementById("chatFab").classList.toggle("on",!!LEAD_ID);
 }
 function autoFirst(){
-  const ind=INDNAME[S.industry]||"";const emp=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"][S.emp]||"";
+  const ind=S.industry==="etc"?"":(INDNAME[S.industry]||"");const emp=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"][S.emp]||"";
   const trg=S.trigger?`${S.trigger} 때문에 도입을 검토 중이신 `:"";
   return `${trg}${emp} ${ind} 기업이시군요. ${S.pains[0]?`'${S.pains[0]}' 문제부터 시스템으로 끊어내는 설계를 권장드립니다.`:"규모에 맞는 최적 구성을 정리했습니다."}`;
 }
 function autoSummary(R){
-  return `선택하신 범위 기준으로 ${R.T.tier} 구성이 가장 적합합니다. 요구사항의 약 ${R.pct}%는 검증된 표준 모듈로 즉시 해결되고, 커스텀 검토는 ${R.custom}건에 그칩니다. 아래 설계도(IA)와 대시보드는 이번 응답만으로 구성한 초안이며, 30분 상담에서 확정 견적으로 다듬어 드립니다.`;
+  return `회사 규모·현재 관리상태·기능 범위·연동을 종합하면 ${R.T.tier} 구간이 가장 적합하고, 최적 제안가는 ${fmt(R.opt??R.T.lo)} 원(VAT 별도)입니다. 요구사항의 약 ${R.pct}%는 검증된 표준 모듈·정찰 옵션으로 즉시 해결되고, 순수 커스텀 검토는 ${R.custom}건에 그칩니다. 아래 설계도(IA)와 대시보드는 이번 응답만으로 구성한 초안이며, 30분 상담에서 확정 견적으로 다듬어 드립니다.`;
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 
