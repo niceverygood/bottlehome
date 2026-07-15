@@ -43,6 +43,7 @@
         <a class="nav-link" href="#erp">ERP</a>
         <a class="nav-link" href="#vision">비전</a>
         <a class="nav-link" href="#method">방식</a>
+        <a class="nav-link" href="#subscribe">구독</a>
         <a class="nav-cta" href="#contact">문의하기</a>
       </div>
     </nav>
@@ -303,6 +304,29 @@
         </div>
       </section>
     </main>
+
+    <!-- ===================== SUBSCRIBE ===================== -->
+    <section id="subscribe" class="subscribe" aria-labelledby="subscribe-title">
+      <div class="wrap subscribe-grid">
+        <div data-reveal>
+          <div class="eyebrow">Newsletter</div>
+          <h2 id="subscribe-title">ERP 도입 전에 알아두면 좋은 정보를 이메일로 보내드립니다</h2>
+          <p class="vision-lead">업종별 구축 사례, 가격 산정 기준, 도입 체크리스트를 부정기로 보내드립니다. 언제든 한 번의 클릭으로 수신을 중단할 수 있습니다.</p>
+        </div>
+        <form class="subscribe-form" id="subscribeForm" data-reveal novalidate>
+          <div class="subscribe-row">
+            <label class="sr-only" for="subEmail">이메일 주소</label>
+            <input type="email" id="subEmail" placeholder="name@company.com" required maxlength="160" autocomplete="email">
+            <button type="submit" class="btn btn-primary" id="subBtn">구독하기</button>
+          </div>
+          <label class="subscribe-consent">
+            <input type="checkbox" id="subConsent" required>
+            <span>이메일 수신 및 개인정보(이메일 주소) 수집·이용에 동의합니다. 안내 목적 외에는 사용하지 않으며, 메일 하단 링크로 언제든 수신거부할 수 있습니다.</span>
+          </label>
+          <p class="subscribe-msg" id="subMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
 
     <!-- ===================== CONTACT / FOOTER ===================== -->
     <footer id="contact" class="footer">

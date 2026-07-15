@@ -1,0 +1,32 @@
+# 리드 자동 육성 메일 — 매일 KST 09:00(UTC 00:00)에 erp-nurture를 호출한다.
+# 대상은 이미 ERP 진단을 신청하며 상담 목적으로 연락처를 남긴 리드뿐이다 —
+# 새 이메일 주소를 수집하지 않는다.
+#
+# 필요한 시크릿 (리포 Settings → Secrets and variables → Actions):
+#   CRON_SECRET  — Supabase erp-nurture 함수에 설정한 것과 반드시 동일한 값
+#                  (supabase secrets set CRON_SECRET=...)
+name: ERP lead nurture
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  nurture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 시크릿 확인
+        run: |
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "::warning::CRON_SECRET 시크릿이 없어 건너뜁니다 — Settings → Secrets and variables → Actions 에 추가하세요"
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: erp-nurture 호출
+        if: env.SKIP != 'true'
+        run: |
+          set -euo pipefail
+          RESULT=$(curl -sfS -X GET "https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-nurture" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}")
+          echo "$RESULT" | jq .

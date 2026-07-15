@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>구독자 발송 — 주식회사 바틀</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#141414;--navy2:#26262A;--accent:#F54B1E;--mint:#FF6A3D;--gray:#66666C;--light:#F4F1ED;--line:#E4E0DA;--bg:#EFECE7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:#26262A;-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+.top{background:var(--navy);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top b{font-size:16px}.top .k{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:.08em;display:block}
+.top .actions{display:flex;gap:8px}
+.top button,.top a{background:var(--navy2);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 60px}
+/* login */
+#login{max-width:420px;margin:80px auto;background:#fff;border-radius:14px;padding:28px 26px;box-shadow:0 2px 10px rgba(20,20,20,.07)}
+#login h1{font-size:18px;color:var(--navy);margin-bottom:6px}
+#login p{font-size:12.5px;color:var(--gray);margin-bottom:16px;line-height:1.55}
+#login input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:13px 12px;font-size:14px}
+#login input:focus{outline:none;border-color:var(--accent)}
+#login button{width:100%;margin-top:12px;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:14px;font-size:14px;font-weight:800;cursor:pointer}
+#loginerr{color:#D64545;font-size:12.5px;margin-top:10px;display:none}
+/* main */
+.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(20,20,20,.06);margin-bottom:14px}
+.stat{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
+.stat b{font-size:22px;color:var(--navy)}
+.stat span{font-size:12.5px;color:var(--gray)}
+.lbl{font-size:12.5px;font-weight:700;color:var(--navy);margin:14px 0 6px}
+.lbl:first-child{margin-top:0}
+input.txt{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-size:14px}
+input.txt:focus{outline:none;border-color:var(--accent)}
+textarea.txt{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-size:14px;min-height:220px;line-height:1.6;resize:vertical}
+textarea.txt:focus{outline:none;border-color:var(--accent)}
+.hint{font-size:11.5px;color:var(--gray);margin-top:6px;line-height:1.6}
+.preview{background:var(--light);border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-top:10px;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto}
+.btn{width:100%;margin-top:16px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:15px;font-size:14.5px;font-weight:800;cursor:pointer}
+.btn:disabled{opacity:.5;cursor:default}
+.result{margin-top:12px;font-size:13px;font-weight:700;padding:10px 12px;border-radius:8px;display:none}
+.result.ok{display:block;background:#EAF7EC;color:#1A7A3C}
+.result.err{display:block;background:#FBE3E3;color:#B03A2E}
+.note{background:var(--light);border-radius:10px;padding:10px 12px;font-size:11.5px;color:var(--gray);margin-top:14px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div><span class="k">BOTTLE · 총괄관리자</span><b>구독자 발송</b></div>
+  <div class="actions">
+    <a href="../">← 리드 관리로</a>
+    <button id="btnLogout" style="display:none">로그아웃</button>
+  </div>
+</div>
+
+<div id="login">
+  <h1>어드민 접속</h1>
+  <p>웹사이트에서 더블 옵트인으로 확정 구독한 사람에게만 발송됩니다.<br>어드민 토큰을 입력하세요.</p>
+  <input id="token" type="password" placeholder="어드민 토큰" autocomplete="current-password">
+  <div id="loginerr">토큰이 올바르지 않습니다.</div>
+  <button id="btnLogin">접속</button>
+</div>
+
+<div class="wrap" id="main" style="display:none">
+  <div class="card">
+    <div class="stat"><b id="stConfirmed">-</b><span>명의 확정 구독자에게 발송됩니다</span></div>
+
+    <div class="lbl">제목 <small style="color:var(--gray);font-weight:500">· 자동으로 앞에 (광고) 가 붙습니다</small></div>
+    <input class="txt" id="subject" placeholder="예) 7월 ERP 구축 사례 — 재고 불일치 해결기" maxlength="200">
+
+    <div class="lbl">본문 <small style="color:var(--gray);font-weight:500">· 줄바꿈 두 번이 문단 구분입니다</small></div>
+    <textarea class="txt" id="bodyText" placeholder="안녕하세요, 주식회사 바틀입니다.&#10;&#10;이번 달에는 재고 불일치로 어려움을 겪던 제조업 고객사의 도입 사례를 소개드립니다."></textarea>
+    <div class="hint">본문 하단에는 회사 정보와 수신거부 링크가 자동으로 추가됩니다.</div>
+
+    <div class="preview" id="preview">미리보기가 여기에 표시됩니다.</div>
+
+    <button class="btn" id="btnSend">확정 구독자 전체에게 발송</button>
+    <div class="result" id="result"></div>
+    <div class="note">발송 전 반드시 내용을 다시 확인하세요 — 이 버튼은 되돌릴 수 없습니다.</div>
+  </div>
+</div>
+
+<script>
+const API="https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-broadcast";
+const LS="erp_admin_token";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* 관리자가 쓴 일반 텍스트를 <p> 문단으로 변환 — HTML 입력을 직접 받지 않는다(간단·안전) */
+function textToHtml(text){
+  return text.split(/\n{2,}/).map(p=>p.trim()).filter(Boolean)
+    .map(p=>`<p style="margin:0 0 14px;line-height:1.7">${esc(p).replace(/\n/g,"<br>")}</p>`).join("");
+}
+
+async function api(opts){
+  const token=localStorage.getItem(LS)||"";
+  const res=await fetch(API,Object.assign({headers:{"x-admin-token":token,"content-type":"application/json"}},opts||{}));
+  if(res.status===401)throw new Error("unauthorized");
+  if(!res.ok)throw new Error("http "+res.status);
+  return res.json();
+}
+
+async function loadStats(){
+  const d=await api();
+  $("stConfirmed").textContent=d.confirmed;
+}
+
+function updatePreview(){
+  const html=textToHtml($("bodyText").value);
+  $("preview").innerHTML=html||"미리보기가 여기에 표시됩니다.";
+}
+
+async function tryLogin(token){
+  localStorage.setItem(LS,token);
+  try{await loadStats();showMain();return true;}
+  catch(e){localStorage.removeItem(LS);return false;}
+}
+function showMain(){
+  $("login").style.display="none";$("main").style.display="block";
+  $("btnLogout").style.display="inline-block";
+}
+$("btnLogin").addEventListener("click",async()=>{
+  const ok=await tryLogin($("token").value.trim());
+  $("loginerr").style.display=ok?"none":"block";
+});
+$("token").addEventListener("keydown",e=>{if(e.key==="Enter")$("btnLogin").click();});
+$("btnLogout").addEventListener("click",()=>{localStorage.removeItem(LS);location.reload();});
+$("bodyText").addEventListener("input",updatePreview);
+
+$("btnSend").addEventListener("click",async()=>{
+  const subject=$("subject").value.trim();
+  const bodyText=$("bodyText").value.trim();
+  const result=$("result");result.className="result";result.textContent="";
+  if(!subject||!bodyText){result.className="result err";result.textContent="제목과 본문을 모두 입력해 주세요.";return;}
+  const count=$("stConfirmed").textContent;
+  if(!confirm(`확정 구독자 ${count}명에게 "(광고) ${subject}" 메일을 발송합니다.\n되돌릴 수 없습니다 — 진행할까요?`))return;
+  $("btnSend").disabled=true;
+  try{
+    const d=await api({method:"POST",body:JSON.stringify({subject,html:textToHtml(bodyText)})});
+    result.className="result ok";result.textContent=`발송 완료 — 성공 ${d.sent}건 / 실패 ${d.failed}건 (총 ${d.total}명)`;
+  }catch(e){
+    result.className="result err";result.textContent="발송 요청이 실패했습니다 — 다시 시도해 주세요.";
+  }
+  $("btnSend").disabled=false;
+});
+
+(async()=>{if(localStorage.getItem(LS)){if(await tryLogin(localStorage.getItem(LS)))return;}$("login").style.display="block";})();
+</script>
+</body>
+</html>
