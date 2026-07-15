@@ -101,8 +101,8 @@ async function callClaude(payload: unknown) {
         }),
       });
       clearTimeout(to);
-      if (res.status === 429 || res.status >= 500) throw new Error("retryable " + res.status);
-      if (!res.ok) throw Object.assign(new Error("anthropic " + res.status), { fatal: true });
+      if (res.status === 429 || res.status >= 500) throw new Error("retryable " + res.status + ": " + await res.text());
+      if (!res.ok) throw Object.assign(new Error("anthropic " + res.status + ": " + await res.text()), { fatal: true });
       const data = await res.json();
       const text: string = Array.isArray(data.content)
         ? data.content.map((b: { text?: string }) => b.text ?? "").join("")
@@ -121,8 +121,10 @@ async function analyze(publicId: string, payload: unknown) {
   try {
     const ai = await callClaude(payload);
     await db.from(TABLE).update({ ai, ai_used: !!ai, ai_ready: true }).eq("public_id", publicId);
-  } catch (_e) {
+  } catch (e) {
     // 분석 실패 시에도 ready 처리 — 프런트는 규칙 기반 리포트로 자동 폴백한다.
+    // 실패 원인은 반드시 로그에 남긴다 — 그렇지 않으면 Supabase Functions 로그로 진단이 불가능하다.
+    console.error(`[erp-analyze] AI 분석 실패 (publicId=${publicId}):`, e instanceof Error ? e.message : e);
     await db.from(TABLE).update({ ai_ready: true }).eq("public_id", publicId);
   }
 }

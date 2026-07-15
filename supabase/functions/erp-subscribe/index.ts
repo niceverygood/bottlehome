@@ -97,7 +97,8 @@ Deno.serve(async (req) => {
           <p style="margin:20px 0"><a href="${confirmUrl}" style="background:#141414;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700">구독 확정하기</a></p>
           <p style="font-size:11.5px;color:#66666C">본인이 신청하지 않았다면 이 메일을 무시해 주세요 — 확정하지 않으면 자동으로 만료됩니다.</p>
         </div></body></html>`);
-  } catch (_e) {
+  } catch (e) {
+    console.error("[erp-subscribe] 확인 메일 발송 실패:", e instanceof Error ? e.message : e);
     return json({ error: "email send failed" }, 502);
   }
   return json({ ok: true });

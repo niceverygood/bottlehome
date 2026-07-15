@@ -34,7 +34,7 @@ async function sendEmail(to: string, subject: string, html: string) {
     headers: { Authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
     body: JSON.stringify({ from, to, subject, html }),
   });
-  if (!res.ok) throw new Error(`resend ${res.status}`);
+  if (!res.ok) throw new Error(`resend ${res.status}: ${await res.text()}`);
 }
 
 Deno.serve(async (req) => {
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
         </p>
       </div></body></html>`;
     try { await sendEmail(s.email, `(광고) ${subject}`, full); sent++; }
-    catch (_e) { failed++; }
+    catch (e) { console.error(`[erp-broadcast] 발송 실패 (${s.email}):`, e instanceof Error ? e.message : e); failed++; }
   }
   return json({ sent, failed, total: (subs ?? []).length });
 });

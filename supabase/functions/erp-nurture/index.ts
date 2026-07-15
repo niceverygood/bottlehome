@@ -155,7 +155,8 @@ Deno.serve(async (req) => {
       await sendEmail(lead.email, t.subject, t.html);
       await db.from(LEADS).update({ followup_stage: nextStage, followup_sent_at: nowIso }).eq("public_id", lead.public_id);
       sent++;
-    } catch (_e) {
+    } catch (e) {
+      console.error(`[erp-nurture] 발송 실패 (${lead.public_id}, stage ${nextStage}):`, e instanceof Error ? e.message : e);
       failed++;
     }
   }
