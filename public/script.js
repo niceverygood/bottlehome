@@ -74,6 +74,21 @@
     element.textContent = String(new Date().getFullYear());
   });
 
+  document.querySelectorAll("[data-href]").forEach(function (element) {
+    function openTarget() {
+      window.location.href = element.getAttribute("data-href");
+    }
+    element.addEventListener("click", function (event) {
+      if (event.target.closest("a, button")) return;
+      openTarget();
+    });
+    element.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openTarget();
+    });
+  });
+
   if (!reducedMotion) {
     var core = document.querySelector(".ai-core");
     var stage = document.querySelector(".core-stage");
