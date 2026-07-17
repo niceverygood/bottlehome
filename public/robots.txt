@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /erpanalysis/admin/
+
+Sitemap: https://bottlecorp.kr/sitemap.xml
