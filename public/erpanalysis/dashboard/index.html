@@ -141,8 +141,15 @@ const MODS=[
  {id:"inv",name:"재고관리",def:"now"},{id:"acc",name:"회계 연동",def:"now"},
  {id:"dash",name:"대시보드·리포트",def:"now"},{id:"auth",name:"권한·보안",def:"now"},
  {id:"hr",name:"인사·근태",def:"later"},{id:"auto",name:"알림·자동화",def:"later"}];
-const PRESETS={mfg:{name:"생산관리"},dist:{name:"판매채널 통합"},svc:{name:"예약·회원"},trade:{name:"수출입 관리"}};
-const INDNAME={mfg:"제조",dist:"도소매·유통",svc:"서비스",trade:"무역·물류",etc:"기타"};
+const PRESETS={mfg:{name:"생산관리"},food:{name:"생산·유통기한 관리"},cos:{name:"생산·품질 관리"},fashion:{name:"스타일·시즌 관리"},
+ dist:{name:"판매채널 통합"},ecom:{name:"온라인 판매 통합"},trade:{name:"수출입 관리"},logi:{name:"운송·배차 관리"},
+ cons:{name:"현장·프로젝트 관리"},svc:{name:"예약·회원"},med:{name:"예약·고객 관리"},edu:{name:"수강·학사 관리"},
+ fnb:{name:"매장·가맹 관리"},it:{name:"프로젝트·계약 관리"},rent:{name:"렌탈·구독 관리"},agri:{name:"산지·로트 관리"}};
+const INDNAME={mfg:"제조",food:"식품·음료",cos:"화장품·뷰티",fashion:"패션·잡화",dist:"도소매·유통",ecom:"이커머스·온라인몰",
+ trade:"무역·수출입",logi:"물류·운송",cons:"건설·인테리어",svc:"전문 서비스",med:"의료·헬스케어",edu:"교육·학원",
+ fnb:"외식·프랜차이즈",it:"IT·소프트웨어",rent:"렌탈·구독",agri:"농축수산",etc:"기타"};
+const FAM={mfg:"mfg",food:"mfg",cos:"mfg",fashion:"dist",dist:"dist",ecom:"dist",fnb:"dist",agri:"dist",
+ trade:"trade",logi:"trade",cons:"svc",svc:"svc",med:"svc",edu:"svc",it:"svc",rent:"svc",etc:"etc"};
 const EMP=["~10인","10~30인","30~50인","50~100인","100~200인","200인 이상"];
 
 const kpiByInd={mfg:["오늘 생산 진행률","이번 달 매출","자재 부족 품목","불량·반품률"],
@@ -164,7 +171,7 @@ function buildDash(S,ai){
       barTitle:String(d.chartTitle||"업무 추이").slice(0,16),barLabels,barValues,
       alerts:(Array.isArray(d.alerts)?d.alerts:[]).slice(0,5),aiGenerated:true};
   }
-  const ind=(S&&S.industry)||"etc";
+  const ind=FAM[(S&&S.industry)||"etc"]||"etc"; /* 폴백 사전은 업종 계열 기준 */
   const alerts=[];
   const pains=(S&&S.pains)||[];
   if(pains.includes("재고 불일치"))alerts.push("안전재고 미달 5개 품목 — 자동 발주 제안");
