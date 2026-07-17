@@ -1,509 +1,246 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀 | Bottle Inc.</title>
-    <meta
-      name="description"
-      content="기업용 ERP를 990만원 고정가부터 구축합니다. AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다. 중소기업 맞춤형 ERP 구축, 대화형 AI·업무 자동화 솔루션 개발 — 주식회사 바틀(Bottle Inc.)."
-    />
-    <meta
-      name="keywords"
-      content="기업용 ERP, 중소기업 ERP, ERP 구축, 맞춤형 ERP, ERP 견적, ERP 가격, AI 솔루션, AI 진단, 업무 자동화, ERP 개발, 재고관리 시스템, 생산관리 시스템, 주식회사 바틀"
-    />
-    <link rel="canonical" href="https://bottlecorp.kr/" />
-    <!-- 검색엔진 소유 확인 — Google Search Console·네이버 서치어드바이저 등록 후 발급 코드로 교체
-    <meta name="google-site-verification" content="" />
-    <meta name="naver-site-verification" content="" />
-    -->
-    <meta property="og:title" content="기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀" />
-    <meta
-      property="og:description"
-      content="AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다. 990만원 고정가부터, 필요한 만큼만 합리적으로."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://bottlecorp.kr/" />
-    <meta property="og:site_name" content="주식회사 바틀 | Bottle Inc." />
-    <meta property="og:locale" content="ko_KR" />
-    <meta property="og:image" content="https://bottlecorp.kr/assets/og-cover.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀" />
-    <meta name="twitter:description" content="AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다." />
-    <meta name="twitter:image" content="https://bottlecorp.kr/assets/og-cover.png" />
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://bottlecorp.kr/#org",
-          "name": "주식회사 바틀",
-          "alternateName": ["Bottle Inc.", "바틀"],
-          "url": "https://bottlecorp.kr/",
-          "logo": "https://bottlecorp.kr/assets/og-cover.png",
-          "email": "de@bottlecorp.kr",
-          "description": "기업용 맞춤형 ERP 구축과 대화형 AI·업무 자동화 솔루션을 개발하는 AI 제품사",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "KR",
-            "addressLocality": "서울특별시 강남구",
-            "streetAddress": "테헤란로2길 27, 15층"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://bottlecorp.kr/#website",
-          "url": "https://bottlecorp.kr/",
-          "name": "주식회사 바틀 | Bottle Inc.",
-          "publisher": { "@id": "https://bottlecorp.kr/#org" },
-          "inLanguage": "ko"
-        },
-        {
-          "@type": "Service",
-          "@id": "https://bottlecorp.kr/#erp-service",
-          "name": "기업용 맞춤형 ERP 구축",
-          "serviceType": "ERP 구축·개발",
-          "provider": { "@id": "https://bottlecorp.kr/#org" },
-          "areaServed": { "@type": "Country", "name": "대한민국" },
-          "description": "표준 모듈과 정찰 옵션으로 구성한 기업용 맞춤형 ERP를 990만원 고정가부터 구축. AI 무료 진단 3분으로 권장 구성과 견적 확인.",
-          "offers": {
-            "@type": "Offer",
-            "priceCurrency": "KRW",
-            "price": "9900000",
-            "description": "표준 구축 990만원부터 (VAT 별도), 옵션 정찰제"
-          }
-        },
-        {
-          "@type": "FAQPage",
-          "@id": "https://bottlecorp.kr/#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "기업용 ERP 구축 비용은 얼마인가요?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "표준 구축은 990만원(VAT 별도)부터 시작하는 고정가입니다. 추가 모듈·연동·커스텀은 정찰 옵션으로 미리 금액이 공개되어 있어, AI 무료 진단 3분이면 우리 회사 구성과 견적을 바로 확인할 수 있습니다."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "중소기업도 맞춤형 ERP를 도입할 수 있나요?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "네. 반복되는 업무는 검증된 표준 모듈로, 우리 회사만의 업무는 커스텀 개발로 구성해 필요한 만큼만 도입합니다. 제조·유통·이커머스·물류·식품 등 17개 업종별 권장 구성을 제공합니다."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "ERP 구축 기간은 얼마나 걸리나요?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "표준 구축 기준 12주부터입니다. 모듈 수·연동·커스텀 범위에 따라 일정이 달라지며, 진단 리포트에서 예상 기간을 함께 안내합니다."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "AI 진단은 어떻게 이루어지나요?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "회사 규모, 현재 관리 상태, 필요한 기능, 연동·커스텀 요구를 설문으로 받아 Claude 기반 AI가 분석합니다. 권장 모듈 구성, 최적 제안가, 시스템 설계도(IA), 경영 대시보드 미리보기를 리포트로 제공합니다."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "기존 엑셀·수기 장부 데이터도 이관되나요?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "네. 엑셀, 수기 장부, 기존 프로그램의 데이터를 정리해 새 ERP로 이관하는 작업을 구축 범위에 포함할 수 있습니다. 진단 시 데이터 관리 상태를 입력하면 이관 범위와 비용이 견적에 반영됩니다."
-              }
-            }
-          ]
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070807" />
+  <title>기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀 | Bottle Inc.</title>
+  <meta name="description" content="기업용 ERP를 990만원 고정가부터 구축합니다. AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다. 대화형 AI·업무 자동화 SaaS를 만드는 AI 제품사 — 주식회사 바틀(Bottle Inc.)." />
+  <meta name="keywords" content="기업용 ERP, 중소기업 ERP, ERP 구축, 맞춤형 ERP, ERP 견적, ERP 가격, AI 솔루션, AI 진단, 업무 자동화, ERP 개발, 재고관리 시스템, 생산관리 시스템, 주식회사 바틀" />
+  <link rel="canonical" href="https://bottlecorp.kr/" />
+  <!-- 검색엔진 소유 확인 — Google Search Console·네이버 서치어드바이저 등록 후 발급 코드로 교체
+  <meta name="google-site-verification" content="" />
+  <meta name="naver-site-verification" content="" />
+  -->
+  <meta property="og:title" content="기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀" />
+  <meta property="og:description" content="AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다. 990만원 고정가부터, 필요한 만큼만 합리적으로." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bottlecorp.kr/" />
+  <meta property="og:site_name" content="주식회사 바틀 | Bottle Inc." />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image" content="https://bottlecorp.kr/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="기업용 ERP 구축·AI 솔루션 개발 — 주식회사 바틀" />
+  <meta name="twitter:description" content="AI 무료 진단 3분이면 우리 회사 맞춤 ERP 구성과 견적이 나옵니다." />
+  <meta name="twitter:image" content="https://bottlecorp.kr/og.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://bottlecorp.kr/#org",
+        "name": "주식회사 바틀",
+        "alternateName": ["Bottle Inc.", "바틀"],
+        "url": "https://bottlecorp.kr/",
+        "logo": "https://bottlecorp.kr/og.png",
+        "email": "dev@bottlecorp.kr",
+        "description": "기업용 맞춤형 ERP 구축과 대화형 AI·업무 자동화 솔루션을 개발하는 AI 제품사",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "KR",
+          "addressLocality": "서울특별시 강남구",
+          "streetAddress": "테헤란로2길 27, 15층"
         }
-      ]
-    }
-    </script>
-
-    <!-- mark JS active before paint so scroll-reveal can hide elements (no FOUC, no stuck-hidden) -->
-    <script>document.documentElement.className += " js";</script>
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- ===================== NAV ===================== -->
-    <nav class="nav" aria-label="주요 메뉴">
-      <a class="logo" href="#top" aria-label="Bottle Inc. home">
-        <span class="logo-text">bottle</span>
-        <span class="dot" aria-hidden="true"></span>
-      </a>
-      <div class="nav-links">
-        <a class="nav-link" href="#products">제품</a>
-        <a class="nav-link" href="#erp">ERP</a>
-        <a class="nav-link" href="#vision">비전</a>
-        <a class="nav-link" href="#method">방식</a>
-        <a class="nav-link" href="#subscribe">구독</a>
-        <a class="nav-cta" href="#contact">문의하기</a>
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://bottlecorp.kr/#website",
+        "url": "https://bottlecorp.kr/",
+        "name": "주식회사 바틀 | Bottle Inc.",
+        "publisher": { "@id": "https://bottlecorp.kr/#org" },
+        "inLanguage": "ko"
+      },
+      {
+        "@type": "Service",
+        "@id": "https://bottlecorp.kr/#erp-service",
+        "name": "기업용 맞춤형 ERP 구축",
+        "serviceType": "ERP 구축·개발",
+        "provider": { "@id": "https://bottlecorp.kr/#org" },
+        "areaServed": { "@type": "Country", "name": "대한민국" },
+        "description": "표준 모듈과 정찰 옵션으로 구성한 기업용 맞춤형 ERP를 990만원 고정가부터 구축. AI 무료 진단 3분으로 권장 구성과 견적 확인.",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "KRW",
+          "price": "9900000",
+          "description": "표준 구축 990만원부터 (VAT 별도), 옵션 정찰제"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://bottlecorp.kr/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "기업용 ERP 구축 비용은 얼마인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "표준 구축은 990만원(VAT 별도)부터 시작하는 고정가입니다. 추가 모듈·연동·커스텀은 정찰 옵션으로 미리 금액이 공개되어 있어, AI 무료 진단 3분이면 우리 회사 구성과 견적을 바로 확인할 수 있습니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "중소기업도 맞춤형 ERP를 도입할 수 있나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "네. 반복되는 업무는 검증된 표준 모듈로, 우리 회사만의 업무는 커스텀 개발로 구성해 필요한 만큼만 도입합니다. 제조·유통·이커머스·물류·식품 등 17개 업종별 권장 구성을 제공합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "ERP 구축 기간은 얼마나 걸리나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "표준 구축 기준 12주부터입니다. 모듈 수·연동·커스텀 범위에 따라 일정이 달라지며, 진단 리포트에서 예상 기간을 함께 안내합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "AI 진단은 어떻게 이루어지나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "회사 규모·현재 관리 방식·필요 기능·연동/커스텀 요구를 3분간 선택하면, AI가 업종별 권장 모듈 구성과 최적 제안가, 예상 일정을 담은 리포트를 즉시 생성합니다. 무료이며 별도 설치가 필요 없습니다."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260717-4" />
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 이동</a>
+  <nav class="nav" aria-label="주요 메뉴">
+    <div class="nav-inner">
+      <a class="logo" href="#top" aria-label="Bottle 홈">bottle<span>●</span></a>
+      <button class="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><i></i><i></i></button>
+      <div class="menu">
+        <a href="#products">Products</a><a href="/erpanalysis">ERP 견적 진단</a><a href="#capability">Capabilities</a><a href="#process">Process</a><a href="#subscribe">Newsletter</a>
+        <a class="nav-cta" href="mailto:dev@bottlecorp.kr">프로젝트 문의 <b>↗</b></a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main>
-      <!-- ===================== HERO ===================== -->
-      <header id="top" class="hero">
-        <div class="hero-product-wall" aria-hidden="true">
-          <img class="hero-device hero-device--ink" src="assets/inkchat-app-1.png" alt="" />
-          <img class="hero-device hero-device--bobi" src="assets/bobi-analysis.png" alt="" />
-          <img class="hero-device hero-device--ink-back" src="assets/inkchat-app-2.png" alt="" />
+  <main id="main">
+    <header class="hero" id="top">
+      <div class="hero-grid"></div><div class="aurora a1"></div><div class="aurora a2"></div>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="status" data-reveal><i></i> INDEPENDENT AI PRODUCT COMPANY <span>SEOUL / 2026</span></p>
+          <h1 data-reveal>AI 제품으로 업무 성과와<br /><em>사용자 경험을 설계합니다</em></h1>
+          <p class="hero-lead" data-reveal>바틀은 대화형 AI와 도메인 자동화 SaaS를 기획·개발·운영합니다. 소비자 AI 경험부터 보험·의료 현장의 업무 흐름까지, 실제 사용되는 제품으로 전환합니다.</p>
+          <div class="hero-actions" data-reveal><a class="btn primary" href="#products">제품 시스템 보기 <span>↓</span></a><a class="btn ghost" href="mailto:dev@bottlecorp.kr">함께 만들기 <span>↗</span></a></div>
         </div>
 
-        <div class="hero-inner">
-          <div class="badge" data-reveal>
-            <span class="badge-dot" aria-hidden="true"></span> AI Product Company · Since 2018
+        <div class="ai-core" data-reveal aria-label="바틀 AI 제품 시스템">
+          <div class="core-top"><span>BOTTLE / PRODUCT OS</span><span class="live">● LIVE</span></div>
+          <div class="core-stage">
+            <div class="rings"><i></i><i></i><i></i><b>AI</b></div>
+            <div class="node n1"><small>01</small><strong>CONVERSATION</strong><span>Context engine</span></div>
+            <div class="node n2"><small>02</small><strong>DOMAIN DATA</strong><span>Insurance · Medical</span></div>
+            <div class="node n3"><small>03</small><strong>AUTOMATION</strong><span>Operational workflow</span></div>
           </div>
-          <h1 data-reveal>
-            <span>AI 제품으로 업무 성과와</span>
-            <span>사용자 경험을 설계합니다</span>
-          </h1>
-          <p class="hero-lead" data-reveal>
-            바틀은 대화형 AI와 도메인 자동화 SaaS를 기획·개발·운영합니다.
-            소비자 AI 경험부터 보험·의료 현장의 업무 흐름까지, 실제 사용되는 제품으로 전환합니다.
-          </p>
-          <div class="hero-actions" data-reveal>
-            <a class="btn btn-primary" href="#products">제품 포트폴리오</a>
-            <a class="btn btn-ghost" href="#contact">사업 제휴 문의</a>
-          </div>
-
-          <div class="hero-stats" data-reveal>
-            <div>
-              <div class="stat-num">2018</div>
-              <div class="stat-label">설립 연도</div>
-            </div>
-            <div>
-              <div class="stat-num">3</div>
-              <div class="stat-label">제품 포트폴리오</div>
-            </div>
-            <div>
-              <div class="stat-num">B2C·B2B</div>
-              <div class="stat-label">제품 운영 영역</div>
-            </div>
-          </div>
+          <div class="core-bottom"><span>MODEL ↔ CONTEXT ↔ INTERFACE</span><span>LATENCY 0.8s</span></div>
         </div>
-      </header>
 
-      <!-- ===================== PROOF STRIP ===================== -->
-      <div class="proof-strip" aria-label="바틀의 제품 영역">
-        <span>AI Character Experience</span>
-        <span>Insurance Workflow Automation</span>
-        <span>Clinic Operations</span>
-        <span>Global Service Operations</span>
+        <div class="hero-metrics" data-reveal><div><small>OPERATING SINCE</small><strong>2018</strong></div><div><small>PRODUCT RANGE</small><strong>B2C — B2B</strong></div><div><small>CORE DISCIPLINE</small><strong>AI × UX × OPS</strong></div><div><small>SYSTEM STATUS</small><strong class="green">● OPERATIONAL</strong></div></div>
       </div>
+    </header>
 
-      <!-- ===================== VISION ===================== -->
-      <section id="vision" class="vision" aria-labelledby="vision-title">
-        <div class="wrap">
-          <div class="eyebrow" data-reveal>Our Vision</div>
-          <h2 id="vision-title" data-reveal>실사용 맥락에서 검증되는 AI 제품을 만듭니다.</h2>
-          <p class="vision-lead" data-reveal>
-            기술 데모가 아니라 반복 사용되는 제품을 목표로 합니다. 사용자 대화, 업무 데이터, 현장 프로세스를
-            하나의 제품 경험으로 설계해 조직과 개인의 다음 행동을 더 명확하게 만듭니다.
-          </p>
-
-          <div class="cards">
-            <div class="v-card" data-reveal>
-              <div class="v-icon v-icon--teardrop" aria-hidden="true"></div>
-              <h3>제품 중심의 AI 설계</h3>
-              <p>모델 성능보다 사용자가 다시 찾는 흐름, 기억, 인터랙션 품질을 우선합니다.</p>
-            </div>
-            <div class="v-card" data-reveal>
-              <div class="v-icon v-icon--square" aria-hidden="true"></div>
-              <h3>도메인 업무 자동화</h3>
-              <p>보험·의료처럼 정확한 판단이 필요한 업무를 데이터 흐름과 운영 도구로 연결합니다.</p>
-            </div>
-            <div class="v-card" data-reveal>
-              <div class="v-icon v-icon--circle" aria-hidden="true"><span></span></div>
-              <h3>운영으로 검증되는 서비스</h3>
-              <p>일본·스페인·베트남 등 다양한 시장과 현장 사용 사례를 기반으로 제품을 개선합니다.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== PRODUCTS INTRO ===================== -->
-      <section id="products" class="products-intro" aria-labelledby="products-title">
-        <div class="wrap">
-          <div class="eyebrow" data-reveal>Our Products</div>
-          <h2 id="products-title" data-reveal>AI 경험과 업무 자동화를 잇는 제품 포트폴리오</h2>
-        </div>
-      </section>
-
-      <!-- ===================== PRODUCT LINEUP ===================== -->
-      <section class="lineup" aria-label="제품 라인업">
-        <div class="lineup-list">
-          <article class="lineup-row" data-reveal>
-            <div>
-              <span class="lineup-chip lineup-chip--ink">Consumer AI</span>
-              <h3><a href="https://inkchat.ai" target="_blank" rel="noreferrer">InkChat은 감정형 AI 캐릭터 경험을 설계합니다.</a></h3>
-            </div>
-            <p class="lineup-desc">캐릭터, 기억, 세계관, 대화 흐름을 하나의 경험으로 연결해 사용자가 지속적으로 관계를 쌓는 AI 서비스를 운영합니다.</p>
-          </article>
-          <article class="lineup-row" data-reveal>
-            <div>
-              <span class="lineup-chip lineup-chip--bobi">Insurance SaaS</span>
-              <h3><a href="https://bobi.co.kr" target="_blank" rel="noreferrer">BoBi는 보험 상담 데이터 분석과 고지 판단을 자동화합니다.</a></h3>
-            </div>
-            <p class="lineup-desc">진료·처방 조회, 고지 의무 판단, 상담 기록 정리를 설계사와 GA 조직이 바로 활용할 수 있는 업무 흐름으로 전환합니다.</p>
-          </article>
-          <article class="lineup-row" data-reveal>
-            <div>
-              <span class="lineup-chip lineup-chip--bloom">Clinic Operations</span>
-              <h3><a href="https://bloom-ai.kr" target="_blank" rel="noreferrer">BloomAI는 클리닉 운영과 환자 케어의 공백을 줄입니다.</a></h3>
-            </div>
-            <p class="lineup-desc">일정 변경, 상담 기록, 환자 문의, 정서 케어 신호를 한곳에 모아 직원의 반복 업무와 환자의 불확실성을 함께 낮춥니다.</p>
-          </article>
-        </div>
-      </section>
-
-      <!-- ===================== INK CHAT ===================== -->
-      <section class="product ink" aria-labelledby="ink-title">
-        <div class="product-grid">
-          <div data-reveal>
-            <div class="product-head">
-              <img class="ink-logo" src="assets/inkchat.png" alt="INK Chat 로고" />
-              <span class="badge-chip">FLAGSHIP</span>
-            </div>
-            <h3 id="ink-title">INK<span class="accent"> Chat</span></h3>
-            <p>
-              개성 있는 AI 캐릭터와 장기적인 대화를 이어가는 감정형 AI 서비스입니다. 대화 맥락, 감정 흐름,
-              캐릭터 일관성을 제품 경험의 핵심 품질로 관리합니다.
-            </p>
-            <div class="pill-row">
-              <span class="pill">맥락·감정 기억</span>
-              <span class="pill">일관된 캐릭터 성격</span>
-              <span class="pill">日 · ES · VN 운영</span>
-            </div>
-            <a class="btn ink-cta" href="https://inkchat.ai" target="_blank" rel="noreferrer">INK Chat 보기</a>
-          </div>
-
-          <div class="ink-shots" data-reveal>
-            <div class="ink-stage">
-              <div class="ink-glow" aria-hidden="true"></div>
-              <img class="ink-shot-back" src="assets/inkchat-app-2.png" alt="INK Chat 대화 화면" />
-              <img class="ink-shot-front" src="assets/inkchat-app-1.png" alt="INK Chat 홈 화면" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== BOBI ===================== -->
-      <section class="product bobi" aria-labelledby="bobi-title">
-        <div class="product-grid">
-          <div class="bobi-visual" data-reveal>
-            <div class="bobi-stack">
-              <div class="bobi-frame-glow" aria-hidden="true"></div>
-              <img class="bobi-phone bobi-phone--left"   src="assets/bobi-hero.png"     alt="BoBi 분석 시작 화면 — 진료내역만 올리면 고지의무·환수 리스크를 잡아줍니다" loading="lazy" />
-              <img class="bobi-phone bobi-phone--right"  src="assets/bobi-summary.png"  alt="BoBi 분석 요약 화면 — 고객 위험 요인 자동 요약" loading="lazy" />
-              <img class="bobi-phone bobi-phone--center" src="assets/bobi-analysis.png" alt="BoBi 항목별 고지사항 분석 화면 — 해당 항목 자동 추출" loading="lazy" />
-            </div>
-          </div>
-
-          <div class="bobi-copy" data-reveal>
-            <div class="product-head">
-              <div class="bobi-icon"><img src="assets/bobi.png" alt="BoBi 로고" /></div>
-              <span class="badge-chip">B2B SaaS</span>
-            </div>
-            <h3 id="bobi-title">BoBi <span class="sub">보험비서</span></h3>
-            <p>
-              보험설계사를 위한 AI 데이터 자동화 SaaS입니다. 고객 데이터 정리·분석, 고지 의무 판단,
-              보험·건강 데이터 연동을 통해 상담 준비 시간을 줄이고 판단 근거를 명확히 합니다.
-            </p>
-            <div class="pill-row">
-              <span class="pill">데이터 자동 정리·분석</span>
-              <span class="pill">HIRA · CODEF 연동</span>
-              <span class="pill">카카오페이 구독</span>
-            </div>
-            <a class="btn bobi-cta" href="https://bobi.co.kr" target="_blank" rel="noreferrer">BoBi 도입 문의</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== ERP SERVICE ===================== -->
-      <section id="erp" class="erp-service" aria-labelledby="erp-title">
-        <div class="wrap erp-wrap">
-          <div class="eyebrow" data-reveal>Enterprise ERP</div>
-          <h2 id="erp-title" data-reveal>기업 맞춤형 ERP를 990만원 고정가로 구축합니다</h2>
-          <p class="erp-lead" data-reveal>
-            표준 모듈과 정찰 옵션으로 구성비를 미리 확정하고, AI 진단으로 3분 만에 권장 구성과 예상 견적 범위를 확인합니다.
-            반복되는 기능은 검증된 표준 모듈로, 우리 회사만의 업무는 커스텀 개발로 — 필요한 만큼만 합리적인 가격에 구축합니다.
-          </p>
-
-          <div class="erp-stats" data-reveal>
-            <div>
-              <div class="stat-num">990만<span class="unit">원~</span></div>
-              <div class="stat-label">고정가 구축비 (VAT 별도)</div>
-            </div>
-            <div>
-              <div class="stat-num">12주<span class="unit">~</span></div>
-              <div class="stat-label">표준 구축 기간</div>
-            </div>
-            <div>
-              <div class="stat-num">Claude<span class="unit"> Sonnet 5</span></div>
-              <div class="stat-label">AI 정밀 진단 엔진</div>
-            </div>
-          </div>
-
-          <div class="erp-features" data-reveal>
-            <div class="erp-feature"><span class="erp-feature-num">01</span>권장 구성 &amp; 예상 견적 범위</div>
-            <div class="erp-feature"><span class="erp-feature-num">02</span>표준 모듈 커버율 분석</div>
-            <div class="erp-feature"><span class="erp-feature-num">03</span>우리 회사 시스템 설계도(IA)</div>
-            <div class="erp-feature"><span class="erp-feature-num">04</span>경영 대시보드 미리보기</div>
-          </div>
-
-          <div class="erp-actions" data-reveal>
-            <a class="btn erp-cta" href="/erpanalysis" target="_blank" rel="noopener">3분 무료 AI 진단 받기</a>
-            <a class="btn btn-ghost" href="mailto:de@bottlecorp.kr?subject=ERP%20도입%20상담%20문의">도입 상담 문의</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== METHOD ===================== -->
-      <section id="method" class="method" aria-labelledby="method-title">
-        <div class="wrap">
-          <div class="eyebrow" data-reveal>Method</div>
-          <h2 id="method-title" data-reveal>바틀이 AI 제품을 운영 가능한 서비스로 만드는 방식</h2>
-          <div class="method-grid">
-            <article class="method-card" data-reveal>
-              <span class="method-num">01</span>
-              <div class="method-body">
-                <h3>도메인 맥락 정의</h3>
-                <p>사용자, 업무 주체, 판단 기준을 먼저 정리해 제품이 풀어야 할 문제를 좁힙니다.</p>
-              </div>
-            </article>
-            <article class="method-card" data-reveal>
-              <span class="method-num">02</span>
-              <div class="method-body">
-                <h3>데이터 흐름 설계</h3>
-                <p>입력, 분석, 근거, 다음 행동까지 이어지는 구조로 AI 기능을 제품에 넣습니다.</p>
-              </div>
-            </article>
-            <article class="method-card" data-reveal>
-              <span class="method-num">03</span>
-              <div class="method-body">
-                <h3>운영 품질 관리</h3>
-                <p>응답 품질, 반복 사용성, 현장 피드백을 함께 보며 서비스 완성도를 높입니다.</p>
-              </div>
-            </article>
-            <article class="method-card" data-reveal>
-              <span class="method-num">04</span>
-              <div class="method-body">
-                <h3>시장별 확장</h3>
-                <p>언어, 규정, 사용 습관의 차이를 반영해 각 시장에 맞는 제품 경험으로 확장합니다.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== FAQ ===================== -->
-      <section id="faq" class="faq" aria-labelledby="faq-title">
-        <div class="wrap">
-          <div class="eyebrow" data-reveal>FAQ</div>
-          <h2 id="faq-title" data-reveal>기업용 ERP 도입, 자주 묻는 질문</h2>
-          <div class="faq-list" data-reveal>
-            <details class="faq-item">
-              <summary>기업용 ERP 구축 비용은 얼마인가요?</summary>
-              <p>표준 구축은 990만원(VAT 별도)부터 시작하는 고정가입니다. 추가 모듈·연동·커스텀은 정찰 옵션으로 미리 금액이 공개되어 있어, <a href="/erpanalysis">AI 무료 진단</a> 3분이면 우리 회사 구성과 견적을 바로 확인할 수 있습니다.</p>
-            </details>
-            <details class="faq-item">
-              <summary>중소기업도 맞춤형 ERP를 도입할 수 있나요?</summary>
-              <p>네. 반복되는 업무는 검증된 표준 모듈로, 우리 회사만의 업무는 커스텀 개발로 구성해 필요한 만큼만 도입합니다. 제조·유통·이커머스·물류·식품 등 17개 업종별 권장 구성을 제공합니다.</p>
-            </details>
-            <details class="faq-item">
-              <summary>ERP 구축 기간은 얼마나 걸리나요?</summary>
-              <p>표준 구축 기준 12주부터입니다. 모듈 수·연동·커스텀 범위에 따라 일정이 달라지며, 진단 리포트에서 예상 기간을 함께 안내합니다.</p>
-            </details>
-            <details class="faq-item">
-              <summary>AI 진단은 어떻게 이루어지나요?</summary>
-              <p>회사 규모, 현재 관리 상태, 필요한 기능, 연동·커스텀 요구를 설문으로 받아 Claude 기반 AI가 분석합니다. 권장 모듈 구성, 최적 제안가, 시스템 설계도(IA), 경영 대시보드 미리보기를 리포트로 제공합니다.</p>
-            </details>
-            <details class="faq-item">
-              <summary>기존 엑셀·수기 장부 데이터도 이관되나요?</summary>
-              <p>네. 엑셀, 수기 장부, 기존 프로그램의 데이터를 정리해 새 ERP로 이관하는 작업을 구축 범위에 포함할 수 있습니다. 진단 시 데이터 관리 상태를 입력하면 이관 범위와 비용이 견적에 반영됩니다.</p>
-            </details>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- ===================== SUBSCRIBE ===================== -->
-    <section id="subscribe" class="subscribe" aria-labelledby="subscribe-title">
-      <div class="wrap subscribe-grid">
-        <div data-reveal>
-          <div class="eyebrow">Newsletter</div>
-          <h2 id="subscribe-title">ERP 도입 전에 알아두면 좋은 정보를 이메일로 보내드립니다</h2>
-          <p class="vision-lead">업종별 구축 사례, 가격 산정 기준, 도입 체크리스트를 부정기로 보내드립니다. 언제든 한 번의 클릭으로 수신을 중단할 수 있습니다.</p>
-        </div>
-        <form class="subscribe-form" id="subscribeForm" data-reveal novalidate>
-          <div class="subscribe-row">
-            <label class="sr-only" for="subEmail">이메일 주소</label>
-            <input type="email" id="subEmail" placeholder="name@company.com" required maxlength="160" autocomplete="email">
-            <button type="submit" class="btn btn-primary" id="subBtn">구독하기</button>
-          </div>
-          <label class="subscribe-consent">
-            <input type="checkbox" id="subConsent" required>
-            <span>이메일 수신 및 개인정보(이메일 주소) 수집·이용에 동의합니다. 안내 목적 외에는 사용하지 않으며, 메일 하단 링크로 언제든 수신거부할 수 있습니다.</span>
-          </label>
-          <p class="subscribe-msg" id="subMsg" role="status" aria-live="polite"></p>
-        </form>
+    <section class="statement section">
+      <div class="shell split">
+        <div class="section-label" data-reveal><span>01</span><p>THE MISSION</p></div>
+        <div><p class="overline" data-reveal>AI THAT WORKS IN THE REAL WORLD</p><h2 data-reveal>데모가 아닌 <em>제품</em>으로.<br />기능이 아닌 <em>성과</em>로.</h2><p class="statement-text" data-reveal>기술의 가능성을 보여주는 데서 멈추지 않습니다. 사용자 맥락, 도메인 데이터, 인터페이스와 운영 체계를 하나로 연결해 매일 쓰이고 계속 개선되는 AI 제품을 만듭니다.</p></div>
       </div>
     </section>
 
-    <!-- ===================== CONTACT / FOOTER ===================== -->
-    <footer id="contact" class="footer">
-      <div class="wrap">
-        <div class="footer-grid">
-          <div data-reveal>
-            <div class="footer-logo">
-              <span class="logo-text">bottle</span>
-              <span class="dot" aria-hidden="true"></span>
-            </div>
-            <p class="footer-tag">AI 제품과 도메인 자동화가 필요한 조직과 협업합니다.</p>
-            <a class="footer-cta" href="mailto:de@bottlecorp.kr">파트너 문의하기</a>
-          </div>
+    <section class="products section" id="products">
+      <div class="shell">
+        <div class="heading-row"><div class="section-label" data-reveal><span>02</span><p>PRODUCT SYSTEMS</p></div><h2 data-reveal>현장에서 작동하는<br />AI 포트폴리오.</h2><p data-reveal>소비자 대화 경험부터 전문가의 판단과 반복 업무까지.</p></div>
+        <div class="product-grid">
+          <article class="product feature ink" data-reveal>
+            <div class="product-head"><span>01 / CONSUMER AI</span><i>LIVE PRODUCT ↗</i></div>
+            <div class="product-copy"><div class="product-name"><img src="assets/inkchat.png" alt="" /><strong>INK Chat</strong></div><h3>캐릭터와 세계관이<br />기억을 가진 대화가 됩니다.</h3><p>장기 기억, 감정 흐름, 캐릭터 일관성을 연결한 글로벌 캐릭터 AI 플랫폼.</p><a href="https://inkchat.ai" target="_blank" rel="noreferrer">inkchat.ai <b>↗</b></a></div>
+            <div class="phone-stack"><img src="assets/inkchat-app-1.png" alt="INK Chat 캐릭터 탐색 화면" /><img src="assets/inkchat-app-2.png" alt="INK Chat 대화 화면" /></div>
+            <div class="tech-tags"><span>LONG-TERM MEMORY</span><span>MULTI-LANGUAGE</span><span>CHARACTER ENGINE</span></div>
+          </article>
 
-          <div data-reveal>
-            <div class="footer-h">Contact</div>
-            <div class="footer-contact">
-              <div><span class="k">이메일</span><a href="mailto:de@bottlecorp.kr">de@bottlecorp.kr</a></div>
-              <div><span class="k">웹</span><a href="https://bottlecorp.kr">www.bottlecorp.kr</a></div>
-            </div>
-          </div>
+          <article class="product bobi" data-reveal>
+            <div class="product-head"><span>02 / INSURANCE AI</span><i>B2B SaaS ↗</i></div>
+            <div class="product-copy"><div class="product-name"><img src="assets/bobi.png" alt="" /><strong>BoBi</strong></div><h3>보험 데이터를<br />판단 가능한 정보로.</h3><p>진료·처방 조회부터 고지 의무 분석까지 설계사의 반복 업무를 자동화합니다.</p><a href="https://bobi.co.kr" target="_blank" rel="noreferrer">bobi.co.kr <b>↗</b></a></div>
+            <div class="screen-pair"><img src="assets/bobi-hero.png" alt="BoBi 시작 화면" /><img src="assets/bobi-analysis.png" alt="BoBi 분석 화면" /></div>
+            <div class="tech-tags"><span>DISCLOSURE AI</span><span>HIRA · CODEF</span></div>
+          </article>
 
-          <div data-reveal>
-            <div class="footer-h">Office</div>
-            <p class="footer-office">서울시 강남구<br />테헤란로2길 27, 15층</p>
-          </div>
-        </div>
+          <article class="product bloom" data-reveal>
+            <div class="product-head"><span>03 / MEDICAL OPS</span><i>IN DEVELOPMENT</i></div>
+            <div class="bloom-orb"><i></i><b>B</b></div>
+            <div class="product-copy"><div class="product-name text"><strong>BloomAI</strong></div><h3>의료 현장의 흐름을<br />더 가볍고 정확하게.</h3><p>상담, 기록, 후속 업무를 연결하는 의료기관 운영 자동화 시스템.</p></div>
+            <div class="tech-tags"><span>CLINIC WORKFLOW</span><span>AI OPERATIONS</span></div>
+          </article>
 
-        <div class="footer-rule" aria-hidden="true"></div>
-        <div class="footer-legal">
-          <span>주식회사 바틀 (Bottle Inc.) · 대표 한승수 · 사업자등록번호 376-87-01076</span>
-          <span>© 2026 Bottle Inc. All rights reserved.</span>
+          <article class="product enterprise-product" data-reveal data-href="/erpanalysis" role="link" tabindex="0" aria-label="Bottle ERP 3분 무료 AI 견적 진단 열기">
+            <div class="product-head"><span>04 / ENTERPRISE ERP</span><i>AI DIAGNOSIS ↗</i></div>
+            <div class="erp-signal" aria-hidden="true"><i></i><i></i><i></i><b>ERP</b></div>
+            <div class="product-copy"><div class="product-name text"><strong>Bottle ERP</strong></div><h3>복잡한 업무를 진단하고,<br />맞춤형 시스템으로 전환합니다.</h3><p>Claude 기반 AI 진단으로 권장 구성과 예상 견적을 제안하고, 검증된 표준 모듈과 커스텀 개발을 연결합니다.</p><a href="/erpanalysis">3분 무료 AI 진단 <b>↗</b></a></div>
+            <div class="erp-numbers"><div><small>STARTING FROM</small><strong>990<em>만원</em></strong></div><div><small>STANDARD SCHEDULE</small><strong>12<em>주~</em></strong></div><div><small>DIAGNOSIS ENGINE</small><strong>AI<em> powered</em></strong></div></div>
+            <div class="tech-tags"><span>CLAUDE AI</span><span>17 INDUSTRIES</span><span>CUSTOM WORKFLOW</span></div>
+          </article>
         </div>
       </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
-  </body>
+    <section class="capability section" id="capability">
+      <div class="shell">
+        <div class="heading-row inverse"><div class="section-label" data-reveal><span>03</span><p>CAPABILITIES</p></div><h2 data-reveal>모델부터 운영까지,<br />제품의 전 과정을 연결합니다.</h2></div>
+        <div class="cap-grid">
+          <article data-reveal><span>01</span><i>⌁</i><h3>AI Product Strategy</h3><p>사용자 문제와 사업 성과를 기준으로 AI가 가장 잘 작동할 제품 구조를 설계합니다.</p><small>DISCOVERY / VALIDATION / ROADMAP</small></article>
+          <article data-reveal><span>02</span><i>◎</i><h3>Conversational UX</h3><p>프롬프트가 아닌 맥락과 기억을 중심으로 자연스럽고 일관된 대화 경험을 만듭니다.</p><small>MEMORY / PERSONA / SAFETY</small></article>
+          <article data-reveal><span>03</span><i>⌘</i><h3>Domain Automation</h3><p>복잡한 도메인 규칙과 데이터를 실제 업무 흐름 속 자동화 시스템으로 전환합니다.</p><small>RAG / WORKFLOW / INTEGRATION</small></article>
+          <article data-reveal><span>04</span><i>◌</i><h3>Product Operations</h3><p>출시 이후의 품질, 지표, 피드백을 추적하며 제품이 계속 학습하도록 운영합니다.</p><small>EVALUATION / ANALYTICS / ITERATION</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="process section" id="process">
+      <div class="shell split"><div class="section-label" data-reveal><span>04</span><p>HOW WE BUILD</p></div><div><h2 data-reveal>아이디어가 실제 사용되는<br />제품이 되는 과정.</h2><div class="process-list"><article data-reveal><b>01</b><h3>DEFINE</h3><p>사용자 문제와 성공 지표를 구체화합니다.</p><span>→</span></article><article data-reveal><b>02</b><h3>DESIGN</h3><p>모델·데이터·인터페이스의 구조를 설계합니다.</p><span>→</span></article><article data-reveal><b>03</b><h3>BUILD</h3><p>검증 가능한 제품을 빠르게 구현합니다.</p><span>→</span></article><article data-reveal><b>04</b><h3>OPERATE</h3><p>실제 데이터로 측정하고 지속적으로 개선합니다.</p><span>↗</span></article></div></div></div>
+    </section>
+
+    <section class="subscribe section" id="subscribe" aria-labelledby="subscribe-title">
+      <div class="shell split">
+        <div class="section-label" data-reveal><span>05</span><p>NEWSLETTER</p></div>
+        <div>
+          <h2 id="subscribe-title" data-reveal>ERP 도입 전에 알아두면 좋은<br />정보를 보내드립니다.</h2>
+          <p class="subscribe-lead" data-reveal>업종별 구축 사례, 가격 산정 기준, 도입 체크리스트를 부정기로 보내드립니다. 확인 메일의 링크를 눌러야 구독이 시작되며, 언제든 한 번의 클릭으로 수신을 중단할 수 있습니다.</p>
+          <form class="subscribe-form" id="subscribeForm" data-reveal novalidate>
+            <div class="subscribe-row">
+              <label class="sr-only" for="subEmail">이메일 주소</label>
+              <input type="email" id="subEmail" placeholder="name@company.com" required maxlength="160" autocomplete="email" />
+              <button type="submit" class="btn primary" id="subBtn">구독하기 <span>↗</span></button>
+            </div>
+            <label class="subscribe-consent">
+              <input type="checkbox" id="subConsent" required />
+              <span>이메일 수신 및 개인정보(이메일 주소) 수집·이용에 동의합니다. 안내 목적 외에는 사용하지 않으며, 메일 하단 링크로 언제든 수신거부할 수 있습니다.</span>
+            </label>
+            <p class="subscribe-msg" id="subMsg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-grid"></div><div class="shell"><p data-reveal>HAVE A PROBLEM WORTH SOLVING?</p><h2 data-reveal>AI를 실제 제품과 성과로<br />연결할 준비가 되셨나요?</h2><a data-reveal href="mailto:dev@bottlecorp.kr">프로젝트 이야기하기 <span>↗</span></a><div class="contact-foot"><span>DEV@BOTTLECORP.KR</span><span>SEOUL, REPUBLIC OF KOREA</span></div></div>
+    </section>
+  </main>
+
+  <footer><div class="shell"><a class="logo" href="#top">bottle<span>●</span></a><p>AI PRODUCT COMPANY</p><p>© <span data-year></span> BOTTLE INC.</p></div></footer>
+  <script src="script.js?v=20260717-4"></script>
+</body>
 </html>
