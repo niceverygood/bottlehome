@@ -1,423 +1,121 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0c0d10" />
-    <title>Bottle Inc. — AI를 제품으로, 성과로</title>
-    <meta
-      name="description"
-      content="주식회사 바틀은 대화형 AI와 도메인 자동화 SaaS를 직접 기획하고 운영하는 AI 제품 회사입니다. INK Chat, BoBi, BloomAI와 기업 맞춤형 ERP를 만나보세요."
-    />
-    <meta property="og:title" content="Bottle Inc. — AI를 제품으로, 성과로" />
-    <meta
-      property="og:description"
-      content="사람들이 반복해서 쓰고, 조직이 성과를 확인하는 AI 제품을 만듭니다."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://bottlecorp.kr" />
-    <meta property="og:locale" content="ko_KR" />
-    <meta property="og:image" content="https://bottlecorp.kr/og.png" />
-    <meta property="og:image:width" content="1731" />
-    <meta property="og:image:height" content="909" />
-    <meta property="og:image:alt" content="Bottle Inc. — AI를 제품으로, 성과로" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Bottle Inc. — AI를 제품으로, 성과로" />
-    <meta name="twitter:description" content="사람들이 반복해서 쓰고, 조직이 성과를 확인하는 AI 제품을 만듭니다." />
-    <meta name="twitter:image" content="https://bottlecorp.kr/og.png" />
-
-    <script>document.documentElement.classList.add("js");</script>
-
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "주식회사 바틀",
-        "alternateName": "Bottle Inc.",
-        "url": "https://bottlecorp.kr",
-        "email": "de@bottlecorp.kr",
-        "foundingDate": "2018",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "테헤란로2길 27, 15층",
-          "addressLocality": "강남구",
-          "addressRegion": "서울특별시",
-          "addressCountry": "KR"
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">본문으로 바로가기</a>
-
-    <nav class="site-nav" aria-label="주요 메뉴">
-      <div class="nav-shell">
-        <a class="brand" href="#top" aria-label="Bottle Inc. 홈">
-          <span class="brand-word">bottle</span>
-          <span class="brand-drop" aria-hidden="true"></span>
-        </a>
-
-        <button
-          class="menu-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-menu"
-          aria-label="메뉴 열기"
-        >
-          <span></span>
-          <span></span>
-        </button>
-
-        <div class="nav-menu" id="nav-menu">
-          <a href="#products">Products</a>
-          <a href="#erp">Enterprise</a>
-          <a href="#approach">Approach</a>
-          <a class="nav-contact" href="#contact">
-            프로젝트 문의
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070807" />
+  <title>Bottle — AI Product Company</title>
+  <meta name="description" content="바틀은 대화형 AI와 도메인 자동화 SaaS를 기획·개발·운영합니다." />
+  <meta property="og:title" content="Bottle — AI 제품으로 업무 성과와 사용자 경험을 설계합니다" />
+  <meta property="og:description" content="소비자 AI 경험부터 보험·의료 현장의 업무 흐름까지, 실제 사용되는 제품으로 전환합니다." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bottlecorp.kr" />
+  <meta property="og:image" content="https://bottlecorp.kr/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 이동</a>
+  <nav class="nav" aria-label="주요 메뉴">
+    <div class="nav-inner">
+      <a class="logo" href="#top" aria-label="Bottle 홈">bottle<span>●</span></a>
+      <button class="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><i></i><i></i></button>
+      <div class="menu">
+        <a href="#products">Products</a><a href="#capability">Capabilities</a><a href="#process">Process</a>
+        <a class="nav-cta" href="mailto:de@bottlecorp.kr">프로젝트 문의 <b>↗</b></a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main id="main">
-      <header class="hero" id="top">
-        <div class="hero-grid" aria-hidden="true"></div>
-        <div class="hero-glow hero-glow--orange" aria-hidden="true"></div>
-        <div class="hero-glow hero-glow--blue" aria-hidden="true"></div>
-
-        <div class="shell hero-shell">
-          <div class="hero-copy">
-            <p class="hero-kicker" data-reveal>
-              <span class="signal" aria-hidden="true"></span>
-              Independent AI Product Company · Seoul
-            </p>
-            <h1 data-reveal>
-              AI가 실제 성과가 되는<br />
-              <em>순간까지.</em>
-            </h1>
-            <p class="hero-lead" data-reveal>
-              바틀은 대화형 AI와 도메인 자동화 SaaS를 직접 기획하고 운영합니다.
-              기술을 사용자의 일상과 기업의 업무 흐름 속에 오래 쓰이는 제품으로 만듭니다.
-            </p>
-            <div class="hero-actions" data-reveal>
-              <a class="button button--light" href="#products">
-                제품 살펴보기 <span aria-hidden="true">↓</span>
-              </a>
-              <a class="text-link text-link--light" href="mailto:de@bottlecorp.kr">
-                사업 제휴 문의 <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-            <dl class="hero-facts" data-reveal>
-              <div>
-                <dt>Since</dt>
-                <dd>2018</dd>
-              </div>
-              <div>
-                <dt>Portfolio</dt>
-                <dd>03 Products</dd>
-              </div>
-              <div>
-                <dt>Market</dt>
-                <dd>B2C · B2B</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div class="hero-showcase" data-reveal aria-label="바틀 제품 화면 미리보기">
-            <div class="showcase-label">
-              <span>Product system</span>
-              <span>03 / Active</span>
-            </div>
-            <div class="showcase-orbit" aria-hidden="true"></div>
-            <div class="device-card device-card--ink">
-              <img src="assets/inkchat-app-2.png" alt="INK Chat의 캐릭터 대화 화면" />
-            </div>
-            <div class="device-card device-card--bobi">
-              <img src="assets/bobi-analysis.png" alt="BoBi의 보험 고지사항 분석 화면" />
-            </div>
-            <div class="showcase-console" aria-hidden="true">
-              <div class="console-head"><span></span><span></span><span></span></div>
-              <div class="console-row"><i class="console-dot console-dot--orange"></i><b>INK Chat</b><small>Consumer AI</small></div>
-              <div class="console-row"><i class="console-dot console-dot--blue"></i><b>BoBi</b><small>Insurance SaaS</small></div>
-              <div class="console-row"><i class="console-dot console-dot--violet"></i><b>BloomAI</b><small>Clinic Ops</small></div>
-            </div>
-          </div>
+  <main id="main">
+    <header class="hero" id="top">
+      <div class="hero-grid"></div><div class="aurora a1"></div><div class="aurora a2"></div>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="status" data-reveal><i></i> INDEPENDENT AI PRODUCT COMPANY <span>SEOUL / 2026</span></p>
+          <h1 data-reveal>AI 제품으로 업무 성과와<br /><em>사용자 경험을 설계합니다</em></h1>
+          <p class="hero-lead" data-reveal>바틀은 대화형 AI와 도메인 자동화 SaaS를 기획·개발·운영합니다. 소비자 AI 경험부터 보험·의료 현장의 업무 흐름까지, 실제 사용되는 제품으로 전환합니다.</p>
+          <div class="hero-actions" data-reveal><a class="btn primary" href="#products">제품 시스템 보기 <span>↓</span></a><a class="btn ghost" href="mailto:de@bottlecorp.kr">함께 만들기 <span>↗</span></a></div>
         </div>
 
-        <div class="hero-rail" aria-hidden="true">
-          <span>Conversational AI</span>
-          <span>Domain Automation</span>
-          <span>Product Operations</span>
-          <span>Global Experience</span>
+        <div class="ai-core" data-reveal aria-label="바틀 AI 제품 시스템">
+          <div class="core-top"><span>BOTTLE / PRODUCT OS</span><span class="live">● LIVE</span></div>
+          <div class="core-stage">
+            <div class="rings"><i></i><i></i><i></i><b>AI</b></div>
+            <div class="node n1"><small>01</small><strong>CONVERSATION</strong><span>Context engine</span></div>
+            <div class="node n2"><small>02</small><strong>DOMAIN DATA</strong><span>Insurance · Medical</span></div>
+            <div class="node n3"><small>03</small><strong>AUTOMATION</strong><span>Operational workflow</span></div>
+          </div>
+          <div class="core-bottom"><span>MODEL ↔ CONTEXT ↔ INTERFACE</span><span>LATENCY 0.8s</span></div>
         </div>
-      </header>
 
-      <section class="manifesto section" aria-labelledby="manifesto-title">
-        <div class="shell">
-          <div class="section-index" data-reveal>
-            <span>01</span>
-            <p>What we believe</p>
-          </div>
-          <div class="manifesto-content">
-            <h2 id="manifesto-title" data-reveal>
-              AI를 기능으로 납품하지 않습니다.<br />
-              <span>사람들이 반복해서 쓰고, 조직이 성과를 확인하는 제품으로 만듭니다.</span>
-            </h2>
-            <p data-reveal>
-              좋은 AI 제품은 높은 모델 성능만으로 완성되지 않습니다. 사용 맥락, 데이터 흐름,
-              인터랙션과 운영까지 하나의 경험으로 설계되어야 합니다. 바틀은 그 전 과정을 직접 책임집니다.
-            </p>
-          </div>
-        </div>
-      </section>
+        <div class="hero-metrics" data-reveal><div><small>OPERATING SINCE</small><strong>2018</strong></div><div><small>PRODUCT RANGE</small><strong>B2C — B2B</strong></div><div><small>CORE DISCIPLINE</small><strong>AI × UX × OPS</strong></div><div><small>SYSTEM STATUS</small><strong class="green">● OPERATIONAL</strong></div></div>
+      </div>
+    </header>
 
-      <section class="products section" id="products" aria-labelledby="products-title">
-        <div class="shell">
-          <div class="section-heading">
-            <div class="section-index" data-reveal>
-              <span>02</span>
-              <p>Selected products</p>
-            </div>
-            <div>
-              <p class="eyebrow" data-reveal>From conversation to operation</p>
-              <h2 id="products-title" data-reveal>서로 다른 현장에서<br />같은 기준으로 만든 제품들.</h2>
-            </div>
-          </div>
+    <section class="statement section">
+      <div class="shell split">
+        <div class="section-label" data-reveal><span>01</span><p>THE MISSION</p></div>
+        <div><p class="overline" data-reveal>AI THAT WORKS IN THE REAL WORLD</p><h2 data-reveal>데모가 아닌 <em>제품</em>으로.<br />기능이 아닌 <em>성과</em>로.</h2><p class="statement-text" data-reveal>기술의 가능성을 보여주는 데서 멈추지 않습니다. 사용자 맥락, 도메인 데이터, 인터페이스와 운영 체계를 하나로 연결해 매일 쓰이고 계속 개선되는 AI 제품을 만듭니다.</p></div>
+      </div>
+    </section>
 
-          <div class="product-stack">
-            <article class="product-card product-card--ink" data-reveal>
-              <div class="product-copy">
-                <div class="product-meta">
-                  <span class="product-number">01</span>
-                  <span class="product-type">Consumer AI · Global</span>
-                </div>
-                <div class="product-brandline">
-                  <img src="assets/inkchat.png" alt="" />
-                  <span>INK Chat</span>
-                </div>
-                <h3>캐릭터와 세계관이<br />대화 속에서 살아나는 경험.</h3>
-                <p>
-                  장기 기억, 감정 흐름, 캐릭터 일관성을 하나의 대화 경험으로 연결합니다.
-                  한국을 넘어 일본·스페인·베트남 사용자를 위한 서비스를 운영합니다.
-                </p>
-                <ul class="tag-list" aria-label="INK Chat 핵심 기능">
-                  <li>Context memory</li>
-                  <li>Character consistency</li>
-                  <li>Global operations</li>
-                </ul>
-                <a class="product-link" href="https://inkchat.ai" target="_blank" rel="noreferrer">
-                  INK Chat 방문하기 <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-              <div class="product-visual product-visual--ink">
-                <div class="visual-caption"><span>Interface / 01</span><span>Live service</span></div>
-                <img class="ink-screen ink-screen--back" src="assets/inkchat-app-1.png" alt="INK Chat 캐릭터 탐색 화면" loading="lazy" />
-                <img class="ink-screen ink-screen--front" src="assets/inkchat-app-2.png" alt="INK Chat 캐릭터 대화 화면" loading="lazy" />
-              </div>
-            </article>
-
-            <article class="product-card product-card--bobi" data-reveal>
-              <div class="product-copy">
-                <div class="product-meta">
-                  <span class="product-number">02</span>
-                  <span class="product-type">Insurance AI SaaS</span>
-                </div>
-                <div class="product-brandline">
-                  <img src="assets/bobi.png" alt="" />
-                  <span>BoBi <small>보험비서</small></span>
-                </div>
-                <h3>복잡한 보험 데이터를<br />명확한 판단 근거로.</h3>
-                <p>
-                  진료·처방 데이터 조회부터 고지 의무 판단, 상담 기록 정리까지.
-                  보험설계사와 GA 조직의 반복 업무를 더 빠르고 정확한 흐름으로 전환합니다.
-                </p>
-                <ul class="tag-list" aria-label="BoBi 핵심 기능">
-                  <li>Disclosure analysis</li>
-                  <li>HIRA · CODEF</li>
-                  <li>Workflow automation</li>
-                </ul>
-                <a class="product-link" href="https://bobi.co.kr" target="_blank" rel="noreferrer">
-                  BoBi 도입 알아보기 <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-              <div class="product-visual product-visual--bobi">
-                <div class="visual-caption"><span>Interface / 02</span><span>B2B SaaS</span></div>
-                <div class="bobi-halo" aria-hidden="true"></div>
-                <img class="bobi-screen bobi-screen--left" src="assets/bobi-hero.png" alt="BoBi 분석 시작 화면" loading="lazy" />
-                <img class="bobi-screen bobi-screen--center" src="assets/bobi-analysis.png" alt="BoBi 고지사항 분석 화면" loading="lazy" />
-                <img class="bobi-screen bobi-screen--right" src="assets/bobi-summary.png" alt="BoBi 분석 요약 화면" loading="lazy" />
-              </div>
-            </article>
-
-            <article class="bloom-card" data-reveal>
-              <div class="bloom-copy">
-                <div class="product-meta">
-                  <span class="product-number">03</span>
-                  <span class="product-type">Clinic Operations</span>
-                </div>
-                <p class="bloom-name">BloomAI</p>
-                <h3>클리닉 운영과 환자 케어 사이의 공백을 줄입니다.</h3>
-              </div>
-              <p class="bloom-description">
-                일정 변경, 상담 기록, 환자 문의와 정서 케어 신호를 한곳에 모아 직원의 반복 업무와
-                환자의 불확실성을 함께 낮춥니다.
-              </p>
-              <a class="round-link" href="https://bloom-ai.kr" target="_blank" rel="noreferrer" aria-label="BloomAI 방문하기">
-                <span aria-hidden="true">↗</span>
-              </a>
-              <div class="bloom-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="enterprise section" id="erp" aria-labelledby="erp-title">
-        <div class="enterprise-grid" aria-hidden="true"></div>
-        <div class="shell">
-          <div class="section-index section-index--dark" data-reveal>
-            <span>03</span>
-            <p>Enterprise system</p>
-          </div>
-
-          <div class="enterprise-layout">
-            <div class="enterprise-copy">
-              <p class="eyebrow eyebrow--orange" data-reveal>Fixed-price custom ERP</p>
-              <h2 id="erp-title" data-reveal>필요한 만큼만 설계하고,<br />처음 약속한 비용으로.</h2>
-              <p class="enterprise-lead" data-reveal>
-                검증된 표준 모듈은 빠르게, 우리 회사만의 업무는 정확하게 커스텀합니다.
-                AI 진단으로 권장 구성과 예상 견적을 먼저 확인하세요.
-              </p>
-              <div class="enterprise-actions" data-reveal>
-                <a class="button button--orange" href="/erpanalysis">3분 무료 AI 진단</a>
-                <a class="text-link text-link--light" href="mailto:de@bottlecorp.kr?subject=ERP%20도입%20상담%20문의">
-                  도입 상담 문의 <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="erp-panel" data-reveal>
-              <div class="erp-panel-head">
-                <span>ERP PROJECT ESTIMATE</span>
-                <span class="live-pill"><i></i> Available</span>
-              </div>
-              <div class="erp-price">
-                <span>구축비</span>
-                <strong>990<small>만원부터</small></strong>
-                <p>VAT 별도 · 표준 구축 기준</p>
-              </div>
-              <div class="erp-specs">
-                <div><span>표준 기간</span><b>12주~</b></div>
-                <div><span>사전 진단</span><b>약 3분</b></div>
-                <div><span>설계 결과</span><b>구성 · 견적 · IA</b></div>
-              </div>
-              <div class="erp-progress" aria-hidden="true">
-                <span>Diagnosis</span><i></i><span>Design</span><i></i><span>Build</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="approach section" id="approach" aria-labelledby="approach-title">
-        <div class="shell">
-          <div class="section-heading section-heading--approach">
-            <div class="section-index" data-reveal>
-              <span>04</span>
-              <p>How we build</p>
-            </div>
-            <div>
-              <p class="eyebrow" data-reveal>One connected process</p>
-              <h2 id="approach-title" data-reveal>아이디어보다 운영을 먼저 생각하는<br />바틀의 제품 설계 방식.</h2>
-            </div>
-          </div>
-
-          <ol class="process-list">
-            <li data-reveal>
-              <span class="process-num">01</span>
-              <div class="process-mark"><i></i></div>
-              <div><h3>Context</h3><p>사용자, 업무 주체와 판단 기준을 정의해 제품이 풀어야 할 문제를 정확히 좁힙니다.</p></div>
-            </li>
-            <li data-reveal>
-              <span class="process-num">02</span>
-              <div class="process-mark"><i></i></div>
-              <div><h3>System</h3><p>입력과 분석, 판단 근거와 다음 행동이 끊기지 않는 데이터 흐름을 설계합니다.</p></div>
-            </li>
-            <li data-reveal>
-              <span class="process-num">03</span>
-              <div class="process-mark"><i></i></div>
-              <div><h3>Experience</h3><p>AI의 능력이 자연스럽게 드러나도록 인터랙션과 사용자 경험을 하나로 만듭니다.</p></div>
-            </li>
-            <li data-reveal>
-              <span class="process-num">04</span>
-              <div class="process-mark"><i></i></div>
-              <div><h3>Operation</h3><p>실제 사용 데이터와 현장 피드백을 바탕으로 품질을 관리하고 시장별로 확장합니다.</p></div>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="closing" aria-labelledby="closing-title">
-        <div class="closing-noise" aria-hidden="true"></div>
-        <div class="shell closing-shell">
-          <p class="closing-kicker" data-reveal>Bottle builds what people keep using.</p>
-          <h2 id="closing-title" data-reveal>
-            다음 AI 제품의<br />첫 장면을 함께 만들까요?
-          </h2>
-          <a class="closing-link" href="mailto:de@bottlecorp.kr" data-reveal>
-            <span>프로젝트 이야기하기</span>
-            <i aria-hidden="true">↗</i>
-          </a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer" id="contact">
+    <section class="products section" id="products">
       <div class="shell">
-        <div class="footer-top">
-          <a class="brand brand--footer" href="#top" aria-label="Bottle Inc. 홈">
-            <span class="brand-word">bottle</span>
-            <span class="brand-drop" aria-hidden="true"></span>
-          </a>
-          <p>AI 제품과 도메인 자동화가 필요한 조직과 협업합니다.</p>
-        </div>
-        <div class="footer-grid">
-          <div>
-            <span class="footer-label">Contact</span>
-            <a href="mailto:de@bottlecorp.kr">de@bottlecorp.kr</a>
-            <a href="https://bottlecorp.kr">bottlecorp.kr</a>
-          </div>
-          <div>
-            <span class="footer-label">Office</span>
-            <address>서울특별시 강남구<br />테헤란로2길 27, 15층</address>
-          </div>
-          <div>
-            <span class="footer-label">Products</span>
-            <a href="https://inkchat.ai" target="_blank" rel="noreferrer">INK Chat ↗</a>
-            <a href="https://bobi.co.kr" target="_blank" rel="noreferrer">BoBi ↗</a>
-            <a href="https://bloom-ai.kr" target="_blank" rel="noreferrer">BloomAI ↗</a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span>주식회사 바틀 · 대표 한승수 · 사업자등록번호 376-87-01076</span>
-          <span>© <b data-year>2026</b> Bottle Inc. All rights reserved.</span>
+        <div class="heading-row"><div class="section-label" data-reveal><span>02</span><p>PRODUCT SYSTEMS</p></div><h2 data-reveal>현장에서 작동하는<br />AI 포트폴리오.</h2><p data-reveal>소비자 대화 경험부터 전문가의 판단과 반복 업무까지.</p></div>
+        <div class="product-grid">
+          <article class="product feature ink" data-reveal>
+            <div class="product-head"><span>01 / CONSUMER AI</span><i>LIVE PRODUCT ↗</i></div>
+            <div class="product-copy"><div class="product-name"><img src="assets/inkchat.png" alt="" /><strong>INK Chat</strong></div><h3>캐릭터와 세계관이<br />기억을 가진 대화가 됩니다.</h3><p>장기 기억, 감정 흐름, 캐릭터 일관성을 연결한 글로벌 캐릭터 AI 플랫폼.</p><a href="https://inkchat.ai" target="_blank" rel="noreferrer">inkchat.ai <b>↗</b></a></div>
+            <div class="phone-stack"><img src="assets/inkchat-app-1.png" alt="INK Chat 캐릭터 탐색 화면" /><img src="assets/inkchat-app-2.png" alt="INK Chat 대화 화면" /></div>
+            <div class="tech-tags"><span>LONG-TERM MEMORY</span><span>MULTI-LANGUAGE</span><span>CHARACTER ENGINE</span></div>
+          </article>
+
+          <article class="product bobi" data-reveal>
+            <div class="product-head"><span>02 / INSURANCE AI</span><i>B2B SaaS ↗</i></div>
+            <div class="product-copy"><div class="product-name"><img src="assets/bobi.png" alt="" /><strong>BoBi</strong></div><h3>보험 데이터를<br />판단 가능한 정보로.</h3><p>진료·처방 조회부터 고지 의무 분석까지 설계사의 반복 업무를 자동화합니다.</p><a href="https://bobi.co.kr" target="_blank" rel="noreferrer">bobi.co.kr <b>↗</b></a></div>
+            <div class="screen-pair"><img src="assets/bobi-hero.png" alt="BoBi 시작 화면" /><img src="assets/bobi-analysis.png" alt="BoBi 분석 화면" /></div>
+            <div class="tech-tags"><span>DISCLOSURE AI</span><span>HIRA · CODEF</span></div>
+          </article>
+
+          <article class="product bloom" data-reveal>
+            <div class="product-head"><span>03 / MEDICAL OPS</span><i>IN DEVELOPMENT</i></div>
+            <div class="bloom-orb"><i></i><b>B</b></div>
+            <div class="product-copy"><div class="product-name text"><strong>BloomAI</strong></div><h3>의료 현장의 흐름을<br />더 가볍고 정확하게.</h3><p>상담, 기록, 후속 업무를 연결하는 의료기관 운영 자동화 시스템.</p></div>
+            <div class="tech-tags"><span>CLINIC WORKFLOW</span><span>AI OPERATIONS</span></div>
+          </article>
         </div>
       </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
-  </body>
+    <section class="capability section" id="capability">
+      <div class="shell">
+        <div class="heading-row inverse"><div class="section-label" data-reveal><span>03</span><p>CAPABILITIES</p></div><h2 data-reveal>모델부터 운영까지,<br />제품의 전 과정을 연결합니다.</h2></div>
+        <div class="cap-grid">
+          <article data-reveal><span>01</span><i>⌁</i><h3>AI Product Strategy</h3><p>사용자 문제와 사업 성과를 기준으로 AI가 가장 잘 작동할 제품 구조를 설계합니다.</p><small>DISCOVERY / VALIDATION / ROADMAP</small></article>
+          <article data-reveal><span>02</span><i>◎</i><h3>Conversational UX</h3><p>프롬프트가 아닌 맥락과 기억을 중심으로 자연스럽고 일관된 대화 경험을 만듭니다.</p><small>MEMORY / PERSONA / SAFETY</small></article>
+          <article data-reveal><span>03</span><i>⌘</i><h3>Domain Automation</h3><p>복잡한 도메인 규칙과 데이터를 실제 업무 흐름 속 자동화 시스템으로 전환합니다.</p><small>RAG / WORKFLOW / INTEGRATION</small></article>
+          <article data-reveal><span>04</span><i>◌</i><h3>Product Operations</h3><p>출시 이후의 품질, 지표, 피드백을 추적하며 제품이 계속 학습하도록 운영합니다.</p><small>EVALUATION / ANALYTICS / ITERATION</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="process section" id="process">
+      <div class="shell split"><div class="section-label" data-reveal><span>04</span><p>HOW WE BUILD</p></div><div><h2 data-reveal>아이디어가 실제 사용되는<br />제품이 되는 과정.</h2><div class="process-list"><article data-reveal><b>01</b><h3>DEFINE</h3><p>사용자 문제와 성공 지표를 구체화합니다.</p><span>→</span></article><article data-reveal><b>02</b><h3>DESIGN</h3><p>모델·데이터·인터페이스의 구조를 설계합니다.</p><span>→</span></article><article data-reveal><b>03</b><h3>BUILD</h3><p>검증 가능한 제품을 빠르게 구현합니다.</p><span>→</span></article><article data-reveal><b>04</b><h3>OPERATE</h3><p>실제 데이터로 측정하고 지속적으로 개선합니다.</p><span>↗</span></article></div></div></div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-grid"></div><div class="shell"><p data-reveal>HAVE A PROBLEM WORTH SOLVING?</p><h2 data-reveal>AI를 실제 제품과 성과로<br />연결할 준비가 되셨나요?</h2><a data-reveal href="mailto:de@bottlecorp.kr">프로젝트 이야기하기 <span>↗</span></a><div class="contact-foot"><span>DE@BOTTLECORP.KR</span><span>SEOUL, REPUBLIC OF KOREA</span></div></div>
+    </section>
+  </main>
+
+  <footer><div class="shell"><a class="logo" href="#top">bottle<span>●</span></a><p>AI PRODUCT COMPANY</p><p>© <span data-year></span> BOTTLE INC.</p></div></footer>
+  <script src="script.js"></script>
+</body>
 </html>

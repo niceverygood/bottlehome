@@ -18,7 +18,7 @@
     menu.classList.remove("open");
     menuButton.setAttribute("aria-expanded", "false");
     menuButton.setAttribute("aria-label", "메뉴 열기");
-    nav.classList.remove("menu-active");
+    nav.classList.remove("open");
     document.body.classList.remove("menu-open");
   }
 
@@ -28,7 +28,7 @@
     menu.classList.toggle("open", shouldOpen);
     menuButton.setAttribute("aria-expanded", String(shouldOpen));
     menuButton.setAttribute("aria-label", shouldOpen ? "메뉴 닫기" : "메뉴 열기");
-    nav.classList.toggle("menu-active", shouldOpen);
+    nav.classList.toggle("open", shouldOpen);
     document.body.classList.toggle("menu-open", shouldOpen);
   }
 
@@ -53,7 +53,7 @@
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
     revealItems.forEach(function (item) {
-      item.classList.add("revealed");
+      item.classList.add("show");
     });
   } else {
     var revealObserver = new IntersectionObserver(
@@ -65,7 +65,7 @@
           );
           var index = siblings.indexOf(entry.target);
           entry.target.style.animationDelay = Math.min(Math.max(index, 0) * 70, 280) + "ms";
-          entry.target.classList.add("revealed");
+          entry.target.classList.add("show");
           observer.unobserve(entry.target);
         });
       },
