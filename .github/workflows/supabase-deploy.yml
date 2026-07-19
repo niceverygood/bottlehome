@@ -54,7 +54,7 @@ jobs:
         with:
           version: latest
 
-      - name: 함수 배포 (erp-analyze = Claude Sonnet 5, erp-chat, erp-nurture, erp-subscribe, erp-broadcast)
+      - name: 함수 배포 (erp-analyze = Claude Sonnet 5, erp-chat, erp-nurture, erp-subscribe, erp-broadcast, erp-project)
         if: env.SKIP != 'true'
         run: |
           supabase functions deploy erp-analyze   --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
@@ -62,6 +62,7 @@ jobs:
           supabase functions deploy erp-nurture   --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
           supabase functions deploy erp-subscribe --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
           supabase functions deploy erp-broadcast --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
+          supabase functions deploy erp-project   --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
 
       # erp-nurture·erp-subscribe·erp-broadcast는 여기서 스모크 테스트하지 않는다 —
       # 실제로 이메일을 발송하는 함수라 CI를 돌릴 때마다 진짜 메일함에 메일이 가면 안 된다.
