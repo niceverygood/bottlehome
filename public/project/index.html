@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#070807" />
+<title>프로젝트 룸 — 주식회사 바틀</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+:root{--bg:#070807;--panel:#0f1524;--line:#253453;--blue:#4f7cff;--blue2:#79a1ff;--white:#f4f6fb;--muted:#8f9bb5;--mono:ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+#app{max-width:680px;margin:0 auto;height:100dvh;display:flex;flex-direction:column}
+.top{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex:none;background:rgba(7,8,7,.9)}
+.top .logo{font-weight:800;font-size:18px;letter-spacing:-1px}.top .logo i{font-style:normal;color:var(--blue);font-size:10px;margin-left:3px}
+.top .name{font-size:13px;color:var(--muted)}.top .name b{color:var(--white);display:block;font-size:14px}
+#msgs{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:82%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.65;word-break:break-word;white-space:pre-wrap}
+.m.client{align-self:flex-end;background:linear-gradient(135deg,#5d89ff,#315fff);color:#fff;border-bottom-right-radius:4px}
+.m.admin,.m.bot{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}
+.m.bot .who{font-size:10.5px;font-weight:800;color:var(--blue2);letter-spacing:.05em;margin-bottom:5px}
+.m.system{align-self:center;background:none;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;border-radius:10px;max-width:92%;text-align:center}
+.m.feedback{border:1px solid rgba(79,124,255,.6)}
+.m .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.06em;background:rgba(255,255,255,.16);border-radius:5px;padding:2px 7px;margin-bottom:6px}
+.m .preview{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(79,124,255,.14);border:1px solid var(--blue);color:var(--blue2);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:700;text-decoration:none}
+.time{font-size:10px;color:#5d6a8a;margin-top:5px}
+.composer{flex:none;border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(7,8,7,.95)}
+.composer .row{display:flex;gap:8px;align-items:flex-end}
+.composer textarea{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--white);padding:12px 14px;font-size:14px;line-height:1.5;resize:none;min-height:46px;max-height:130px}
+.composer textarea:focus{outline:none;border-color:var(--blue)}
+.composer button{border:0;border-radius:12px;padding:0 16px;height:46px;font-size:13px;font-weight:800;cursor:pointer;flex:none}
+#sendBtn{background:var(--panel);border:1px solid var(--line);color:var(--white)}
+#fbBtn{background:linear-gradient(135deg,#5d89ff,#315fff);color:#fff}
+#fbBtn:disabled,#sendBtn:disabled{opacity:.5;cursor:wait}
+.hint{font-size:11px;color:#5d6a8a;margin-top:8px;line-height:1.6}
+#gate{display:none;text-align:center;padding:80px 24px;color:var(--muted);font-size:14px;line-height:1.7}
+</style>
+</head>
+<body>
+<div id="gate">유효하지 않은 프로젝트 링크입니다.<br>담당자에게 링크를 다시 요청해주세요.</div>
+<div id="app" style="display:none">
+  <div class="top">
+    <div class="logo">bottle<i>●</i></div>
+    <div class="name"><b id="pname">프로젝트</b><span id="pcompany"></span></div>
+  </div>
+  <div id="msgs" aria-live="polite"></div>
+  <div class="composer">
+    <div class="row">
+      <textarea id="input" placeholder="메시지를 입력하세요" rows="1" maxlength="4000"></textarea>
+      <button id="sendBtn" type="button">전송</button>
+      <button id="fbBtn" type="button">반영 요청 ↗</button>
+    </div>
+    <p class="hint"><b>전송</b>은 일반 대화, <b>반영 요청</b>은 수정·개선 요청을 개발 작업으로 접수합니다. 접수된 요청은 구현 후 미리보기 링크와 함께 회신드립니다.</p>
+  </div>
+</div>
+<script>
+(function () {
+  "use strict";
+  var API = "https://joycuxdxlqhztyomnimh.supabase.co/functions/v1/erp-project";
+  var token = new URLSearchParams(location.search).get("t") || "";
+  var app = document.getElementById("app"), gate = document.getElementById("gate");
+  var msgs = document.getElementById("msgs"), input = document.getElementById("input");
+  var sendBtn = document.getElementById("sendBtn"), fbBtn = document.getElementById("fbBtn");
+  var lastId = 0, seen = {};
+
+  if (!token) { gate.style.display = "block"; return; }
+
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  function fmtTime(iso) {
+    var d = new Date(iso);
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  }
+  function render(m) {
+    if (seen[m.id]) return; seen[m.id] = true;
+    if (m.id > lastId) lastId = m.id;
+    var el = document.createElement("div");
+    var cls = m.sender === "client" ? "client" : m.sender === "system" ? "system" : m.sender;
+    el.className = "m " + cls + (m.kind === "feedback" ? " feedback" : "");
+    var html = "";
+    if (m.sender === "bot") html += '<div class="who">BOTTLE PROJECT BOT</div>';
+    if (m.kind === "feedback") html += '<span class="tag">반영 요청</span><br>';
+    html += esc(m.body);
+    if (m.preview_url) html += '<br><a class="preview" href="' + esc(m.preview_url) + '" target="_blank" rel="noreferrer">미리보기 확인하기 ↗</a>';
+    if (m.sender !== "system") html += '<div class="time">' + fmtTime(m.created_at) + "</div>";
+    el.innerHTML = html;
+    msgs.appendChild(el);
+  }
+  function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
+
+  function load(first) {
+    return fetch(API + "?t=" + encodeURIComponent(token) + "&after=" + lastId)
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (d) {
+        if (first) {
+          document.getElementById("pname").textContent = d.project.name;
+          document.getElementById("pcompany").textContent = d.project.company || "";
+          app.style.display = "flex";
+        }
+        var had = d.messages.length > 0;
+        d.messages.forEach(render);
+        if (had) scrollDown();
+      })
+      .catch(function () { if (first) { gate.style.display = "block"; } });
+  }
+
+  function send(kind) {
+    var body = input.value.trim();
+    if (!body) return;
+    sendBtn.disabled = fbBtn.disabled = true;
+    fetch(API, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ t: token, body: body, kind: kind }),
+    })
+      .then(function (r) { if (!r.ok) throw 0; input.value = ""; return load(false); })
+      .catch(function () { alert("전송에 실패했습니다. 잠시 후 다시 시도해주세요."); })
+      .then(function () { sendBtn.disabled = fbBtn.disabled = false; input.focus(); });
+  }
+
+  sendBtn.addEventListener("click", function () { send("chat"); });
+  fbBtn.addEventListener("click", function () {
+    if (confirm("이 내용을 개발 반영 요청으로 접수할까요?\n접수되면 구현 작업이 시작됩니다.")) send("feedback");
+  });
+  input.addEventListener("input", function () {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 130) + "px";
+  });
+
+  load(true).then(scrollDown);
+  setInterval(function () { load(false); }, 4000);
+})();
+</script>
+</body>
+</html>

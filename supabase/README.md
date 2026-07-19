@@ -97,3 +97,19 @@ curl -s -X POST "$BASE/erp-broadcast" -H "x-admin-token: <ERP_ADMIN_TOKEN 값>" 
 - 기존 배포본과 테이블 구조가 다르면 (컬럼 누락 오류 등) `migrations/` SQL을 먼저 실행하세요. 기존 데이터는 건드리지 않습니다.
 - 관리자 채팅 페이지(`/erpanalysis/admin/chat/`)는 PWA입니다 — 폰 브라우저로 열면 '앱으로 설치' 배너가 뜨고, 설치 후 앱처럼 실행됩니다. 앱이 꺼져 있을 때의 실시간 푸시는 `SLACK_WEBHOOK_URL`로 들어오는 Slack 알림이 담당합니다.
 - **이메일 자동 수집·무동의 발송 기능은 의도적으로 만들지 않았습니다.** 정보통신망법 제50조의2(이메일 수집 프로그램 금지)·제50조(사전 동의 없는 광고성 정보 전송 금지) 위반이기 때문입니다. `erp-nurture`·`erp-subscribe`·`erp-broadcast` 셋 다 이미 동의받은 연락처에만 발송합니다 — 이 경계를 허무는 방향으로 수정하지 마세요.
+
+## erp-project — 클라이언트 프로젝트 룸 + 피드백 자동 반영
+
+프로젝트별 메신저 룸에서 클라이언트가 "반영 요청"을 보내면:
+Claude(Sonnet 5)가 피드백을 작업 명세로 변환 → 레포에 `client-feedback` 이슈 생성
+→ GitHub Actions(`client-feedback.yml`)에서 Claude Code가 구현·PR 생성
+→ 회신 초안이 만들어지고 **관리자가 어드민에서 승인해야** 클라이언트에게 발송된다.
+
+- 클라이언트 룸: `https://bottlecorp.kr/project/?t=<client_token>` (룸 생성 시 발급)
+- 관리자: `https://bottlecorp.kr/erpanalysis/admin/projects/`
+- 추가 시크릿: `GH_BOT_TOKEN` — 이슈 생성용 GitHub Fine-grained PAT
+  (해당 레포 Issues: Read and write 권한). Supabase 시크릿에 저장.
+- 콜백 인증은 `CRON_SECRET`을 재사용한다 — GitHub Actions 시크릿과 Supabase
+  시크릿에 같은 값이 있어야 회신 초안이 생성된다.
+- 완전 자동 배포는 의도적으로 만들지 않았다: 클라이언트 입력은 신뢰할 수 없는
+  입력이므로, 머지·회신 발송은 항상 관리자 승인(사람)을 거친다.

@@ -95,7 +95,9 @@ async function callClaude(payload: unknown) {
         body: JSON.stringify({
           model: MODEL,
           max_tokens: MAX_TOKENS,
-          temperature: 0.3,
+          // Sonnet 5는 temperature 등 샘플링 파라미터를 받으면 400을 반환한다 — 절대 추가 금지.
+          // thinking도 명시적으로 끈다(기본값이 adaptive라 max_tokens를 사고에 소모함).
+          thinking: { type: "disabled" },
           system: SYSTEM_PROMPT,
           messages: [{ role: "user", content: "진단 응답 데이터:\n" + JSON.stringify(payload) }],
         }),
